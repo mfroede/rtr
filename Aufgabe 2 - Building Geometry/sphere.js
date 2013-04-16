@@ -3,10 +3,71 @@ var Sphere = function (gl, depth) {
     this.gl = gl;
     this.depth = depth;
 
+    this.vertices = [];
+    this.colors = [];
+
     this.vertexPositionBuffer;
     this.colorvertexColorBuffer;
 } 
 
+Sphere.prototype.normalisedMiddle = function(a, b) {
+    var c = vec3.create([0,0,0]);
+    vec3.add(a, b, c);
+    vec3.normalize(c);
+    return c;
+};
+
+Sphere.prototype.configVertices = function(depth, a, b, c) {
+    var ab = this.normalisedMiddle(a, b);
+    var bc = this.normalisedMiddle(b, c);
+    var ca = this.normalisedMiddle(c, a);
+
+    if(depth == 0){
+        this.vertices.push(
+              a[0], a[1], a[2],
+             ab[0],ab[1],ab[2],
+             ca[0],ca[1],ca[2],
+
+             ab[0],ab[1],ab[2],
+              b[0], b[1], b[2],
+             bc[0],bc[1],bc[2],
+
+             bc[0],bc[1],bc[2],
+              c[0], c[1], c[2],
+             ca[0],ca[1],ca[2],
+
+             ab[0],ab[1],ab[2],
+             bc[0],bc[1],bc[2],
+             ca[0],ca[1],ca[2]
+            );
+        this.colors.push(
+                1.0, 0.0, 0.0, 1.0,
+                1.0, 0.0, 0.0, 1.0,
+                1.0, 0.0, 0.0, 1.0,
+
+                // Right face
+                1.0, 0.0, 0.0, 1.0,
+                1.0, 0.0, 0.0, 1.0,
+                1.0, 0.0, 0.0, 1.0,
+
+                // Back face
+                1.0, 0.0, 0.0, 1.0,
+                1.0, 0.0, 0.0, 1.0,
+                1.0, 0.0, 0.0, 1.0,
+
+                // Left face
+                1.0, 0.0, 0.0, 1.0,
+                1.0, 0.0, 0.0, 1.0,
+                1.0, 0.0, 0.0, 1.0
+            )
+        return;
+    }
+
+    this.configVertices(depth -1, a, ab, ca);
+    this.configVertices(depth -1, ab, b, bc);
+    this.configVertices(depth -1, bc, c, ca);
+    this.configVertices(depth -1, ab, bc, ca);
+}
 
 Sphere.prototype.initBuffers = function() {
     this.vertexPositionBuffer = this.gl.createBuffer();
@@ -16,67 +77,64 @@ Sphere.prototype.initBuffers = function() {
     var positonB = [ 1.0,-1.0,-1.0];
     var positonC = [-1.0, 1.0,-1.0];
     var positonD = [ 1.0, 1.0, 1.0];
-    var normPositonA = []; 
-    var normPositonB = []; 
-    var normPositonC = []; 
-    var normPositonD = []; 
 
+    vec3.normalize(positonA); 
+    vec3.normalize(positonB); 
+    vec3.normalize(positonC);
+    vec3.normalize(positonD); 
 
-    vec3.normalize(positonA, normPositonA); 
-    vec3.normalize(positonB, normPositonB); 
-    vec3.normalize(positonC, normPositonC);
-    vec3.normalize(positonD, normPositonD); 
+    // this.vertices.push(
+    //      positonA[0],positonA[1],positonA[2],
+    //      positonB[0],positonB[1],positonB[2],
+    //      positonC[0],positonC[1],positonC[2],
 
+    //      positonA[0],positonA[1],positonA[2],
+    //      positonB[0],positonB[1],positonB[2],
+    //      positonD[0],positonD[1],positonD[2],
 
-    var vertices = [
-        // Front face
-         normPositonA[0],normPositonA[1],normPositonA[2],
-         normPositonB[0],normPositonB[1],normPositonB[2],
-         normPositonC[0],normPositonC[1],normPositonC[2],
+    //      positonC[0],positonC[1],positonC[2],
+    //      positonB[0],positonB[1],positonB[2],
+    //      positonD[0],positonD[1],positonD[2],
 
-         normPositonA[0],normPositonA[1],normPositonA[2],
-         normPositonB[0],normPositonB[1],normPositonB[2],
-         normPositonD[0],normPositonD[1],normPositonD[2],
+    //      positonC[0],positonC[1],positonC[2],
+    //      positonA[0],positonA[1],positonA[2],
+    //      positonD[0],positonD[1],positonD[2]
+    // );
+    // this.colors.push(
+    //             1.0, 0.0, 0.0, 1.0,
+    //             1.0, 0.0, 0.0, 1.0,
+    //             1.0, 0.0, 0.0, 1.0,
 
-         normPositonC[0],normPositonC[1],normPositonC[2],
-         normPositonB[0],normPositonB[1],normPositonB[2],
-         normPositonD[0],normPositonD[1],normPositonD[2],
+    //             // Right face
+    //             1.0, 0.0, 0.0, 1.0,
+    //             1.0, 0.0, 0.0, 1.0,
+    //             1.0, 0.0, 0.0, 1.0,
 
-         normPositonC[0],normPositonC[1],normPositonC[2],
-         normPositonA[0],normPositonA[1],normPositonA[2],
-         normPositonD[0],normPositonD[1],normPositonD[2]
-    ];
+    //             // Back face
+    //             1.0, 0.0, 0.0, 1.0,
+    //             1.0, 0.0, 0.0, 1.0,
+    //             1.0, 0.0, 0.0, 1.0,
+
+    //             // Left face
+    //             1.0, 0.0, 0.0, 1.0,
+    //             1.0, 0.0, 0.0, 1.0,
+    //             1.0, 0.0, 0.0, 1.0
+    //         );
+    this.configVertices(this.depth, positonA, positonB, positonC);
+    this.configVertices(this.depth, positonA, positonB, positonD);
+    this.configVertices(this.depth, positonA, positonC, positonD);
+    this.configVertices(this.depth, positonB, positonC, positonD);
     
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(vertices), this.gl.STATIC_DRAW);
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.vertices), this.gl.STATIC_DRAW);
     this.vertexPositionBuffer.itemSize = 3;
-    this.vertexPositionBuffer.numItems = 12;
+    this.vertexPositionBuffer.numItems = this.vertices.length / this.vertexPositionBuffer.itemSize;
 
     this.colorvertexColorBuffer = this.gl.createBuffer();
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorvertexColorBuffer);
-    var colors = [
-        // Front face
-        1.0, 0.0, 0.0, 1.0,
-        1.0, 0.0, 0.0, 1.0,
-        1.0, 0.0, 0.0, 1.0,
-
-        // Right face
-        0.0, 1.0, 0.0, 1.0,
-        0.0, 1.0, 0.0, 1.0,
-        0.0, 1.0, 0.0, 1.0,
-
-        // Back face
-        0.0, 0.0, 1.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
-        0.0, 0.0, 1.0, 1.0,
-
-        // Left face
-        1.0, 1.0, 0.0, 1.0,
-        1.0, 1.0, 0.0, 1.0,
-        1.0, 1.0, 0.0, 1.0
-    ];
-    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(colors), this.gl.STATIC_DRAW);
+    
+    this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.colors), this.gl.STATIC_DRAW);
     this.colorvertexColorBuffer.itemSize = 4;
-    this.colorvertexColorBuffer.numItems = 16;
+    this.colorvertexColorBuffer.numItems = this.colors.length / this.colorvertexColorBuffer.itemSize;
 }
 
 Sphere.prototype.draw = function(){
