@@ -86,7 +86,6 @@
         return shader;
     }
 
-
     var shaderProgram;
 
     function initShaders() {
@@ -144,7 +143,6 @@
     }
 
     var rPyramid = 0;
-    var rCube = 0;
 
     function drawScene() {
         gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
@@ -192,10 +190,10 @@
         initGL(canvas);
         initShaders()
 
-        sphere = new Sphere(gl, 0);
+        sphere = new Sphere(gl, 3);
         sphere.initBuffers();
 
-        gl.clearColor(0.0, 0.0, 0.1, 1.0);
+        gl.clearColor(0.1, 0.1, 0.3, 1.0);
         gl.enable(gl.DEPTH_TEST);
 
         tick();

@@ -22,51 +22,38 @@ Sphere.prototype.configVertices = function(depth, a, b, c) {
     var bc = this.normalisedMiddle(b, c);
     var ca = this.normalisedMiddle(c, a);
 
-    if(depth == 0){
-        this.vertices.push(
-              a[0], a[1], a[2],
-             ab[0],ab[1],ab[2],
-             ca[0],ca[1],ca[2],
-
-             ab[0],ab[1],ab[2],
-              b[0], b[1], b[2],
-             bc[0],bc[1],bc[2],
-
-             bc[0],bc[1],bc[2],
-              c[0], c[1], c[2],
-             ca[0],ca[1],ca[2],
-
-             ab[0],ab[1],ab[2],
-             bc[0],bc[1],bc[2],
-             ca[0],ca[1],ca[2]
-            );
-        this.colors.push(
-                1.0, 0.0, 0.0, 1.0,
-                1.0, 0.0, 0.0, 1.0,
-                1.0, 0.0, 0.0, 1.0,
-
-                // Right face
-                1.0, 0.0, 0.0, 1.0,
-                1.0, 0.0, 0.0, 1.0,
-                1.0, 0.0, 0.0, 1.0,
-
-                // Back face
-                1.0, 0.0, 0.0, 1.0,
-                1.0, 0.0, 0.0, 1.0,
-                1.0, 0.0, 0.0, 1.0,
-
-                // Left face
-                1.0, 0.0, 0.0, 1.0,
-                1.0, 0.0, 0.0, 1.0,
-                1.0, 0.0, 0.0, 1.0
-            )
-        return;
+    if(depth != 0){
+        this.configVertices(depth -1, a, ab, ca);
+        this.configVertices(depth -1, ab, b, bc);
+        this.configVertices(depth -1, bc, c, ca);
+        this.configVertices(depth -1, ab, bc, ca);
     }
 
-    this.configVertices(depth -1, a, ab, ca);
-    this.configVertices(depth -1, ab, b, bc);
-    this.configVertices(depth -1, bc, c, ca);
-    this.configVertices(depth -1, ab, bc, ca);
+    this.addVertex(  a, ab, ca);
+    this.addVertex( ab,  b, bc);
+    this.addVertex( bc,  c, ca);
+    this.addVertex( ab, bc, ca);
+
+    this.addColor(  a, ab, ca);
+    this.addColor( ab,  b, bc);
+    this.addColor( bc,  c, ca);
+    this.addColor( ab, bc, ca);
+}
+
+Sphere.prototype.addVertex = function(a, b, c) {
+    this.vertices.push(
+        a[0], a[1], a[2],
+        b[0], b[1], b[2],
+        c[0], c[1], c[2]
+    );
+}
+
+Sphere.prototype.addColor = function(a, b, c) {
+    this.colors.push(
+         a[0], a[1], a[2], 1.0,
+         b[0], b[1], b[2], 1.0,
+         c[0], c[1], c[2], 1.0
+    );
 }
 
 Sphere.prototype.initBuffers = function() {
