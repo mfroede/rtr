@@ -11,8 +11,7 @@ var Sphere = function (gl, depth) {
 } 
 
 Sphere.prototype.normalisedMiddle = function(a, b) {
-    var c = vec3.create([0,0,0]);
-    vec3.add(a, b, c);
+    var c = [(a[0]+b[0])/2.0,(a[1]+b[1])/2.0,(a[2]+b[2])/2.0];
     vec3.normalize(c);
     return c;
 };
@@ -22,22 +21,28 @@ Sphere.prototype.configVertices = function(depth, a, b, c) {
     var bc = this.normalisedMiddle(b, c);
     var ca = this.normalisedMiddle(c, a);
 
-    if(depth != 0){
+    if(depth > 0){
         this.configVertices(depth -1, a, ab, ca);
         this.configVertices(depth -1, ab, b, bc);
         this.configVertices(depth -1, bc, c, ca);
         this.configVertices(depth -1, ab, bc, ca);
     }
 
-    this.addVertex(  a, ab, ca);
-    this.addVertex( ab,  b, bc);
-    this.addVertex( bc,  c, ca);
-    this.addVertex( ab, bc, ca);
+	if(depth == 0){
+		this.addVertex(  a, ab, ca);
+		this.addVertex( ab,  b, bc);
+		this.addVertex( bc,  c, ca);
+		this.addVertex( ab, bc, ca);
 
-    this.addColor(  a, ab, ca);
-    this.addColor( ab,  b, bc);
-    this.addColor( bc,  c, ca);
-    this.addColor( ab, bc, ca);
+		this.addColor(  a, ab, ca);
+		this.addColor( ab,  b, bc);
+		this.addColor( bc,  c, ca);
+		this.addColor( ab, bc, ca);
+		return;
+    }
+    
+    this.addVertex( a, b, c)
+	this.addColor(  a, b, c);
 }
 
 Sphere.prototype.addVertex = function(a, b, c) {
@@ -70,10 +75,10 @@ Sphere.prototype.initBuffers = function() {
     vec3.normalize(positonC);
     vec3.normalize(positonD); 
 
-    this.configVertices(this.depth, positonA, positonB, positonC);
-    this.configVertices(this.depth, positonA, positonB, positonD);
-    this.configVertices(this.depth, positonA, positonC, positonD);
-    this.configVertices(this.depth, positonB, positonC, positonD);
+    this.configVertices(this.depth - 1, positonA, positonB, positonC);
+    this.configVertices(this.depth - 1, positonA, positonB, positonD);
+    this.configVertices(this.depth - 1, positonA, positonC, positonD);
+    this.configVertices(this.depth - 1, positonB, positonC, positonD);
     
     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.vertices), this.gl.STATIC_DRAW);
     this.vertexPositionBuffer.itemSize = 3;
