@@ -220,6 +220,12 @@ body{
     margin-top: 130px;
 }
 
+.slide-description{
+    font-size: 15pt;
+    line-height: 15pt;
+    text-align: left;
+}
+
 em{
     color: #ff7700;
 }
