@@ -89,6 +89,19 @@ body{
     top: 15%
 }
 
+.subpagetitle{
+    color: #EEE;
+    width: inherit;
+    font-family: ExpletusSans;
+    font-size: 40pt;
+    vertical-align: middle;
+    line-height: 40pt;
+    text-align: center;
+    position: absolute;
+    letter-spacing: normal;
+    top: 15%
+}
+
 .subtitle{
     font-family: ExpletusSans;
     position: absolute;
@@ -98,6 +111,11 @@ body{
     font-size: 30pt;
     line-height: 50pt;
     width: inherit;
+}
+
+.subsubtitle {
+	font-size: 15pt;
+	line-height: 20pt;	
 }
 
 .section-title{
