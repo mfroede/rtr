@@ -17,32 +17,22 @@ Sphere.prototype.normalisedMiddle = function(a, b) {
 };
 
 Sphere.prototype.configVertices = function(depth, a, b, c) {
+
+
+	if(depth == 0){
+    	this.addVertex( a, b, c)
+		this.addColor(  a, b, c);
+		return;
+    }
+    
     var ab = this.normalisedMiddle(a, b);
     var bc = this.normalisedMiddle(b, c);
     var ca = this.normalisedMiddle(c, a);
 
-    if(depth > 0){
-        this.configVertices(depth -1, a, ab, ca);
-        this.configVertices(depth -1, ab, b, bc);
-        this.configVertices(depth -1, bc, c, ca);
-        this.configVertices(depth -1, ab, bc, ca);
-    }
-
-	if(depth == 0){
-		this.addVertex(  a, ab, ca);
-		this.addVertex( ab,  b, bc);
-		this.addVertex( bc,  c, ca);
-		this.addVertex( ab, bc, ca);
-
-		this.addColor(  a, ab, ca);
-		this.addColor( ab,  b, bc);
-		this.addColor( bc,  c, ca);
-		this.addColor( ab, bc, ca);
-		return;
-    }
-    
-    this.addVertex( a, b, c)
-	this.addColor(  a, b, c);
+    this.configVertices(depth -1, ab, a, ca);
+    this.configVertices(depth -1, ab, b, bc);
+    this.configVertices(depth -1, bc, c, ca);
+    this.configVertices(depth -1, ab, bc, ca);
 }
 
 Sphere.prototype.addVertex = function(a, b, c) {
@@ -75,10 +65,10 @@ Sphere.prototype.initBuffers = function() {
     vec3.normalize(positonC);
     vec3.normalize(positonD); 
 
-    this.configVertices(this.depth - 1, positonA, positonB, positonC);
-    this.configVertices(this.depth - 1, positonA, positonB, positonD);
-    this.configVertices(this.depth - 1, positonA, positonC, positonD);
-    this.configVertices(this.depth - 1, positonB, positonC, positonD);
+    this.configVertices(this.depth, positonA, positonB, positonC);
+    this.configVertices(this.depth, positonA, positonB, positonD);
+    this.configVertices(this.depth, positonA, positonC, positonD);
+    this.configVertices(this.depth, positonC, positonD, positonB);
     
     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(this.vertices), this.gl.STATIC_DRAW);
     this.vertexPositionBuffer.itemSize = 3;
@@ -102,5 +92,4 @@ Sphere.prototype.draw = function(){
 
     setMatrixUniforms();
     this.gl.drawArrays(this.gl.TRIANGLES, 0, this.vertexPositionBuffer.numItems);
-
 }
