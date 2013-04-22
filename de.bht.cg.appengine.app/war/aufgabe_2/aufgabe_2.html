@@ -223,11 +223,11 @@
 	}
 </script>
 
-
 </head>
 
 
 <body onload="webGLStart();">
+    <input class='backButton' type="button" value="back" onclick="javascript:history.back()">
 	<div class="subpagetitle"
 		style='opacity: 0.8; margin-left: auto; margin-right: auto; display: block; text-align: center; position: relative;'>Aufgabe
 		2: Building Geometry</div>
@@ -235,7 +235,7 @@
 	<canvas id="lesson04-canvas" width="800" height="450" style='margin-left: auto; margin-right: auto; display: block;'></canvas>
 
 	<div class='slide-content' style='margin-left: auto; margin-right: auto; display: block;'>
-		<div class='slide-description'>
+		<div class='slide-description' style='width:800px; display: block; margin-left: auto; margin-right: auto;'>
 			<h3 style='margin: 15px 15px;'>Erläuterung des Lösungsansatzes</h3>
 			Nachdem die notwendigen Funktionen in eine eigenständige Datei ausgelagert war, mussten die Eckpunkte des Tetraeders
 			festgelegt werden. Hierzu wurden die Eckpunkte eines Würfels verwendet. (siehe Abbildung <b>2.1</b>). </br>
@@ -245,14 +245,14 @@
 			Konstruktor der Kugel die Rekursionstiefe angegeben werden. Wird die Rekursionstiefe um eins erhöht, vervierfachen sich
 			die Anzahl der Dreiecke. Im Beispiel, wird bei einer Rekursionstiefe von 5 eine gute Kugelform dargestellt. </br>
 			</br>
-			<div style="">
-				<div style="float: left; margin-left: auto; margin-right: auto; display: block;">
+			<div style="margin-left: auto; margin-right: auto; display: block; padding-left: 25%;">
+				<div style="float: left;">
 					<img src="../resources/images/Vertices_Ermitteln.png"
-						style='margin-left: auto; margin-right: auto; display: block;' />Abb. 2.1
+						style='' /><div style='text-align: center;'>Abb. 2.1</div>
 				</div>
-				<div style="float: left; margin-left: auto; margin-right: auto; display: block;">
-					<img src="../resources/images/Seiten_Splitten.png"
-						style='margin-left: auto; margin-right: auto; display: block;' />Abb. 2.2
+				<div style="float: left;padding-left: 20pt">
+					<img src="../resources/images/Seiten_Splitten.png" height="159px"
+						style='' /><div style='text-align: center;'>Abb. 2.2</div>
 				</div>
 			</div>
 		</div>
