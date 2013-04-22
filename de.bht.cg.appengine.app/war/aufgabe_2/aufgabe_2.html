@@ -36,7 +36,7 @@
 
 <script type="text/javascript">
 	var gl;
-
+	
 	function initGL(canvas) {
 		try {
 			gl = canvas.getContext("experimental-webgl");
@@ -194,7 +194,7 @@
 		if (lastTime != 0) {
 			var elapsed = timeNow - lastTime;
 
-			rPyramid += (90 * elapsed) / 1000.0;
+			rPyramid += (90 * elapsed) / 2000.0;
 			// rCube -= (75 * elapsed) / 1000.0;
 		}
 		lastTime = timeNow;
@@ -239,10 +239,10 @@
 			<h3 style='margin: 15px 15px;'>Erläuterung des Lösungsansatzes</h3>
 			Nachdem die notwendigen Funktionen in eine eigenständige Datei ausgelagert war, mussten die Eckpunkte des Tetraeders
 			festgelegt werden. Hierzu wurden die Eckpunkte eines Würfels verwendet. (siehe Abbildung <b>2.1</b>). </br>
-			</br> Anschließend wird durch mormaliseren der Vektoren die Position so verändert das alle Eckpunkte auf dem Einheitskreis
+			</br> Anschließend wird durch normaliseren der Vektoren die Position so verändert das alle Eckpunkte auf dem Einheitskreis
 			(Radius = 1) liegen. Um aus dem Tetraeder ein Kreis zu erzeugen, müssen dessen Kanten halbiert und neue Eckpunkte
 			erzeugt werden, die dann wiederum normalisiert werden (siehe Abbildung <b>2.2</b>). Dieser Vorgang wurde rekursiv implementiert. Dazu muss im
-			Konstruktor der Kugel die Rekursionstiefe angegeben werden. Wird die Rekursionstiefe um eins erhöht, vierfacht sich
+			Konstruktor der Kugel die Rekursionstiefe angegeben werden. Wird die Rekursionstiefe um eins erhöht, vervierfachen sich
 			die Anzahl der Dreiecke. Im Beispiel, wird bei einer Rekursionstiefe von 5 eine gute Kugelform dargestellt. </br>
 			</br>
 			<div style="margin-left: auto; margin-right: auto; display: block; padding-left: 25%;">
