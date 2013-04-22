@@ -16,7 +16,7 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- <link rel="stylesheet" type="text/css" href="../resources/common/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../resources/common/bootstrap/css/bootstrap-responsive.min.css"> -->
+<link rel="stylesheet" type="text/css" href="../resources/common/bootstrap/css/b1234ootstrap-responsive.min.css"> -->
 <link rel="stylesheet" href="../resources/css/style.css" />
 
 <script type="text/javascript" src="aufgabe_3.js"></script>
@@ -26,7 +26,8 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 
 	<input class='backButton' type="button" value="back" onclick="javascript:history.back()">
 	<div class="subpagetitle"
-		style='opacity: 0.8; margin-left: auto; margin-right: auto; display: block; text-align: center; position: relative;'>Aufgabe 3: WebGL Illuminated Spheres</div>
+		style='opacity: 0.8; margin-left: auto; margin-right: auto; display: block; text-align: center; position: relative;'>Aufgabe
+		3: WebGL Illuminated Spheres</div>
 	<canvas id="canvas" width="800" height="450" style='margin-left: auto; margin-right: auto; display: block;'></canvas>
 
 	<div class='slide-content' style='margin-left: auto; margin-right: auto; display: block;'>
@@ -61,8 +62,66 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 	</div>
 </body>
 
-<!-- Constant color -->
+<!--cell shader -->
 
+<script id="vs4" type="text/glsl">
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
+
+uniform vec3 lightPosition;
+uniform vec3 eyePosition;
+
+attribute vec4 position;
+attribute vec3 normal;
+
+varying vec3 normalW;
+varying vec3 lightDirectionW;
+varying vec3 eyeDirectionW;
+
+void main() {
+  vec4 positionW = model * position;
+  normalW = (model * vec4(normal, 0.0)).xyz;
+  lightDirectionW = lightPosition - positionW.xyz;
+  eyeDirectionW = eyePosition - positionW.xyz;
+
+  gl_Position = projection * view * positionW;
+}
+</script>
+
+<script id="fs4" type="text/glsl">
+precision highp float;
+
+uniform vec3 color;
+uniform vec3 lightIntensity;
+
+varying vec3 normalW;
+varying vec3 lightDirectionW;
+varying vec3 eyeDirectionW;
+
+void main() {
+
+float intensity;
+    vec3 newColor = color +
+         pow(max(0.0, dot(reflect(-normalize(eyeDirectionW), normalize(normalW)), 
+                                      normalize(lightDirectionW))), 2.0);
+
+    intensity = dot(lightDirectionW, normalW);
+
+    if (intensity > 0.95)
+        newColor = newColor * 0.95;
+    else if (intensity > 0.5)
+        newColor = newColor * 0.65;
+    else if (intensity > 0.25)
+        newColor = newColor * 0.35;
+    else
+        newColor = newColor * 0.15;
+    gl_FragColor = vec4(newColor , 1);
+}
+</script>
+<!--EOF: cell shader -->
+
+<!-- Constant color -->
 <script id="vs0" type="text/glsl">
 uniform mat4 projection;
 uniform mat4 view;
@@ -246,7 +305,7 @@ void main() {
 
 <!-- Phong lighting model, Phong shading with texture -->
 
-<script id="vs4" type="text/glsl">
+<script id="vs5" type="text/glsl">
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
@@ -274,11 +333,10 @@ void main() {
 }
 </script>
 
-<script id="fs4" type="text/glsl">
+<script id="fs5" type="text/glsl">
 precision highp float;
 
 uniform vec3 lightIntensity;
-
 uniform sampler2D earth;
 
 varying vec3 normalW;
