@@ -1,0 +1,4048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Namespace: primitives</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Namespace: primitives</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+        <span class="ancestors"><a href="tdl.html">tdl</a>.</span>
+    
+    primitives
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+            <div class="description">A module for primitives.</div>
+        
+        
+        
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 46</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+        
+        
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="addTangentsAndBinormals"><span class="type-signature">&lt;static> </span>addTangentsAndBinormals</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Adds tangents and binormals.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>arrays</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Object.&lt;string,!AttibArray></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Arrays containing position,
+       normal and texCoord.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 396</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="applyPlanarUVMapping"><span class="type-signature">&lt;static> </span>applyPlanarUVMapping</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Applies planar UV mapping in the XZ plane.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>positions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!AttribBuffer</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The positions</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>texCoords</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!AttribBuffer</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The texCoords</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 526</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="AttribBuffer"><span class="type-signature">&lt;static> </span>AttribBuffer</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        AttribBuffer manages a TypedArray as an array of vectors.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>numComponents</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Number of components per
+    vector.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>numElements</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">!Array.&lt;number></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Number of vectors or the data.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The type of the TypedArray to
+    create. Default = 'Float32Array'.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_data</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Array.&lt;number></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The data for the array.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 58</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="concat"><span class="type-signature">&lt;static> </span>concat</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Concats 2 or more sets of arrays. Assumes each set of arrays has arrays that
+match the other sets.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>arrays</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Array&lt;!Object.&lt;string, !AttribBuffer>></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Arrays to concat</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 421</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    concatenated result.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Object.&lt;string, !AttribBuffer></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="concatLarge"><span class="type-signature">&lt;static> </span>concatLarge</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Same as tdl.primitives.concat except this one returns an array
+of arrays if the models have indices. This is because WebGL can only handle
+16bit indices (ie, < 65536) So, as it is concatenating, if the data would
+make indices > 65535 it starts a new set of arrays.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>arrays</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Array&lt;!Object.&lt;string, !AttribBuffer>></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Arrays to concat</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 484</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    {!{arrays:{!Array<{!Object.<string, !AttribBuffer>>,
+    instances:{!Array<{firstVertex:number, numVertices:number, arrayIndex:
+    number}>}} object result.
+</div>
+
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createCresent"><span class="type-signature">&lt;static> </span>createCresent</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates cresent vertices. The created sphere has position, normal and uv
+streams.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>verticalRadius</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The vertical radius of the cresent.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>outerRadius</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The outer radius of the cresent.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>innerRadius</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The inner radius of the cresent.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>thickness</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The thickness of the cresent.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>subdivisionsDown</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">number of steps around the sphere.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>subdivisionsThick</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">number of vertically on the sphere.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_startOffset</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Where to start arc Default 0.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_endOffset</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Where to end arg Default 1.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 672</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The
+        created plane vertices.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Object.&lt;string, !tdl.primitives.AttribBuffer></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createCube"><span class="type-signature">&lt;static> </span>createCube</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates the vertices and indices for a cube. The
+cube will be created around the origin. (-size / 2, size / 2)
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Width, height and depth of the cube.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 854</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The
+        created plane vertices.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Object.&lt;string, !tdl.primitives.AttribBuffer></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createCylinder"><span class="type-signature">&lt;static> </span>createCylinder</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates cylinder vertices. The cylinder will be created around the origin
+along the y-axis. The created cylinder has position, normal and uv streams.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Radius of cylinder.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Height of cylinder.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>radialSubdivisions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The number of subdivisions around the
+    cylinder.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>verticalSubdivisions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The number of subdivisions down the
+    cylinder.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_topCap</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Create top cap. Default = true.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_bottomCap</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Create bottom cap. Default =
+       true.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 1126</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The
+        created plane vertices.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Object.&lt;string, !tdl.primitives.AttribBuffer></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createDisc"><span class="type-signature">&lt;static> </span>createDisc</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates a disc. The disc will be in the xz plane, centered at
+the origin. When creating, at least 3 divisions, or pie
+pieces, need to be specified, otherwise the triangles making
+up the disc will be degenerate. You can also specify the
+number of radial pieces (opt_stacks). A value of 1 for
+opt_stacks will give you a simple disc of pie pieces.  If you
+want to create an annulus you can set opt_innerRadius to a
+value > 0. Finally, stackPower allows you to have the widths
+increase or decrease as you move away from the center. This
+is particularly useful when using the disc as a ground plane
+with a fixed camera such that you don't need the resolution
+of small triangles near the perimeter. For example, a value
+of 2 will produce stacks whose ouside radius increases with
+the square of the stack index. A value of 1 will give uniform
+stacks.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Radius of the ground plane.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>divisions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Number of triangles in the ground plane
+                (at least 3).</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_stacks</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Number of radial divisions (default=1).</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_innerRadius.</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Default 0.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_stackPower</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Power to raise stack size to for decreasing
+                width.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 1256</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The
+        created vertices.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Object.&lt;string, !tdl.primitives.AttribBuffer></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createFlaredCube"><span class="type-signature">&lt;static> </span>createFlaredCube</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates the vertices and indices for a flared cube (extrude the edges).
+The U texture coordinate will be a gradient 0-1 from inside out. Use
+the vertex shader to distort using U as an angle for fun effects.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>size</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Width, height and depth of the cube.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 927</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The
+        created plane vertices.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Object.&lt;string, !tdl.primitives.AttribBuffer></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createPlane"><span class="type-signature">&lt;static> </span>createPlane</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates XZ plane vertices.
+The created plane has position, normal and uv streams.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>width</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Width of the plane.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>depth</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Depth of the plane.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>subdivisionsWidth</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Number of steps across the plane.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>subdivisionsDepth</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Number of steps down the plane.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_matrix</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!o3djs.math.Matrix4</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">A matrix by which to multiply
+    all the vertices.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 776</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The
+        created plane vertices.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Object.&lt;string, !tdl.primitives.AttribBuffer></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createSphere"><span class="type-signature">&lt;static> </span>createSphere</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates sphere vertices.
+The created sphere has position, normal and uv streams.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">radius of the sphere.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>subdivisionsAxis</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">number of steps around the sphere.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>subdivisionsHeight</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">number of vertically on the sphere.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_startLatitudeInRadians</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">where to start the
+    top of the sphere. Default = 0.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_endLatitudeInRadians</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Where to end the
+    bottom of the sphere. Default = Math.PI.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_startLongitudeInRadians</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">where to start
+    wrapping the sphere. Default = 0.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_endLongitudeInRadians</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">where to end
+    wrapping the sphere. Default = 2 * Math.PI.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 581</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The
+        created plane vertices.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Object.&lt;string, !tdl.primitives.AttribBuffer></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createTangentsAndBinormals"><span class="type-signature">&lt;static> </span>createTangentsAndBinormals</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates tangents and normals.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>positionArray</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!AttibArray</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Positions</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>normalArray</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!AttibArray</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Normals</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>normalMapUVArray</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!AttibArray</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">UVs for the normal map.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>triangles</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!AttibArray</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The indicies of the trianlges.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 264</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    {!{tangent: {!AttribArray},
+    binormal: {!AttribArray}}
+</div>
+
+
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createTorus"><span class="type-signature">&lt;static> </span>createTorus</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates vertices for a torus, The created cone has position, normal
+and texCoord streams.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>radius</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">radius of center of torus circle.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>thickness</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">radius of torus ring.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>radialSubdivisions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The number of subdivisions around the
+    torus.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>bodySubdivisions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The number of subdivisions around the
+    body torus.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_startAngle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">start angle in radians. Default = 0.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_endAngle</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">end angle in radians. Default = Math.PI * 2.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 1158</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The
+        created torus vertices.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Object.&lt;string, !tdl.primitives.AttribBuffer></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createTruncatedCone"><span class="type-signature">&lt;static> </span>createTruncatedCone</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates vertices for a truncated cone, which is like a cylinder
+except that it has different top and bottom radii. A truncated cone
+can also be used to create cylinders and regular cones. The
+truncated cone will be created centered about the origin, with the
+y axis as its vertical axis. The created cone has position, normal
+and uv streams.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>bottomRadius</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Bottom radius of truncated cone.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>topRadius</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Top radius of truncated cone.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>height</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Height of truncated cone.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>radialSubdivisions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The number of subdivisions around the
+    truncated cone.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>verticalSubdivisions</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The number of subdivisions down the
+    truncated cone.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_topCap</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Create top cap. Default = true.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_bottomCap</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Create bottom cap. Default =
+       true.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 1021</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The
+        created plane vertices.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!Object.&lt;string, !tdl.primitives.AttribBuffer></span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="expandInstancesToGeometry"><span class="type-signature">&lt;static> </span>expandInstancesToGeometry</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Takes a bunch of instances of geometry and converts them
+to 1 or more geometries that represent all the instances.
+
+In other words, if make a cube
+
+   var cube = tdl.primitives.createCube(1);
+
+And you put 4 of those in an array
+
+   var instances = [cube, cube, cube, cube]
+
+Then if you call this function it will return a mesh that contains
+all 4 cubes.  it
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>instances</code></td>
+            
+            
+            <td class="type">
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	<dt class="tag-author">Author:</dt>
+	<dd class="tag-author">
+        <ul>
+            <li>gman (4/19/2011)</li>
+        </ul>
+	</dd>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 559</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="interleaveVertexData"><span class="type-signature">&lt;static> </span>interleaveVertexData</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Interleaves vertex information into one large buffer
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>vertexDataArray</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Array of &lt;string, tdl.primitives.AttribBuffer></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code></code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object.&lt;string, tdl.primitives.AttribBuffer></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 1325</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="mulComponents"><span class="type-signature">&lt;static> </span>mulComponents</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Reorients positions by the given matrix. In other words, it
+multiplies each vertex by the given matrix.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!tdl.primitives.AttribBuffer</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">AttribBuffer to
+    reorient.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>matrix</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!tdl.math.Matrix4</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Matrix by which to
+    multiply.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 167</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="reorient"><span class="type-signature">&lt;static> </span>reorient</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Reorients arrays by the given matrix. Assumes arrays have
+names that start with 'position', 'normal', 'tangent',
+'binormal'
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>arrays</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Object.&lt;string, !tdl.primitive.AttribBuffer></span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The arrays to remap.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>matrix</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!tdl.math.Matrix4</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The matrix to remap by</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 242</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="reorientDirections"><span class="type-signature">&lt;static> </span>reorientDirections</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Reorients directions by the given matrix..
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!tdl.primitives.AttribBuffer</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">AttribBuffer to
+    reorient.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>matrix</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!tdl.math.Matrix4</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Matrix by which to
+    multiply.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 222</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="reorientNormals"><span class="type-signature">&lt;static> </span>reorientNormals</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Reorients normals by the inverse-transpose of the given
+matrix..
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!tdl.primitives.AttribBuffer</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">AttribBuffer to
+    reorient.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>matrix</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!tdl.math.Matrix4</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Matrix by which to
+    multiply.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 205</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="reorientPositions"><span class="type-signature">&lt;static> </span>reorientPositions</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Reorients positions by the given matrix. In other words, it
+multiplies each vertex by the given matrix.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>array</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!tdl.primitives.AttribBuffer</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">AttribBuffer to
+    reorient.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>matrix</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!tdl.math.Matrix4</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Matrix by which to
+    multiply.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>primitives.js, line 187</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="tdl.fps.FPSTimer.html">FPSTimer</a></li><li><a href="tdl.io.LoadInfo.html">LoadInfo</a></li><li><a href="tdl.loader.Loader.html">Loader</a></li><li><a href="tdl.models.Model.html">Model</a></li><li><a href="tdl.particles.ParticleSpec.html">ParticleSpec</a></li><li><a href="tdl.particles.ParticleSystem.html">ParticleSystem</a></li><li><a href="tdl.particles.Trail.html">Trail</a></li><li><a href="tdl.programs.Program.html">Program</a></li><li><a href="tdl.sync.SyncManager.html">SyncManager</a></li><li><a href="tdl.textures.ColorTexture.html">ColorTexture</a></li><li><a href="tdl.textures.CubeMap.html">CubeMap</a></li><li><a href="tdl.textures.DepthTexture.html">DepthTexture</a></li><li><a href="tdl.textures.ExternalTexture.html">ExternalTexture</a></li><li><a href="tdl.textures.ExternalTexture2D.html">ExternalTexture2D</a></li><li><a href="tdl.textures.SolidTexture.html">SolidTexture</a></li><li><a href="tdl.textures.Texture2D.html">Texture2D</a></li></ul><h3>Namespaces</h3><ul><li><a href="tdl.html">tdl</a></li><li><a href="tdl.base.html">base</a></li><li><a href="tdl.buffers.html">buffers</a></li><li><a href="tdl.fast.html">fast</a></li><li><a href="tdl.fast.columnMajor.html">columnMajor</a></li><li><a href="tdl.fast.matrix4.html">matrix4</a></li><li><a href="tdl.fast.rowMajor.html">rowMajor</a></li><li><a href="tdl.fps.html">fps</a></li><li><a href="tdl.framebuffers.html">framebuffers</a></li><li><a href="tdl.fullscreen.html">fullscreen</a></li><li><a href="tdl.io.html">io</a></li><li><a href="tdl.loader.html">loader</a></li><li><a href="tdl.log.html">log</a></li><li><a href="tdl.math.html">math</a></li><li><a href="tdl.math.columnMajor.html">columnMajor</a></li><li><a href="tdl.math.matrix4.html">matrix4</a></li><li><a href="tdl.math.rowMajor.html">rowMajor</a></li><li><a href="tdl.misc.html">misc</a></li><li><a href="tdl.models.html">models</a></li><li><a href="tdl.particles.html">particles</a></li><li><a href="tdl.primitives.html">primitives</a></li><li><a href="tdl.programs.html">programs</a></li><li><a href="tdl.quaternions.html">quaternions</a></li><li><a href="tdl.shader.html">shader</a></li><li><a href="tdl.string.html">string</a></li><li><a href="tdl.sync.html">sync</a></li><li><a href="tdl.textures.html">textures</a></li><li><a href="tdl.webgl.html">webgl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#gl">gl</a></li><li><a href="global.html#goog">goog</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3</a> on Sun Oct 07 2012 17:18:42 GMT+0200 (MESZ)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: ParticleSystem</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Class: ParticleSystem</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+        <span class="ancestors"><a href="tdl.html">tdl</a><a href="tdl.particles.html">.particles</a>.</span>
+    
+    ParticleSystem
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <h4 class="name" id="ParticleSystem"><span class="type-signature"></span>new ParticleSystem</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates a particle system.
+You only need one of these to run multiple emitters of different types
+of particles.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>gl</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!WebGLRenderingContext</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The WebGLRenderingContext
+    into which the particles will be rendered.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_clock</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!function(): number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">A function that returns the
+    number of seconds elapsed. The "time base" does not matter; it is
+    corrected for internally in the particle system. If not supplied,
+    wall clock time defined by the JavaScript Date API will be used.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_randomFunction</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!function(): number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">A function that returns
+    a random number between 0.0 and 1.0. This allows you to pass in a
+    pseudo random function if you need particles that are reproducible.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 278</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="defaultColorTexture"><span class="type-signature"></span>defaultColorTexture<span class="type-signature"> :!o3d.Texture2D</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The default color texture for particles.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 363</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="defaultRampTexture"><span class="type-signature"></span>defaultRampTexture<span class="type-signature"> :!o3d.Texture2D</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The default ramp texture for particles.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 369</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="shaders"><span class="type-signature"></span>shaders<span class="type-signature"> :!Array.&lt;!Shader></span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The shaders for particles.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 357</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="createParticleEmitter"><span class="type-signature"></span>createParticleEmitter</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates a particle emitter.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_texture</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!o3d.Texture</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The texture to use for the particles.
+    If you don't supply a texture a default is provided.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_clock</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!function(): number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">A ParamFloat to be the clock for
+    the emitter.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 637</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The new emitter.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!tdl.particles.ParticleEmitter</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="createTrail"><span class="type-signature"></span>createTrail</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates a Trail particle emitter.
+You can use this for jet exhaust, etc...
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>parent</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!o3d.Transform</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Transform to put emitter on.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>maxParticles</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Maximum number of particles to appear at once.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>parameters</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!tdl.particles.ParticleSpec</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The parameters used to
+    generate particles.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_texture</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!o3d.Texture</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The texture to use for the particles.
+    If you don't supply a texture a default is provided.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_perParticleParamSetter</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!function(number, !tdl.particles.ParticleSpec): void</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">A function that is called for each particle to
+    allow it's parameters to be adjusted per particle. The number is the
+    index of the particle being created, in other words, if numParticles is
+    20 this value will be 0 to 19. The ParticleSpec is a spec for this
+    particular particle. You can set any per particle value before returning.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>opt_clock</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!function(): number</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">A function to be the clock for
+    the emitter.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 663</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    A Trail object.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!tdl.particles.Trail</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="draw"><span class="type-signature"></span>draw</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Draws all of the particle emitters managed by this ParticleSystem.
+This modifies the depth mask, depth test, blend function and its
+enabling, array buffer binding, element array buffer binding, the
+textures bound to texture units 0 and 1, and which is the active
+texture unit.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>viewProjection</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Matrix4x4</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The viewProjection matrix.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>world</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Matrix4x4</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The world matrix.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>viewInverse</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!Matrix4x4</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">The viewInverse matrix.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 690</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="tdl.fps.FPSTimer.html">FPSTimer</a></li><li><a href="tdl.io.LoadInfo.html">LoadInfo</a></li><li><a href="tdl.loader.Loader.html">Loader</a></li><li><a href="tdl.models.Model.html">Model</a></li><li><a href="tdl.particles.ParticleSpec.html">ParticleSpec</a></li><li><a href="tdl.particles.ParticleSystem.html">ParticleSystem</a></li><li><a href="tdl.particles.Trail.html">Trail</a></li><li><a href="tdl.programs.Program.html">Program</a></li><li><a href="tdl.sync.SyncManager.html">SyncManager</a></li><li><a href="tdl.textures.ColorTexture.html">ColorTexture</a></li><li><a href="tdl.textures.CubeMap.html">CubeMap</a></li><li><a href="tdl.textures.DepthTexture.html">DepthTexture</a></li><li><a href="tdl.textures.ExternalTexture.html">ExternalTexture</a></li><li><a href="tdl.textures.ExternalTexture2D.html">ExternalTexture2D</a></li><li><a href="tdl.textures.SolidTexture.html">SolidTexture</a></li><li><a href="tdl.textures.Texture2D.html">Texture2D</a></li></ul><h3>Namespaces</h3><ul><li><a href="tdl.html">tdl</a></li><li><a href="tdl.base.html">base</a></li><li><a href="tdl.buffers.html">buffers</a></li><li><a href="tdl.fast.html">fast</a></li><li><a href="tdl.fast.columnMajor.html">columnMajor</a></li><li><a href="tdl.fast.matrix4.html">matrix4</a></li><li><a href="tdl.fast.rowMajor.html">rowMajor</a></li><li><a href="tdl.fps.html">fps</a></li><li><a href="tdl.framebuffers.html">framebuffers</a></li><li><a href="tdl.fullscreen.html">fullscreen</a></li><li><a href="tdl.io.html">io</a></li><li><a href="tdl.loader.html">loader</a></li><li><a href="tdl.log.html">log</a></li><li><a href="tdl.math.html">math</a></li><li><a href="tdl.math.columnMajor.html">columnMajor</a></li><li><a href="tdl.math.matrix4.html">matrix4</a></li><li><a href="tdl.math.rowMajor.html">rowMajor</a></li><li><a href="tdl.misc.html">misc</a></li><li><a href="tdl.models.html">models</a></li><li><a href="tdl.particles.html">particles</a></li><li><a href="tdl.primitives.html">primitives</a></li><li><a href="tdl.programs.html">programs</a></li><li><a href="tdl.quaternions.html">quaternions</a></li><li><a href="tdl.shader.html">shader</a></li><li><a href="tdl.string.html">string</a></li><li><a href="tdl.sync.html">sync</a></li><li><a href="tdl.textures.html">textures</a></li><li><a href="tdl.webgl.html">webgl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#gl">gl</a></li><li><a href="global.html#goog">goog</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3</a> on Sun Oct 07 2012 17:18:41 GMT+0200 (MESZ)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: ParticleSpec</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Class: ParticleSpec</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+        <span class="ancestors"><a href="tdl.html">tdl</a><a href="tdl.particles.html">.particles</a>.</span>
+    
+    ParticleSpec
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <h4 class="name" id="ParticleSpec"><span class="type-signature"></span>new ParticleSpec</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        A ParticleSpec specifies how to emit particles.
+
+NOTE: For all particle functions you can specific a ParticleSpec as a
+Javascript object, only specifying the fields that you care about.
+
+<pre>
+emitter.setParameters({
+  numParticles: 40,
+  lifeTime: 2,
+  timeRange: 2,
+  startSize: 50,
+  endSize: 90,
+  positionRange: [10, 10, 10],
+  velocity:[0, 0, 60], velocityRange: [15, 15, 15],
+  acceleration: [0, 0, -20],
+  spinSpeedRange: 4}
+);
+</pre>
+
+Many of these parameters are in pairs. For paired paramters each particle
+specfic value is set like this
+
+particle.field = value + Math.random() - 0.5 * valueRange * 2;
+
+or in English
+
+particle.field = value plus or minus valueRange.
+
+So for example, if you wanted a value from 10 to 20 you'd pass 15 for value
+and 5 for valueRange because
+
+15 + or - 5  = (10 to 20)
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 447</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="acceleration"><span class="type-signature"></span>acceleration<span class="type-signature"> :!tdl.math.Vector3</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The acceleration of a particle in local space.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 558</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="accelerationRange"><span class="type-signature"></span>accelerationRange<span class="type-signature"> :!tdl.math.Vector3</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The accleration range.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 564</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="billboard"><span class="type-signature"></span>billboard<span class="type-signature"> :boolean</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        Whether these particles are oriented in 2d or 3d. true = 2d, false = 3d.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 618</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="colorMult"><span class="type-signature"></span>colorMult<span class="type-signature"> :!tdl.math.Vector4</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The color multiplier of a particle.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 594</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="colorMultRange"><span class="type-signature"></span>colorMultRange<span class="type-signature"> :!tdl.math.Vector4</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The color multiplier range.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 600</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="endSize"><span class="type-signature"></span>endSize<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The ending size of a particle.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 522</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="endSizeRange"><span class="type-signature"></span>endSizeRange<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The ending size range.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 528</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="frameDuration"><span class="type-signature"></span>frameDuration<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The frame duration at which to animate the particle texture in seconds per
+frame.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 465</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="frameStart"><span class="type-signature"></span>frameStart<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The initial frame to display for a particular particle.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 471</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="frameStartRange"><span class="type-signature"></span>frameStartRange<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The frame start range.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 477</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="lifeTime"><span class="type-signature"></span>lifeTime<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The lifeTime of a particle.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 498</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="lifeTimeRange"><span class="type-signature"></span>lifeTimeRange<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The lifeTime range.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 504</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="numFrames"><span class="type-signature"></span>numFrames<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The number of frames in the particle texture.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 458</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="numParticles"><span class="type-signature"></span>numParticles<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The number of particles to emit.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 452</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="orientation"><span class="type-signature"></span>orientation<span class="type-signature"> :!tdl.quaternions.Quaternion</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The orientation of a particle. This is only used if billboard is false.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 624</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="position"><span class="type-signature"></span>position<span class="type-signature"> :!tdl.math.Vector3</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The starting position of a particle in local space.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 534</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="positionRange"><span class="type-signature"></span>positionRange<span class="type-signature"> :!tdl.math.Vector3</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The starting position range.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 540</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="spinSpeed"><span class="type-signature"></span>spinSpeed<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The spin speed of a particle in radians.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 582</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="spinSpeedRange"><span class="type-signature"></span>spinSpeedRange<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The spin speed range.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 588</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="spinStart"><span class="type-signature"></span>spinStart<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The starting spin value for a particle in radians.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 570</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="spinStartRange"><span class="type-signature"></span>spinStartRange<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The spin start range.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 576</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="startSize"><span class="type-signature"></span>startSize<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The starting size of a particle.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 510</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="startSizeRange"><span class="type-signature"></span>startSizeRange<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The starting size range.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 516</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="startTime"><span class="type-signature"></span>startTime<span class="type-signature"> :?number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The startTime of a particle.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 490</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="timeRange"><span class="type-signature"></span>timeRange<span class="type-signature"> :number</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The life time of the entire particle system.
+To make a particle system be continuous set this to match the lifeTime.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 484</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="velocity"><span class="type-signature"></span>velocity<span class="type-signature"> :!tdl.math.Vector3</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The velocity of a paritcle in local space.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 546</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="velocityRange"><span class="type-signature"></span>velocityRange<span class="type-signature"> :!tdl.math.Vector3</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The velocity range.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 552</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="worldAcceleration"><span class="type-signature"></span>worldAcceleration<span class="type-signature"> :!tdl.math.Vector3</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The acceleration of all paritcles in world space.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 612</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="worldVelocity"><span class="type-signature"></span>worldVelocity<span class="type-signature"> :!tdl.math.Vector3</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The velocity of all paritcles in world space.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>particles.js, line 606</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="tdl.fps.FPSTimer.html">FPSTimer</a></li><li><a href="tdl.io.LoadInfo.html">LoadInfo</a></li><li><a href="tdl.loader.Loader.html">Loader</a></li><li><a href="tdl.models.Model.html">Model</a></li><li><a href="tdl.particles.ParticleSpec.html">ParticleSpec</a></li><li><a href="tdl.particles.ParticleSystem.html">ParticleSystem</a></li><li><a href="tdl.particles.Trail.html">Trail</a></li><li><a href="tdl.programs.Program.html">Program</a></li><li><a href="tdl.sync.SyncManager.html">SyncManager</a></li><li><a href="tdl.textures.ColorTexture.html">ColorTexture</a></li><li><a href="tdl.textures.CubeMap.html">CubeMap</a></li><li><a href="tdl.textures.DepthTexture.html">DepthTexture</a></li><li><a href="tdl.textures.ExternalTexture.html">ExternalTexture</a></li><li><a href="tdl.textures.ExternalTexture2D.html">ExternalTexture2D</a></li><li><a href="tdl.textures.SolidTexture.html">SolidTexture</a></li><li><a href="tdl.textures.Texture2D.html">Texture2D</a></li></ul><h3>Namespaces</h3><ul><li><a href="tdl.html">tdl</a></li><li><a href="tdl.base.html">base</a></li><li><a href="tdl.buffers.html">buffers</a></li><li><a href="tdl.fast.html">fast</a></li><li><a href="tdl.fast.columnMajor.html">columnMajor</a></li><li><a href="tdl.fast.matrix4.html">matrix4</a></li><li><a href="tdl.fast.rowMajor.html">rowMajor</a></li><li><a href="tdl.fps.html">fps</a></li><li><a href="tdl.framebuffers.html">framebuffers</a></li><li><a href="tdl.fullscreen.html">fullscreen</a></li><li><a href="tdl.io.html">io</a></li><li><a href="tdl.loader.html">loader</a></li><li><a href="tdl.log.html">log</a></li><li><a href="tdl.math.html">math</a></li><li><a href="tdl.math.columnMajor.html">columnMajor</a></li><li><a href="tdl.math.matrix4.html">matrix4</a></li><li><a href="tdl.math.rowMajor.html">rowMajor</a></li><li><a href="tdl.misc.html">misc</a></li><li><a href="tdl.models.html">models</a></li><li><a href="tdl.particles.html">particles</a></li><li><a href="tdl.primitives.html">primitives</a></li><li><a href="tdl.programs.html">programs</a></li><li><a href="tdl.quaternions.html">quaternions</a></li><li><a href="tdl.shader.html">shader</a></li><li><a href="tdl.string.html">string</a></li><li><a href="tdl.sync.html">sync</a></li><li><a href="tdl.textures.html">textures</a></li><li><a href="tdl.webgl.html">webgl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#gl">gl</a></li><li><a href="global.html#goog">goog</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3</a> on Sun Oct 07 2012 17:18:41 GMT+0200 (MESZ)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

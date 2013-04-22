@@ -1,0 +1,44 @@
+html, body {
+	background: #d7d7d7;
+	overflow: hidden;
+}
+
+#slide-container {
+	background: #fff;
+	overflow: hidden;
+	position: absolute;
+	width: 800px;
+	height: 600px;
+	-webkit-transform-origin: top left;
+	-moz-transform-origin: top left;
+	-o-transform-origin: top left;
+	transform-origin: top-left;
+}
+
+.slide {
+}
+
+.slide h1 {
+}
+
+.slide h2 {
+}
+
+#tools {
+	position:absolute;
+	top: 0;
+	right: 0;
+	padding: 10px;
+}
+
+.slide .content {
+	padding: 1em 4em 1em 4em;
+}
+
+.invisible {
+  display: none;
+}
+
+.comment {
+  display: none;
+}

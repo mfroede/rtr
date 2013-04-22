@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: Loader</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Class: Loader</h1>
+    
+    
+
+
+
+<section>
+    
+<header>
+    <h2>
+        <span class="ancestors"><a href="tdl.html">tdl</a><a href="tdl.loader.html">.loader</a>.</span>
+    
+    Loader
+    </h2>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <h4 class="name" id="Loader"><span class="type-signature"></span>new Loader</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        A simple Loader class to call some callback when everything has loaded.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>onFinished</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!function(): void</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Function to call when final item has
+       loaded.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>loader.js, line 55</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Members</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="loadInfo"><span class="type-signature"></span>loadInfo<span class="type-signature"> :!tdl.io.LoadInfo</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    <div class="description">
+        The LoadInfo for this loader you can use to track progress.
+    </div>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>loader.js, line 63</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <h4 class="name" id="createLoader"><span class="type-signature"></span>createLoader</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Creates a loader that is tracked by this loader so that when the new loader
+is finished it will be reported to this loader.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>onFinished</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!function(): void</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Function to be called when everything
+     loaded with this loader has finished.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>loader.js, line 114</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    The new Loader.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">!tdl.loader.Loader</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="finish"><span class="type-signature"></span>finish</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Finishes the loading process.
+Actually this just calls countDown_ to account for the count starting at 1.
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>loader.js, line 140</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="loadTextFile"><span class="type-signature"></span>loadTextFile</h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Loads a text file.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">URL of scene to load.</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>onTextLoaded</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">!function(string, *): void</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">Function to call when
+    the file is loaded. It will be passed the contents of the file as a
+    string and an exception which is null on success.</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<dt class="tag-source">Source:</dt>
+	<dd class="tag-source"><ul class="dummy"><li>loader.js, line 97</li></ul></dd>
+	
+    
+    
+	
+	
+	
+	
+</dl>
+
+    
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="tdl.fps.FPSTimer.html">FPSTimer</a></li><li><a href="tdl.io.LoadInfo.html">LoadInfo</a></li><li><a href="tdl.loader.Loader.html">Loader</a></li><li><a href="tdl.models.Model.html">Model</a></li><li><a href="tdl.particles.ParticleSpec.html">ParticleSpec</a></li><li><a href="tdl.particles.ParticleSystem.html">ParticleSystem</a></li><li><a href="tdl.particles.Trail.html">Trail</a></li><li><a href="tdl.programs.Program.html">Program</a></li><li><a href="tdl.sync.SyncManager.html">SyncManager</a></li><li><a href="tdl.textures.ColorTexture.html">ColorTexture</a></li><li><a href="tdl.textures.CubeMap.html">CubeMap</a></li><li><a href="tdl.textures.DepthTexture.html">DepthTexture</a></li><li><a href="tdl.textures.ExternalTexture.html">ExternalTexture</a></li><li><a href="tdl.textures.ExternalTexture2D.html">ExternalTexture2D</a></li><li><a href="tdl.textures.SolidTexture.html">SolidTexture</a></li><li><a href="tdl.textures.Texture2D.html">Texture2D</a></li></ul><h3>Namespaces</h3><ul><li><a href="tdl.html">tdl</a></li><li><a href="tdl.base.html">base</a></li><li><a href="tdl.buffers.html">buffers</a></li><li><a href="tdl.fast.html">fast</a></li><li><a href="tdl.fast.columnMajor.html">columnMajor</a></li><li><a href="tdl.fast.matrix4.html">matrix4</a></li><li><a href="tdl.fast.rowMajor.html">rowMajor</a></li><li><a href="tdl.fps.html">fps</a></li><li><a href="tdl.framebuffers.html">framebuffers</a></li><li><a href="tdl.fullscreen.html">fullscreen</a></li><li><a href="tdl.io.html">io</a></li><li><a href="tdl.loader.html">loader</a></li><li><a href="tdl.log.html">log</a></li><li><a href="tdl.math.html">math</a></li><li><a href="tdl.math.columnMajor.html">columnMajor</a></li><li><a href="tdl.math.matrix4.html">matrix4</a></li><li><a href="tdl.math.rowMajor.html">rowMajor</a></li><li><a href="tdl.misc.html">misc</a></li><li><a href="tdl.models.html">models</a></li><li><a href="tdl.particles.html">particles</a></li><li><a href="tdl.primitives.html">primitives</a></li><li><a href="tdl.programs.html">programs</a></li><li><a href="tdl.quaternions.html">quaternions</a></li><li><a href="tdl.shader.html">shader</a></li><li><a href="tdl.string.html">string</a></li><li><a href="tdl.sync.html">sync</a></li><li><a href="tdl.textures.html">textures</a></li><li><a href="tdl.webgl.html">webgl</a></li></ul><h3>Global</h3><ul><li><a href="global.html#gl">gl</a></li><li><a href="global.html#goog">goog</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3</a> on Sun Oct 07 2012 17:18:41 GMT+0200 (MESZ)
+</footer>
+
+<script> prettyPrint(); </script>
+</body>
+</html>

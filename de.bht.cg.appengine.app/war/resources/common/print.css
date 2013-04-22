@@ -1,0 +1,26 @@
+html, body {
+	background: #fee;
+}
+
+a:link:after, a:visited:after { 
+	content:" [" attr(href) "] "; 
+}			
+
+@page {
+  margin: 10%;
+}
+
+#slide-container {
+}
+
+#tools {
+	display: none;
+}
+
+.slide {
+}
+
+.slide .content {
+	padding: 1em 4em 1em 4em;
+	border: 1px solid black;
+}
