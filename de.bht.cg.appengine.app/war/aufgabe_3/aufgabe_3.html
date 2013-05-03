@@ -1,5 +1,5 @@
 <!--
-A WebGL example using tdl.js (http://code.google.com/p/threedlibrary/).
+A WebGL example using tdl.js (http:// code.google.com/p/threedlibrary/).
 
 author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 -->
@@ -24,42 +24,43 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 
 <body>
 
-	<input class='backButton' type="button" value="back" onclick="javascript:history.back()">
-	<div class="subpagetitle"
-		style='opacity: 0.8; margin-left: auto; margin-right: auto; display: block; text-align: center; position: relative;'>Aufgabe
-		3: WebGL Illuminated Spheres</div>
-	<canvas id="canvas" width="800" height="450" style='margin-left: auto; margin-right: auto; display: block;'></canvas>
+   <input class='backButton' type="button" value="back" onclick="javascript:history.back()">
+   <div class="subpagetitle"
+      style='opacity: 0.8; margin-left: auto; margin-right: auto; display: block; text-align: center; position: relative;'>Aufgabe
+      3: WebGL Illuminated Spheres</div>
+   <canvas id="canvas" width="800" height="450" style='margin-left: auto; margin-right: auto; display: block;'></canvas>
 
-	<div class='slide-content' style='margin-left: auto; margin-right: auto; display: block;'>
-		<div class='slide-description' style='width: 800px; display: block; margin-left: auto; margin-right: auto;'>
-			<h3 style='margin: 15px 15px;'>Erläuterung des Lösungsansatzes</h3>
+   <div class='slide-content' style='margin-left: auto; margin-right: auto; display: block;'>
+      <div class='slide-description' style='width: 800px; display: block; margin-left: auto; margin-right: auto;'>
+         <h3 style='margin: 15px 15px;'>Erläuterung des Lösungsansatzes</h3>
 
-		</div>
-	</div>
+      </div>
+   </div>
 
-	<div class="container">
-		<div class="page-header">
-			<h1>WebGL Illuminated Spheres</h1>
-		</div>
+   <div class="container">
+      <div class="page-header">
+         <h1>WebGL Illuminated Spheres</h1>
+      </div>
 
-		<pre id="error" class="alert alert-error"></pre>
+      <pre id="error" class="alert alert-error"></pre>
 
 
 
-		<h2>Usage</h2>
-		<ul>
-			<li>Use keys <span class="label">0</span> - <span class="label">4</span> to switch between shader programs.
-			</li>
-			<li>Use <span class="label label-warning">S</span> to toggle animation.
-			</li>
-		</ul>
+      <h2>Usage</h2>
+      <ul>
+         <li>Use keys <span class="label">0</span> - <span class="label">4</span> to switch between shader
+            programs.
+         </li>
+         <li>Use <span class="label label-warning">S</span> to toggle animation.
+         </li>
+      </ul>
 
-		<h2>Resources</h2>
-		<ul>
-			<li>Uses <a href="http://code.google.com/p/threedlibrary/">TDL</a> as a low-level WebGL support library.
-			</li>
-		</ul>
-	</div>
+      <h2>Resources</h2>
+      <ul>
+         <li>Uses <a href="http://code.google.com/p/threedlibrary/">TDL</a> as a low-level WebGL support library.
+         </li>
+      </ul>
+   </div>
 </body>
 
 <!--cell shader -->
@@ -100,22 +101,21 @@ varying vec3 lightDirectionW;
 varying vec3 eyeDirectionW;
 
 vec3 toon(vec3 normal, vec3 eye, vec3 light) {
-  float intensity = max(dot(light, normal), 0.0);
-	vec3 resultColor = color;
-  if(intensity < 0.2) {
-    resultColor = vec3(0.0, 0.0, 0.0);
-  } else {
-		float specular = pow( max(0.0, dot(normal,eye)), 10.0);
-		if (specular < 0.2) {
-			resultColor *= 0.8;
-		} else {
-			resultColor = lightIntensity;
-		}
-		float diffuse = max(dot(normal,light), 0.0);
-   		if (diffuse < 0.5) {
-			resultColor *=0.8;
-		}
-  }
+    float intensity = max(dot(light, normal), 0.0);
+    if(intensity < 0.2) {
+        return vec3(0.0, 0.0, 0.0);
+    }
+    vec3 resultColor;
+    float specular = pow(max(0.0, dot(normal,light)), 30.0);
+    if (specular < 0.2) {
+        resultColor = color * 0.8;
+	} else {
+		resultColor = lightIntensity;
+	}
+	float diffuse = dot(normal,light);
+   	if (diffuse < 0.5) {
+		resultColor *= 0.8;
+	}
 	return resultColor;
 }
 
@@ -126,6 +126,60 @@ void main() {
 }
 </script>
 <!--EOF: cell shader -->
+
+<!--DOF shader -->
+
+<script id="vs4" type="text/glsl">
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
+
+uniform vec3 lightPosition;
+uniform vec3 eyePosition;
+
+attribute vec4 position;
+attribute vec3 normal;
+
+varying vec3 normalW;
+varying vec3 lightDirectionW;
+varying vec3 eyeDirectionW;
+
+void main() {
+  vec4 positionW = model * position;
+  normalW = (model * vec4(normal, 0.0)).xyz;
+  lightDirectionW = lightPosition - positionW.xyz;
+  eyeDirectionW = eyePosition - positionW.xyz;
+
+  gl_Position = projection * view * positionW;
+}
+</script>
+<script id="fs4" type="text/glsl">
+precision highp float;
+
+const float MAX_BLUR_RADIUS = 10.0;
+const float FOCAL_LENGTH = 50.0;
+const float FOCU_STOP = 2.8;
+
+uniform float ds; // distance to the subject in perfect focus
+
+uniform vec3 color;
+uniform vec3 lightIntensity;
+
+varying vec3 normalW;
+varying vec3 lightDirectionW;
+varying vec3 eyeDirectionW;
+
+vec3 dofBlur(vec3 normal, vec3 eye, vec3 light) {
+    float subject_magnification = FOCAL_LENGTH/(ds - FOCAL_LENGTH)
+}
+
+void main() {
+    vec3 color = toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW));
+
+  gl_FragColor = vec4(color, 1.0);
+}
+</script>
+<!--EOF: DOF shader -->
 
 <!-- Constant color -->
 <script id="vs0" type="text/glsl">
