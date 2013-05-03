@@ -1,5 +1,5 @@
 <!--
-A WebGL example using tdl.js (http://code.google.com/p/threedlibrary/).
+A WebGL example using tdl.js (http:// code.google.com/p/threedlibrary/).
 
 author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 -->
@@ -82,7 +82,7 @@ varying vec3 eyeDirectionW;
 void main() {
   vec4 positionW = model * position;
   normalW = (model * vec4(normal, 0.0)).xyz;
-  lightDirectionW = lightPosition - positionW.xyz;
+  lightDirectionW = lightPosition[0] - positionW.xyz;
   eyeDirectionW = eyePosition - positionW.xyz;
 
   gl_Position = projection * view * positionW;
@@ -100,29 +100,33 @@ varying vec3 lightDirectionW;
 varying vec3 eyeDirectionW;
 
 vec3 toon(vec3 normal, vec3 eye, vec3 light) {
-  float intensity = max(dot(light, normal), 0.0);
+	float silhouette = max(dot(eye, normal), 0.0);
+	if(silhouette < 0.2){
+		return vec3(0.0, 0.0, 0.0);
+	}
+	
+	float intensity = max(dot(light, normal), 0.0);
+	if(intensity < 0.2) {
+		return vec3(0.0, 0.0, 0.0);
+	} 
 	vec3 resultColor = color;
-  if(intensity < 0.2) {
-    resultColor = vec3(0.0, 0.0, 0.0);
-  } else {
-		float specular = pow( max(0.0, dot(normal,eye)), 10.0);
-		if (specular < 0.2) {
-			resultColor *= 0.8;
-		} else {
-			resultColor = lightIntensity;
-		}
-		float diffuse = max(dot(normal,light), 0.0);
-   		if (diffuse < 0.5) {
-			resultColor *=0.8;
-		}
-  }
+	float specular = pow( max(0.0, dot(normal, light)), 30.0);
+	if (specular < 0.2) {
+		resultColor *= 0.8;
+	} else {
+		resultColor = lightIntensity;
+	}
+	float diffuse = max(dot(normal,light), 0.0);
+   	if (diffuse < 0.5) {
+		resultColor *= 0.8;
+	}
 	return resultColor;
 }
 
 void main() {
 	vec3 color = toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW));
 
-  gl_FragColor = vec4(color, 1.0);
+	gl_FragColor = vec4(color, 1.0);
 }
 </script>
 <!--EOF: cell shader -->
