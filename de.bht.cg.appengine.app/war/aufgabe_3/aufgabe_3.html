@@ -162,11 +162,10 @@ void main() {
 
   vec3 direction = normalize(vec3(0.0, 1.0, 0.0));
   float projected = dot(direction, position.xyz);
-  float displacement = wave(projected, time, 0.2, 1.0, -0.1, 0.0);
-  vec3 rippled = positionW.xyz + (position.xyz - direction * projected) * displacement;
-  vec4 iPosition = vec4(rippled.xyz, 1.0);
+  float displacement = wave(projected, time, 0.2, 1.0, -1.0, 0.0);
+  vec3 trans = positionW.xyz + vec3(positionW.z * displacement, positionW.x * displacement, positionW.y * displacement);
 
-  gl_Position = projection * view * iPosition;
+  gl_Position = projection * view * vec4(trans.xyz, 1.0);
 }
 </script>
 
