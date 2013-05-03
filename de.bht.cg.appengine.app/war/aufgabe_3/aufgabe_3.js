@@ -136,6 +136,13 @@ function initialize() {
       eyePosition[2] = Math.cos(clock * eyeSpeed) * eyeRadius;
 
       // Setup global WebGL rendering behavior.
+      
+//      lightingFramebuffer = gl.createFramebuffer();
+//      gl.bindFramebuffer(gl.FRAMEBUFFER, lightingFramebuffer);
+//      lightingFramebuffer.width = 800;
+//      lightingFramebuffer.height = 450;
+      
+      gl.enable(gl.BLEND);
       gl.viewport(0, 0, canvas.width, canvas.width * 0.6);
       gl.colorMask(true, true, true, true);
       gl.depthMask(true);
@@ -158,6 +165,11 @@ function initialize() {
 
       var across = 3;
       var half = (across - 1) / 2.0;
+      
+//      // set up the light buffer
+//      var lightBuffer = createFramebuffer(gl, 800, 450);
+//      gl.bindFramebuffer(gl.FRAMEBUFFER, lightBuffer.buffer);
+      
       for ( var xx = 0; xx < across; ++xx) {
          for ( var yy = 0; yy < across; ++yy) {
             for ( var zz = 0; zz < across; ++zz) {
@@ -173,6 +185,33 @@ function initialize() {
       }
       
    }
+   
+//   function createFramebuffer(gl, width, height) {
+//      var buffer = gl.createFramebuffer();
+//      //bind framebuffer to texture
+//      gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
+//      var texture = createTexture(gl, width, height);
+//      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+//   
+//      return {
+//        texture: texture,
+//        buffer: buffer
+//      };
+//   }
+//   
+//   function createTexture(gl, width, height) {
+//      var texture = gl.createTexture();
+//      //set properties for the texture
+//      gl.bindTexture(gl.TEXTURE_2D, texture);
+//      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+//      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+//      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+//      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+//   
+//      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+//   
+//      return texture;
+//    }
 
    // Initial call to get the rendering started.
    render();
