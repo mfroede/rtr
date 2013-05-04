@@ -99,10 +99,6 @@ precision highp float;
 
 uniform vec3 color;
 uniform vec3 lightIntensity;
-uniform float radius;
-uniform float number;
-uniform vec3 circleColor;
-uniform vec3 backround;
 
 varying vec3 normalW;
 varying vec3 lightDirectionW;
@@ -129,22 +125,8 @@ vec3 toon(vec3 normal, vec3 eye, vec3 light, vec3 color) {
 	return resultColor;
 }
 
-float oscillation(float x, float num){    
-    return 2.0 / 3.14159 * asin(cos(3.14159 * x * num));
-}
-
-vec3 generateColor(){
-    if(oscillation(texCoordI.x, number) * oscillation(texCoordI.x, number) + oscillation(texCoordI.y, number) * oscillation(texCoordI.y, number) <= radius*radius){
-        return vec3(1.0,0.0,0.0);
-    } else {
-        return vec3(0.0,1.0,0.0);
-    }
-
-    return vec3(0.0,texCoordI.y,texCoordI.x);
-}
-
 void main() {
-    vec3 newcolor = toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), generateColor());
+    vec3 newcolor = toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), color);
     gl_FragColor = vec4(newcolor, 1.0);
 }
 </script>
