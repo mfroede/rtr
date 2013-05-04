@@ -63,6 +63,8 @@ function initialize() {
    var frag = window.location.hash.substring(1);
    var pnum = frag ? parseInt(frag) : 0;
 
+
+   
    // Create a torus mesh that initialy is renderd using the first shader
    // program.
    var torus = new tdl.models.Model(programs[pnum], tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
@@ -102,6 +104,9 @@ function initialize() {
    var then = 0.0;
    var clock = 0.0;
 
+   var radius = 0.5;
+   var number = 5;
+
    // Uniform variables that are the same for all torus in one frame.
    var torusConst = {
       view : view,
@@ -109,7 +114,9 @@ function initialize() {
       eyePosition : eyePosition,
       lightPosition : lightPosition,
       lightIntensity : lightIntensity,
-      time : clock
+      time : clock,
+      radius : radius,
+      number : number
    };
 
    // Uniform variables that change for each torus in a frame.

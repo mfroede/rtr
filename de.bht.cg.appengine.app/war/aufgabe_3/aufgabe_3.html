@@ -76,10 +76,12 @@ uniform vec3 eyePosition;
 
 attribute vec4 position;
 attribute vec3 normal;
+attribute vec2 texCoord;
 
 varying vec3 normalW;
 varying vec3 lightDirectionW;
 varying vec3 eyeDirectionW;
+varying vec2 texCoordI;
 
 void main() {
   vec4 positionW = model * position;
@@ -88,6 +90,7 @@ void main() {
   eyeDirectionW = eyePosition - positionW.xyz;
 
   gl_Position = projection * view * positionW;
+  texCoordI = texCoord;
 }
 </script>
 
@@ -96,16 +99,18 @@ precision highp float;
 
 uniform vec3 color;
 uniform vec3 lightIntensity;
+uniform float radius;
+uniform float number;
 
 varying vec3 normalW;
 varying vec3 lightDirectionW;
 varying vec3 eyeDirectionW;
-varying vec4 iPosition;
+varying vec2 texCoordI;
 
-vec3 toon(vec3 normal, vec3 eye, vec3 light) {
+vec3 toon(vec3 normal, vec3 eye, vec3 light, vec3 color) {
     float sil = max(dot(eye, normal), 0.0);
     float intensity = max(dot(light, normal), 0.0);
-    if(intensity < 0.2 || sil < 0.2) {
+    if(intensity < 0.2 || sil < 0.3) {
         return vec3(0.0, 0.0, 0.0);
     }
     vec3 resultColor;
@@ -122,10 +127,23 @@ vec3 toon(vec3 normal, vec3 eye, vec3 light) {
 	return resultColor;
 }
 
-void main() {
-  vec3 color = toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW));
+float oscillation(float x, float num){    
+    return 2.0 / 3.14159 * asin(cos(3.14159 * (x + 3.0) * num));
+}
 
-	gl_FragColor = vec4(color, 1.0);
+vec3 generateColor(){
+    if(oscillation(texCoordI.x, number) * oscillation(texCoordI.x, number) + oscillation(texCoordI.y, number) * oscillation(texCoordI.y, number) <= radius*radius){
+        return vec3(1.0,0.0,0.0);
+    } else {
+        return vec3(0.0,1.0,0.0);
+    }
+
+    return vec3(0.0,texCoordI.y,texCoordI.x);
+}
+
+void main() {
+    vec3 newcolor = toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), generateColor());
+    gl_FragColor = vec4(newcolor, 1.0);
 }
 </script>
 <!--EOF: cell shader -->
