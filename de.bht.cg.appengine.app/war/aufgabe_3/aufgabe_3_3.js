@@ -63,11 +63,11 @@ function initialize() {
    var frag = window.location.hash.substring(1);
    var pnum = frag ? parseInt(frag) : 0;
 
-
+   var edgelength = 0.7;
    
    // Create a torus mesh that initialy is renderd using the first shader
    // program.
-   var torus = new tdl.models.Model(programs[pnum], tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
+   var torus = new tdl.models.Model(programs[pnum], tdl.primitives.createCube(edgelength), textures);
 
    // Register a keypress-handler for shader program switching using the number
    // keys.
@@ -104,8 +104,10 @@ function initialize() {
    var then = 0.0;
    var clock = 0.0;
 
-   var radius = 1.0;
-   var number = 5;
+   var radius = 0.8;
+   var number = 10;
+   var circleColor = [1.0,0.0,0.0];
+   var backround = [0.0,0.0,1.0];
 
    // Uniform variables that are the same for all torus in one frame.
    var torusConst = {
@@ -116,7 +118,9 @@ function initialize() {
       lightIntensity : lightIntensity,
       time : clock,
       radius : radius,
-      number : number
+      number : number,
+      circleColor : circleColor,
+      backround : backround
    };
 
    // Uniform variables that change for each torus in a frame.
