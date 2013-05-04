@@ -101,6 +101,8 @@ uniform vec3 color;
 uniform vec3 lightIntensity;
 uniform float radius;
 uniform float number;
+uniform vec3 circleColor;
+uniform vec3 backround;
 
 varying vec3 normalW;
 varying vec3 lightDirectionW;
@@ -128,7 +130,7 @@ vec3 toon(vec3 normal, vec3 eye, vec3 light, vec3 color) {
 }
 
 float oscillation(float x, float num){    
-    return 2.0 / 3.14159 * asin(cos(3.14159 * (x + 3.0) * num));
+    return 2.0 / 3.14159 * asin(cos(3.14159 * x * num));
 }
 
 vec3 generateColor(){

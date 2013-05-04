@@ -104,7 +104,7 @@ function initialize() {
    var then = 0.0;
    var clock = 0.0;
 
-   var radius = 0.5;
+   var radius = 1.6;
    var number = 5;
 
    // Uniform variables that are the same for all torus in one frame.
