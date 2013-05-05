@@ -65,8 +65,8 @@ function initialize() {
 
    // Create the shader programs.
    var programs = createProgramsFromTags();
-
-   // Load textures.
+   
+      // Load textures.
    var textures = {
       earth : tdl.textures.loadTexture('earth-2k-land-ocean-noshade.png'),
    };
@@ -75,8 +75,7 @@ function initialize() {
    var pnum = frag ? parseInt(frag) : 0;
 
    var edgelength = document.getElementById("cubelength").value == 0 ? 0.7 : document.getElementById("cubelength").value;   
-   // Create a torus mesh that initialy is renderd using the first shader
-   // program.
+
    var torus = new tdl.models.Model(programs[pnum], tdl.primitives.createCube(edgelength), textures);
    var circleTexture = false;
 
@@ -106,9 +105,11 @@ function initialize() {
    var model = mat4.create();
 
    // Uniforms for lighting.
-   var lightPosition = vec3.create([ 10, 10, 10 ]);
-   var lightIntensity = vec3.create([ 1, 1, 1 ]);
    var color = vec3.create();
+   var lights = [ new Light([ 10, 10, 10 ], [ 1, 1, 1 ]), new Light([ -10, 10, 10 ], [ 1, 1, 1 ]) ];
+   var lightPositions = createLightPositions(lights);
+   var lightIntensities = createLightIntensities(lights);
+
 
    var eyePosition = vec3.create();
    var target = vec3.create();
@@ -131,10 +132,10 @@ function initialize() {
       color : color
    };
 
-   var radius = 0.8;
+   var radius = document.getElementById("circleradius").value;
    var number = document.getElementById("circlenumber").value;
-   var circleColor = [1.0,0.0,0.0];
-   var backround = [0.0,0.0,1.0];
+   var circleColor = StringToVec3(document.getElementById("circlecolor").value, circleColor);
+   var backround = StringToVec3(document.getElementById("cubecolor").value, backround);
    
    // Renders one frame and registers itself for the next frame.
    function render() {
@@ -148,8 +149,8 @@ function initialize() {
 	      view : view,
 	      projection : projection,
 	      eyePosition : eyePosition,
-	      lightPosition : lightPosition,
-	      lightIntensity : lightIntensity,
+	      lightPositions : lightPositions,
+	      lightIntensities : lightIntensities,
 	      time : clock,
 	      radius : radius,
 	      number : number,
