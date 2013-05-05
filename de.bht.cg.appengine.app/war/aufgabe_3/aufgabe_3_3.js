@@ -139,6 +139,8 @@ function initialize() {
    
    // Renders one frame and registers itself for the next frame.
    function render() {
+	      tdl.webgl.requestAnimationFrame(render, canvas);
+
 	   radius = document.getElementById("circleradius").value == 0 ? radius : document.getElementById("circleradius").value;
 	   number = document.getElementById("circlenumber").value == 0 ? number : document.getElementById("circlenumber").value;
 	   circleColor = StringToVec3(document.getElementById("circlecolor").value, circleColor);
@@ -159,8 +161,6 @@ function initialize() {
 	      circleTexture : circleTexture
 	   };
 	   
-      tdl.webgl.requestAnimationFrame(render, canvas);
-
       // Do the time keeping.
       var now = (new Date()).getTime() * 0.001;
       elapsedTime = (then == 0.0 ? 0.0 : now - then);

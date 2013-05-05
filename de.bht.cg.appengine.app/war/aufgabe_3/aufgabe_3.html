@@ -31,6 +31,20 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
       3: WebGL Illuminated Spheres</div>
    <canvas id="canvas" width="800" height="450" style='margin-left: auto; margin-right: auto; display: block;'></canvas>
 
+    <div class='slide-content' style='margin-left: auto; margin-right: auto; display: block;'>
+      <div class='slide-description' style='width: 800px; display: block; margin-left: auto; margin-right: auto;'>
+         <h3 style='margin: 15px 15px;'>Bedienung der Anwendung</h3>
+         <p>Number of Circle: <input id="circlenumber" onchange='render()' value="5" size="2" maxlength="5" type="text"></input></p>
+         <p>Radius of Circle: <input id="circleradius" onchange='render()' value="0.8" size="2" maxlength="5" type="text"></input></p>
+         <p>Color of Circle: <input id="circlecolor" onchange='render()' value="255, 0, 0" size="5" maxlength="50" type="text"></input></p>
+         <p>Color of Cube: <input id="cubecolor" onchange='render()' value="0, 0, 255" size="5" maxlength="50" type="text"></input></p>
+         <p>Edge length of Cube: <input id="cubelength" onchange='initialize()' value="0.7" size="2" maxlength="5" type="text"></input></p>
+         <br><p>"q" - Ansicht mit Kugel-Textur</p>
+         <p>"w" - Ansicht mit Toonshader</p>
+         <p>"s" - Ein-/Ausschalten der Rotation</p>
+      </div>
+   </div>
+
    <div class='slide-content' style='margin-left: auto; margin-right: auto; display: block;'>
       <div class='slide-description' style='width: 800px; display: block; margin-left: auto; margin-right: auto;'>
          <h3 style='margin: 15px 15px;'>Erläuterung des Lösungsansatzes</h3>
@@ -102,6 +116,11 @@ precision highp float;
 
 uniform vec3 color;
 uniform vec3 lightIntensities[4];
+uniform float radius;
+uniform float number;
+uniform vec3 circleColor;
+uniform vec3 backround;
+uniform bool circleTexture;
 
 varying vec3 normalW;
 varying vec3 lightDirectionsW[4];
@@ -128,11 +147,28 @@ vec3 toon(vec3 normal, vec3 eye, vec3 light, vec3 lightIntensity, vec3 color) {
 	return resultColor * lightIntensity;
 }
 
+float oscillation(float x, float num){    
+    return 2.0 / 3.14159 * asin(cos(3.14159 * x * num));
+}
+
+vec3 generateColor(){
+    if(oscillation(texCoordI.x, number) * oscillation(texCoordI.x, number) + oscillation(texCoordI.y, number) * oscillation(texCoordI.y, number) <= radius * radius){
+        return circleColor;
+    } else {
+        return backround;
+    }
+}
+
 void main() {
+    vec3 formColor = color;
+    if(circleTexture){
+        formColor = generateColor();
+    }  
+
     vec3 newcolor = vec3(0,0,0);
 
     for(int i = 0; i < 4; i++) {
-       newcolor +=  toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionsW[i]), lightIntensities[i],  color);
+       newcolor +=  toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionsW[i]), lightIntensities[i],  formColor);
     }
     gl_FragColor = vec4(newcolor, 1.0);
 }

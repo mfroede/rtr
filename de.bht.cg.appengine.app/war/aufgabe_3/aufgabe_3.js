@@ -46,6 +46,17 @@ function perFaceNormals(arrays) {
    return arrays;
 };
 
+function StringToVec3(string, defaulColor) {
+	if(!string.match(/-?([0-9]*)\s*,\s*-?([0-9]*)\s*,\s*-?([0-9]*)\s?/)) {
+		return defaulColor;
+	}
+	var arr = string.split(',');
+	var x = arr[0].trim() / 255.0;
+	var y = arr[1].trim() / 255.0;
+	var z = arr[2].trim() / 255.0;
+	return vec3.create([x, y, z]);
+};
+
 // The main entry point.
 function initialize() {
    // Setup the canvas widget for WebGL.
@@ -63,18 +74,40 @@ function initialize() {
    var frag = window.location.hash.substring(1);
    var pnum = frag ? parseInt(frag) : 0;
 
-   // Create a torus mesh that initialy is renderd using the first shader
-   // program.
-   var torus = new tdl.models.Model(programs[pnum], tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
+   // Create a torus mesh that initialy is renderd using the first shader program.
+   
+   var edgelength = document.getElementById("cubelength").value == 0 ? 0.7 : document.getElementById("cubelength").value;   
 
+   var torus = new tdl.models.Model(programs[pnum], tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
+   var circleTexture = true;
+   
    // Register a keypress-handler for shader program switching using the number
    // keys.
    window.onkeypress = function(event) {
       var n = String.fromCharCode(event.which);
-      if (n == "s")
+      if (n == "s") {
          animate = !animate;
-      else
-         torus.setProgram(programs[n % programs.length]);
+      } else if (n == "y") {
+    	  torus.setBuffers(tdl.primitives.createCube(edgelength), textures);
+      } else if (n == "x") {
+    	  torus.setBuffers(tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
+      } else if (n == "a") {
+    	  circleTexture = !circleTexture;
+      }else if (n == "q"){
+         torus.setProgram(programs[0]);
+      }else if (n == "w"){
+         torus.setProgram(programs[1]);
+      }else if (n == "e"){
+         torus.setProgram(programs[2]);
+      }else if (n == "r"){
+         torus.setProgram(programs[3]);
+      }else if (n == "t"){
+         torus.setProgram(programs[4]);
+      }else if (n == "z"){
+         torus.setProgram(programs[5]);
+      }else if (n == "u"){
+         torus.setProgram(programs[6]);
+      }
    };
 
    // Create some matrices and vectors now to save time later.
@@ -102,9 +135,11 @@ function initialize() {
    var elapsedTime = 0.0;
    var then = 0.0;
    var clock = 0.0;
-
-   var radius = 1.6;
-   var number = 5;
+   
+   var radius = document.getElementById("circleradius").value;
+   var number = document.getElementById("circlenumber").value;
+   var circleColor = StringToVec3(document.getElementById("circlecolor").value, circleColor);
+   var backround = StringToVec3(document.getElementById("cubecolor").value, backround);
 
    // Uniform variables that are the same for all torus in one frame.
    var torusConst = {
@@ -115,7 +150,10 @@ function initialize() {
       lightIntensities : lightIntensities,
       time : clock,
       radius : radius,
-      number : number
+      number : number,
+      circleColor : circleColor,
+      backround : backround,
+      circleTexture : circleTexture
    };
 
    // Uniform variables that change for each torus in a frame.
@@ -127,7 +165,13 @@ function initialize() {
    // Renders one frame and registers itself for the next frame.
    function render() {
       tdl.webgl.requestAnimationFrame(render, canvas);
-
+      
+      torusConst.radius = document.getElementById("circleradius").value == 0 ? radius : document.getElementById("circleradius").value;
+      torusConst.number = document.getElementById("circlenumber").value == 0 ? number : document.getElementById("circlenumber").value;
+      torusConst.circleColor = StringToVec3(document.getElementById("circlecolor").value, circleColor);
+      torusConst.backround = StringToVec3(document.getElementById("cubecolor").value, backround);
+      torusConst.circleTexture = circleTexture;
+      
       // Do the time keeping.
       var now = (new Date()).getTime() * 0.001;
       elapsedTime = (then == 0.0 ? 0.0 : now - then);
