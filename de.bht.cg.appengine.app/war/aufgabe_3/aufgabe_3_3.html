@@ -106,6 +106,7 @@ uniform float radius;
 uniform float number;
 uniform vec3 circleColor;
 uniform vec3 backround;
+uniform bool circleTexture;
 
 varying vec3 normalW;
 varying vec3 lightDirectionW;
@@ -144,7 +145,12 @@ vec3 generateColor(){
 }
 
 void main() {
-    vec3 newcolor = toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), generateColor());
+    vec3 formColor = color;
+    if(circleTexture){
+        formColor = generateColor();
+    }    
+
+    vec3 newcolor = toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), formColor);
     gl_FragColor = vec4(newcolor, 1.0);
 }
 </script>

@@ -78,6 +78,7 @@ function initialize() {
    // Create a torus mesh that initialy is renderd using the first shader
    // program.
    var torus = new tdl.models.Model(programs[pnum], tdl.primitives.createCube(edgelength), textures);
+   var circleTexture = false;
 
    // Register a keypress-handler for shader program switching using the number
    // keys.
@@ -89,6 +90,12 @@ function initialize() {
     	  torus.setProgram(programs[0]);    	  
       } else if (n == "w") {
     	  torus.setProgram(programs[1]);    	  
+      } else if (n == "y") {
+    	  torus.setBuffers(tdl.primitives.createCube(edgelength), textures);
+      } else if (n == "x") {
+    	  torus.setBuffers(tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
+      } else if (n == "a") {
+    	  circleTexture = !circleTexture;
       }
       
    };
@@ -147,7 +154,8 @@ function initialize() {
 	      radius : radius,
 	      number : number,
 	      circleColor : circleColor,
-	      backround : backround
+	      backround : backround,
+	      circleTexture : circleTexture
 	   };
 	   
       tdl.webgl.requestAnimationFrame(render, canvas);
