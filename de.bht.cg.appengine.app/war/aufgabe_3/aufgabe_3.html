@@ -187,10 +187,12 @@ uniform vec3 eyePosition;
 
 attribute vec4 position;
 attribute vec3 normal;
+attribute vec2 texCoord;
 
 varying vec3 normalW;
 varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
+varying vec2 texCoordI;
 
 float pi2 = asin(1.0);
 
@@ -212,6 +214,7 @@ void main() {
   vec3 trans = positionW.xyz + vec3(positionW.z * displacement, positionW.x * displacement, positionW.y * displacement);
 
   gl_Position = projection * view * vec4(trans.xyz, 1.0);
+  texCoordI = texCoord;
 }
 </script>
 
@@ -220,10 +223,16 @@ precision highp float;
 
 uniform vec3 color;
 uniform vec3 lightIntensities[4];
+uniform float radius;
+uniform float number;
+uniform vec3 circleColor;
+uniform vec3 backround;
+uniform bool circleTexture;
 
 varying vec3 normalW;
 varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
+varying vec2 texCoordI;
 
 vec3 lambert(vec3 normal, vec3 light, 
              vec3 intensity, vec3 reflectivity) {
@@ -238,15 +247,31 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
                                       light)), 10.0);
 }
 
+float oscillation(float x, float num){    
+    return 2.0 / 3.14159 * asin(cos(3.14159 * x * num));
+}
+
+vec3 generateColor(){
+    if(oscillation(texCoordI.x, number) * oscillation(texCoordI.x, number) + oscillation(texCoordI.y, number) * oscillation(texCoordI.y, number) <= radius * radius){
+        return circleColor;
+    } else {
+        return backround;
+    }
+}
+
 void main() {
-vec3 newCcolor = vec3(0,0,0);
-   for(int i = 0; i < 4; i++) {
+  vec3 formColor = color;
+  if(circleTexture){
+      formColor = generateColor();
+  } 
+  vec3 newCcolor = vec3(0,0,0);
+  for(int i = 0; i < 4; i++) {
      newCcolor += phong(
              normalize(normalW), 
              normalize(eyeDirectionW), 
              normalize(lightDirectionsW[i]), 
-             lightIntensities[i], color) * lightIntensities[i];
-   }
+             lightIntensities[i], formColor) * lightIntensities[i];
+  }
   gl_FragColor.rgb = newCcolor.rgb;
   gl_FragColor.a = 1.0;
 }
@@ -260,9 +285,13 @@ uniform mat4 view;
 uniform mat4 model;
 
 attribute vec4 position;
+attribute vec2 texCoord;
+
+varying vec2 texCoordI;
 
 void main() {
   gl_Position = projection * view * model * position;
+  texCoordI = texCoord;
 }
 </script>
 
@@ -270,9 +299,32 @@ void main() {
 precision highp float;
 
 uniform vec3 color;
+uniform float radius;
+uniform float number;
+uniform vec3 circleColor;
+uniform vec3 backround;
+uniform bool circleTexture;
+
+varying vec2 texCoordI;
+
+float oscillation(float x, float num){    
+    return 2.0 / 3.14159 * asin(cos(3.14159 * x * num));
+}
+
+vec3 generateColor(){
+    if(oscillation(texCoordI.x, number) * oscillation(texCoordI.x, number) + oscillation(texCoordI.y, number) * oscillation(texCoordI.y, number) <= radius * radius){
+        return circleColor;
+    } else {
+        return backround;
+    }
+}
 
 void main() {
-  gl_FragColor.rgb = 0.7 * color;
+  vec3 formColor = color;
+  if(circleTexture){
+      formColor = generateColor();
+  } 
+  gl_FragColor.rgb = 0.7 * formColor;
   gl_FragColor.a = 1.0;
 }
 </script>
@@ -392,10 +444,12 @@ uniform vec3 eyePosition;
 
 attribute vec4 position;
 attribute vec3 normal;
+attribute vec2 texCoord;
 
 varying vec3 normalW;
 varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
+varying vec2 texCoordI;
 
 void main() {
   vec4 positionW = model * position;
@@ -406,6 +460,7 @@ void main() {
   eyeDirectionW = eyePosition - positionW.xyz;
 
   gl_Position = projection * view * positionW;
+  texCoordI = texCoord;
 }
 </script>
 
@@ -414,10 +469,16 @@ precision highp float;
 
 uniform vec3 color;
 uniform vec3 lightIntensities[4];
+uniform float radius;
+uniform float number;
+uniform vec3 circleColor;
+uniform vec3 backround;
+uniform bool circleTexture;
 
 varying vec3 normalW;
 varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
+varying vec2 texCoordI;
 
 vec3 lambert(vec3 normal, vec3 light, 
              vec3 intensity, vec3 reflectivity) {
@@ -432,14 +493,30 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
                                       light)), 10.0);
 }
 
+float oscillation(float x, float num){    
+    return 2.0 / 3.14159 * asin(cos(3.14159 * x * num));
+}
+
+vec3 generateColor(){
+    if(oscillation(texCoordI.x, number) * oscillation(texCoordI.x, number) + oscillation(texCoordI.y, number) * oscillation(texCoordI.y, number) <= radius * radius){
+        return circleColor;
+    } else {
+        return backround;
+    }
+}
+
 void main() {
+   vec3 formColor = color;
+   if(circleTexture){
+       formColor = generateColor();
+   }
    vec3 newColor = vec3(0,0,0);
    for(int i = 0; i < 4; i++) {
      newColor += phong(
              normalize(normalW), 
              normalize(eyeDirectionW), 
              normalize(lightDirectionsW[i]), 
-             lightIntensities[i], color);
+             lightIntensities[i], formColor);
    }
    gl_FragColor.rgb = newColor;
    gl_FragColor.a = 1.0;
