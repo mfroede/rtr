@@ -20,6 +20,7 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 <link rel="stylesheet" href="../resources/css/style.css" />
 
 <script type="text/javascript" src="aufgabe_3.js"></script>
+<script type="text/javascript" src="light.js"></script>
 </head>
 
 <body>
@@ -71,7 +72,7 @@ uniform mat4 view;
 uniform mat4 model; 
 uniform float time;
 
-uniform vec3 lightPosition;
+uniform vec3 lightPositions[8];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
@@ -79,14 +80,16 @@ attribute vec3 normal;
 attribute vec2 texCoord;
 
 varying vec3 normalW;
-varying vec3 lightDirectionW;
+varying vec3 lightDirectionsW[8];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
 void main() {
   vec4 positionW = model * position;
   normalW = (model * vec4(normal, 0.0)).xyz;
-  lightDirectionW = lightPosition[0] - positionW.xyz;
+  for(int i=0; i<8; i++) {
+    lightDirectionsW[i] = lightPositions[i] - positionW.xyz;
+  }
   eyeDirectionW = eyePosition - positionW.xyz;
 
   gl_Position = projection * view * positionW;
@@ -98,14 +101,14 @@ void main() {
 precision highp float;
 
 uniform vec3 color;
-uniform vec3 lightIntensity;
+uniform vec3 lightIntensities[8];
 
 varying vec3 normalW;
-varying vec3 lightDirectionW;
+varying vec3 lightDirectionsW[8];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
-vec3 toon(vec3 normal, vec3 eye, vec3 light, vec3 color) {
+vec3 toon(vec3 normal, vec3 eye, vec3 light, vec3 lightIntensity, vec3 color) {
     float sil = max(dot(eye, normal), 0.0);
     float intensity = max(dot(light, normal), 0.0);
     if(intensity < 0.2 || sil < 0.3) {
@@ -122,32 +125,35 @@ vec3 toon(vec3 normal, vec3 eye, vec3 light, vec3 color) {
    	if (diffuse < 0.5) {
 		resultColor *= 0.8;
 	}
-	return resultColor;
+	return resultColor * lightIntensity;
 }
 
 void main() {
-    vec3 newcolor = toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), color);
+    vec3 newcolor = vec3(0,0,0);
+
+    for(int i = 0; i < 8; i++) {
+       newcolor +=  toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionsW[i]), lightIntensities[i],  color);
+    }
     gl_FragColor = vec4(newcolor, 1.0);
 }
 </script>
 <!--EOF: cell shader -->
 
 <!--Wave shader -->
-
 <script id="vs5" type="text/glsl">
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model; 
 uniform float time;
 
-uniform vec3 lightPosition;
+uniform vec3 lightPositions[8];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
 attribute vec3 normal;
 
 varying vec3 normalW;
-varying vec3 lightDirectionW;
+varying vec3 lightDirectionsW[8];
 varying vec3 eyeDirectionW;
 
 float pi2 = asin(1.0);
@@ -159,7 +165,9 @@ float wave(float x, float t, float A, float f, float c, float p0) {
 void main() {
   vec4 positionW = model * position;
   normalW = (model * vec4(normal, 0.0)).xyz;
-  lightDirectionW = lightPosition[0] - positionW.xyz;
+  for(int i=0; i<8; i++) {
+    lightDirectionsW[i] = lightPositions[i] - positionW.xyz;
+  }
   eyeDirectionW = eyePosition - positionW.xyz;
 
   vec3 direction = normalize(vec3(0.0, 1.0, 0.0));
@@ -175,10 +183,10 @@ void main() {
 precision highp float;
 
 uniform vec3 color;
-uniform vec3 lightIntensity;
+uniform vec3 lightIntensities[8];
 
 varying vec3 normalW;
-varying vec3 lightDirectionW;
+varying vec3 lightDirectionsW[8];
 varying vec3 eyeDirectionW;
 
 vec3 lambert(vec3 normal, vec3 light, 
@@ -195,11 +203,15 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
 }
 
 void main() {
-  gl_FragColor.rgb = phong(
-    normalize(normalW), 
-    normalize(eyeDirectionW), 
-    normalize(lightDirectionW), 
-    lightIntensity, color);
+vec3 newCcolor = vec3(0,0,0);
+   for(int i = 0; i < 8; i++) {
+     newCcolor += phong(
+             normalize(normalW), 
+             normalize(eyeDirectionW), 
+             normalize(lightDirectionsW[i]), 
+             lightIntensities[i], color) * lightIntensities[i];
+   }
+  gl_FragColor.rgb = newCcolor.rgb;
   gl_FragColor.a = 1.0;
 }
 </script>
@@ -228,17 +240,17 @@ void main() {
   gl_FragColor.a = 1.0;
 }
 </script>
+<!-- EOF Constant color -->
 
 <!-- Lambert lighting model, Gouraud shading -->
-
 <script id="vs1" type="text/glsl">
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
 uniform vec3 color;
-uniform vec3 lightIntensity;
-uniform vec3 lightPosition;
+uniform vec3 lightIntensities[8];
+uniform vec3 lightPositions[8];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
@@ -255,9 +267,11 @@ vec3 lambert(vec3 normal, vec3 light,
 void main() {
   vec3 normalW = (model * vec4(normal, 0.0)).xyz;
   vec4 positionW = model * position;
-  vec3 lightDirectionW = normalize(lightPosition - positionW.xyz);
+  for(int i=0; i<8; i++) {
+    vec3 lightDirectionW = normalize(lightPositions[i] - positionW.xyz);
+    intensity += lambert(normalW, lightDirectionW, lightIntensities[i], color);
+  }
 
-  intensity = lambert(normalW, lightDirectionW, lightIntensity, color);
   gl_Position = projection * view * positionW;
 }
 </script>
@@ -272,17 +286,17 @@ void main() {
   gl_FragColor.a = 1.0;
 }
 </script>
+<!-- EOF Lambert lighting model, Gouraud shading -->
 
 <!-- Phong lighting model, Gouraud shading -->
-
 <script id="vs2" type="text/glsl">
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
 uniform vec3 color;
-uniform vec3 lightIntensity;
-uniform vec3 lightPosition;
+uniform vec3 lightIntensities[8];
+uniform vec3 lightPositions[8];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
@@ -307,11 +321,13 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
 void main() {
   vec3 normalW = (model * vec4(normal, 0.0)).xyz;
   vec4 positionW = model * position;
-  vec3 lightDirectionW = normalize(lightPosition - positionW.xyz);
   vec3 eyeDirectionW = normalize(eyePosition - positionW.xyz);
+  for(int i=0; i<8; i++) {
+    vec3 lightDirectionW = normalize(lightPositions[i] - positionW.xyz);
+    intensity += phong(normalW, eyeDirectionW, lightDirectionW, 
+                       lightIntensities[i], color);
+  }
 
-  intensity = phong(normalW, eyeDirectionW, lightDirectionW, 
-                    lightIntensity, color);
   gl_Position = projection * view * positionW;
 }
 </script>
@@ -326,28 +342,31 @@ void main() {
   gl_FragColor.a = 1.0;
 }
 </script>
+<!-- EOF Phong lighting model, Gouraud shading -->
 
 <!-- Phong lighting model, Phong shading -->
-
 <script id="vs3" type="text/glsl">
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
-uniform vec3 lightPosition;
+uniform vec3 lightPositions[8];
+uniform vec3 lightIntensities[8];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
 attribute vec3 normal;
 
 varying vec3 normalW;
-varying vec3 lightDirectionW;
+varying vec3 lightDirectionsW[8];
 varying vec3 eyeDirectionW;
 
 void main() {
   vec4 positionW = model * position;
   normalW = (model * vec4(normal, 0.0)).xyz;
-  lightDirectionW = lightPosition - positionW.xyz;
+  for(int i=0; i<8; i++) {
+    lightDirectionsW[i] = normalize(lightPositions[i] - positionW.xyz);
+  }
   eyeDirectionW = eyePosition - positionW.xyz;
 
   gl_Position = projection * view * positionW;
@@ -358,10 +377,10 @@ void main() {
 precision highp float;
 
 uniform vec3 color;
-uniform vec3 lightIntensity;
+uniform vec3 lightIntensities[8];
 
 varying vec3 normalW;
-varying vec3 lightDirectionW;
+varying vec3 lightDirectionsW[8];
 varying vec3 eyeDirectionW;
 
 vec3 lambert(vec3 normal, vec3 light, 
@@ -378,23 +397,27 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
 }
 
 void main() {
-  gl_FragColor.rgb = phong(
-    normalize(normalW), 
-    normalize(eyeDirectionW), 
-    normalize(lightDirectionW), 
-    lightIntensity, color);
-  gl_FragColor.a = 1.0;
+   vec3 newColor = vec3(0,0,0);
+   for(int i = 0; i < 8; i++) {
+     newColor += phong(
+             normalize(normalW), 
+             normalize(eyeDirectionW), 
+             normalize(lightDirectionsW[i]), 
+             lightIntensities[i], color);
+   }
+   gl_FragColor.rgb = newColor;
+   gl_FragColor.a = 1.0;
 }
 </script>
+<!-- EOF Phong lighting model, Phong shading -->
 
 <!-- Phong lighting model, Phong shading with texture -->
-
 <script id="vs5" type="text/glsl">
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
-uniform vec3 lightPosition;
+uniform vec3 lightPositions[8];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
@@ -402,14 +425,16 @@ attribute vec3 normal;
 attribute vec2 texCoord;
 
 varying vec3 normalW;
-varying vec3 lightDirectionW;
+varying vec3 lightDirectionsW[8];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
 void main() {
   vec4 positionW = model * position;
   normalW = (model * vec4(normal, 0.0)).xyz;
-  lightDirectionW = lightPosition - positionW.xyz;
+  for(int i=0; i<8; i++) {
+    lightDirectionsW[i] = lightPositions[i] - positionW.xyz;
+  }
   eyeDirectionW = eyePosition - positionW.xyz;
 
   texCoordI = texCoord;
@@ -420,11 +445,11 @@ void main() {
 <script id="fs5" type="text/glsl">
 precision highp float;
 
-uniform vec3 lightIntensity;
+uniform vec3 lightIntensities[8];
 uniform sampler2D earth;
 
 varying vec3 normalW;
-varying vec3 lightDirectionW;
+varying vec3 lightDirectionsW[8];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
@@ -442,15 +467,17 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
 }
 
 void main() {
-  vec3 color = texture2D(earth, texCoordI).rgb;
-
-  gl_FragColor.rgb = phong(
-    normalize(normalW), 
-    normalize(eyeDirectionW), 
-    normalize(lightDirectionW), 
-    lightIntensity, color);
+  vec3 newColor = texture2D(earth, texCoordI).rgb;
+  for(int i = 0; i < 8; i++) {
+     newColor += phong(
+             normalize(normalW), 
+             normalize(eyeDirectionW), 
+             normalize(lightDirectionsW[i]), 
+             lightIntensities[i], newColor);
+  }
+  gl_FragColor.rgb = newColor;
   gl_FragColor.a = 1.0;
 }
 </script>
-
+<!-- EOF Phong lighting model, Phong shading with texture -->
 </html>

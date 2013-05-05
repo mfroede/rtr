@@ -74,7 +74,7 @@ uniform mat4 view;
 uniform mat4 model; 
 uniform float time;
 
-uniform vec3 lightPosition;
+uniform vec3 lightPositions[8];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
@@ -82,14 +82,16 @@ attribute vec3 normal;
 attribute vec2 texCoord;
 
 varying vec3 normalW;
-varying vec3 lightDirectionW;
+varying vec3 lightDirectionsW[8];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
 void main() {
   vec4 positionW = model * position;
   normalW = (model * vec4(normal, 0.0)).xyz;
-  lightDirectionW = lightPosition[0] - positionW.xyz;
+  for(int i=0; i<8; i++) {
+    lightDirectionsW[i] = lightPositions[i] - positionW.xyz;
+  }
   eyeDirectionW = eyePosition - positionW.xyz;
 
   gl_Position = projection * view * positionW;
@@ -101,18 +103,18 @@ void main() {
 precision highp float;
 
 uniform vec3 color;
-uniform vec3 lightIntensity;
+uniform vec3 lightIntensities[8];
 uniform float radius;
 uniform float number;
 uniform vec3 circleColor;
 uniform vec3 backround;
 
 varying vec3 normalW;
-varying vec3 lightDirectionW;
+varying vec3 lightDirectionsW[8];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
-vec3 toon(vec3 normal, vec3 eye, vec3 light, vec3 color) {
+vec3 toon(vec3 normal, vec3 eye, vec3 light, vec3 lightIntensity, vec3 color) {
     float intensity = max(dot(light, normal), 0.0);
     if(intensity < 0.2) {
         return vec3(0.0, 0.0, 0.0);
@@ -128,7 +130,7 @@ vec3 toon(vec3 normal, vec3 eye, vec3 light, vec3 color) {
    	if (diffuse < 0.5) {
 		resultColor *= 0.8;
 	}
-	return resultColor;
+	return resultColor * lightIntensity;
 }
 
 float oscillation(float x, float num){    
@@ -144,7 +146,10 @@ vec3 generateColor(){
 }
 
 void main() {
-    vec3 newcolor = toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), generateColor());
+    vec3 newcolor = vec3(0,0,0);
+    for(int i = 0; i < 8; i++) {
+       newcolor +=  toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionsW[i]), lightIntensities[i],  generateColor());
+    }
     gl_FragColor = vec4(newcolor, 1.0);
 }
 </script>
