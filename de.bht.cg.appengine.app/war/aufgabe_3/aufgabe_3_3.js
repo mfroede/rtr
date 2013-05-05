@@ -46,6 +46,17 @@ function perFaceNormals(arrays) {
    return arrays;
 };
 
+function StringToVec3(string, defaulColor) {
+	if(!string.match(/-?([0-9]*)\s*,\s*-?([0-9]*)\s*,\s*-?([0-9]*)\s?/)) {
+		return defaulColor;
+	}
+	var arr = string.split(',');
+	var x = arr[0].trim() / 255.0;
+	var y = arr[1].trim() / 255.0;
+	var z = arr[2].trim() / 255.0;
+	return vec3.create([x, y, z]);
+};
+
 // The main entry point.
 function initialize() {
    // Setup the canvas widget for WebGL.
@@ -63,8 +74,7 @@ function initialize() {
    var frag = window.location.hash.substring(1);
    var pnum = frag ? parseInt(frag) : 0;
 
-   var edgelength = 0.7;
-   
+   var edgelength = document.getElementById("cubelength").value == 0 ? 0.7 : document.getElementById("cubelength").value;   
    // Create a torus mesh that initialy is renderd using the first shader
    // program.
    var torus = new tdl.models.Model(programs[pnum], tdl.primitives.createCube(edgelength), textures);
@@ -73,10 +83,14 @@ function initialize() {
    // keys.
    window.onkeypress = function(event) {
       var n = String.fromCharCode(event.which);
-      if (n == "s")
-         animate = !animate;
-      else
-         torus.setProgram(programs[n % programs.length]);
+      if (n == "s") {
+    	  animate = !animate;    	  
+      } else if (n == "q") {
+    	  torus.setProgram(programs[0]);    	  
+      } else if (n == "w") {
+    	  torus.setProgram(programs[1]);    	  
+      }
+      
    };
 
    // Create some matrices and vectors now to save time later.
@@ -104,33 +118,38 @@ function initialize() {
    var then = 0.0;
    var clock = 0.0;
 
-   var radius = 0.8;
-   var number = 10;
-   var circleColor = [1.0,0.0,0.0];
-   var backround = [0.0,0.0,1.0];
-
-   // Uniform variables that are the same for all torus in one frame.
-   var torusConst = {
-      view : view,
-      projection : projection,
-      eyePosition : eyePosition,
-      lightPosition : lightPosition,
-      lightIntensity : lightIntensity,
-      time : clock,
-      radius : radius,
-      number : number,
-      circleColor : circleColor,
-      backround : backround
-   };
-
    // Uniform variables that change for each torus in a frame.
    var torusPer = {
       model : model,
       color : color
    };
 
+   var radius = 0.8;
+   var number = document.getElementById("circlenumber").value;
+   var circleColor = [1.0,0.0,0.0];
+   var backround = [0.0,0.0,1.0];
+   
    // Renders one frame and registers itself for the next frame.
    function render() {
+	   radius = document.getElementById("circleradius").value == 0 ? radius : document.getElementById("circleradius").value;
+	   number = document.getElementById("circlenumber").value == 0 ? number : document.getElementById("circlenumber").value;
+	   circleColor = StringToVec3(document.getElementById("circlecolor").value, circleColor);
+	   backround = StringToVec3(document.getElementById("cubecolor").value, backround);
+
+	   // Uniform variables that are the same for all torus in one frame.
+	   var torusConst = {
+	      view : view,
+	      projection : projection,
+	      eyePosition : eyePosition,
+	      lightPosition : lightPosition,
+	      lightIntensity : lightIntensity,
+	      time : clock,
+	      radius : radius,
+	      number : number,
+	      circleColor : circleColor,
+	      backround : backround
+	   };
+	   
       tdl.webgl.requestAnimationFrame(render, canvas);
 
       // Do the time keeping.
@@ -196,34 +215,6 @@ function initialize() {
       }
       
    }
-   
-//   function createFramebuffer(gl, width, height) {
-//      var buffer = gl.createFramebuffer();
-//      //bind framebuffer to texture
-//      gl.bindFramebuffer(gl.FRAMEBUFFER, buffer);
-//      var texture = createTexture(gl, width, height);
-//      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
-//   
-//      return {
-//        texture: texture,
-//        buffer: buffer
-//      };
-//   }
-//   
-//   function createTexture(gl, width, height) {
-//      var texture = gl.createTexture();
-//      //set properties for the texture
-//      gl.bindTexture(gl.TEXTURE_2D, texture);
-//      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-//      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-//      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-//      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-//   
-//      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-//   
-//      return texture;
-//    }
 
-   // Initial call to get the rendering started.
    render();
 }

@@ -32,6 +32,20 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 
    <div class='slide-content' style='margin-left: auto; margin-right: auto; display: block;'>
       <div class='slide-description' style='width: 800px; display: block; margin-left: auto; margin-right: auto;'>
+         <h3 style='margin: 15px 15px;'>Bedienung der Anwendung</h3>
+         <p>Number of Circle: <input id="circlenumber" onchange='render()' value="5" size="2" maxlength="5" type="text"></input></p>
+         <p>Radius of Circle: <input id="circleradius" onchange='render()' value="0.8" size="2" maxlength="5" type="text"></input></p>
+         <p>Color of Circle: <input id="circlecolor" onchange='render()' value="255, 0, 0" size="5" maxlength="50" type="text"></input></p>
+         <p>Color of Cube: <input id="cubecolor" onchange='render()' value="0, 0, 255" size="5" maxlength="50" type="text"></input></p>
+         <p>Edge length of Cube: <input id="cubelength" onchange='initialize()' value="0.7" size="2" maxlength="5" type="text"></input></p>
+         <br><p>"q" - Ansicht mit Kugel-Textur</p>
+         <p>"w" - Ansicht mit Toonshader</p>
+         <p>"s" - Ein-/Ausschalten der Rotation</p>
+      </div>
+   </div>
+
+   <div class='slide-content' style='margin-left: auto; margin-right: auto; display: block;'>
+      <div class='slide-description' style='width: 800px; display: block; margin-left: auto; margin-right: auto;'>
          <h3 style='margin: 15px 15px;'>Erläuterung des Lösungsansatzes</h3>
 
       </div>
@@ -43,17 +57,6 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
       </div>
 
       <pre id="error" class="alert alert-error"></pre>
-
-
-
-      <h2>Usage</h2>
-      <ul>
-         <li>Use keys <span class="label">0</span> - <span class="label">4</span> to switch between shader
-            programs.
-         </li>
-         <li>Use <span class="label label-warning">S</span> to toggle animation.
-         </li>
-      </ul>
 
       <h2>Resources</h2>
       <ul>
@@ -133,7 +136,7 @@ float oscillation(float x, float num){
 }
 
 vec3 generateColor(){
-    if(oscillation(texCoordI.x, number) * oscillation(texCoordI.x, number) + oscillation(texCoordI.y, number) * oscillation(texCoordI.y, number) <= radius*radius){
+    if(oscillation(texCoordI.x, number) * oscillation(texCoordI.x, number) + oscillation(texCoordI.y, number) * oscillation(texCoordI.y, number) <= radius * radius){
         return circleColor;
     } else {
         return backround;
