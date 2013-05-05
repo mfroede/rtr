@@ -91,6 +91,8 @@ function initialize() {
     	  torus.setBuffers(tdl.primitives.createCube(edgelength), textures);
       } else if (n == "x") {
     	  torus.setBuffers(tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
+      } else if (n == "c") {
+         torus.setBuffers(tdl.primitives.createSphere(0.4, 60, 60), textures);
       } else if (n == "a") {
     	  circleTexture = !circleTexture;
       }else if (n == "q"){
