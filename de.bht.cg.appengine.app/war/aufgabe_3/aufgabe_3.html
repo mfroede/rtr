@@ -72,7 +72,7 @@ uniform mat4 view;
 uniform mat4 model; 
 uniform float time;
 
-uniform vec3 lightPositions[8];
+uniform vec3 lightPositions[4];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
@@ -80,14 +80,14 @@ attribute vec3 normal;
 attribute vec2 texCoord;
 
 varying vec3 normalW;
-varying vec3 lightDirectionsW[8];
+varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
 void main() {
   vec4 positionW = model * position;
   normalW = (model * vec4(normal, 0.0)).xyz;
-  for(int i=0; i<8; i++) {
+  for(int i=0; i<4; i++) {
     lightDirectionsW[i] = lightPositions[i] - positionW.xyz;
   }
   eyeDirectionW = eyePosition - positionW.xyz;
@@ -101,10 +101,10 @@ void main() {
 precision highp float;
 
 uniform vec3 color;
-uniform vec3 lightIntensities[8];
+uniform vec3 lightIntensities[4];
 
 varying vec3 normalW;
-varying vec3 lightDirectionsW[8];
+varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
@@ -131,7 +131,7 @@ vec3 toon(vec3 normal, vec3 eye, vec3 light, vec3 lightIntensity, vec3 color) {
 void main() {
     vec3 newcolor = vec3(0,0,0);
 
-    for(int i = 0; i < 8; i++) {
+    for(int i = 0; i < 4; i++) {
        newcolor +=  toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionsW[i]), lightIntensities[i],  color);
     }
     gl_FragColor = vec4(newcolor, 1.0);
@@ -146,14 +146,14 @@ uniform mat4 view;
 uniform mat4 model; 
 uniform float time;
 
-uniform vec3 lightPositions[8];
+uniform vec3 lightPositions[4];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
 attribute vec3 normal;
 
 varying vec3 normalW;
-varying vec3 lightDirectionsW[8];
+varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
 
 float pi2 = asin(1.0);
@@ -165,7 +165,7 @@ float wave(float x, float t, float A, float f, float c, float p0) {
 void main() {
   vec4 positionW = model * position;
   normalW = (model * vec4(normal, 0.0)).xyz;
-  for(int i=0; i<8; i++) {
+  for(int i=0; i<4; i++) {
     lightDirectionsW[i] = lightPositions[i] - positionW.xyz;
   }
   eyeDirectionW = eyePosition - positionW.xyz;
@@ -183,10 +183,10 @@ void main() {
 precision highp float;
 
 uniform vec3 color;
-uniform vec3 lightIntensities[8];
+uniform vec3 lightIntensities[4];
 
 varying vec3 normalW;
-varying vec3 lightDirectionsW[8];
+varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
 
 vec3 lambert(vec3 normal, vec3 light, 
@@ -204,7 +204,7 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
 
 void main() {
 vec3 newCcolor = vec3(0,0,0);
-   for(int i = 0; i < 8; i++) {
+   for(int i = 0; i < 4; i++) {
      newCcolor += phong(
              normalize(normalW), 
              normalize(eyeDirectionW), 
@@ -249,8 +249,8 @@ uniform mat4 view;
 uniform mat4 model;
 
 uniform vec3 color;
-uniform vec3 lightIntensities[8];
-uniform vec3 lightPositions[8];
+uniform vec3 lightIntensities[4];
+uniform vec3 lightPositions[4];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
@@ -267,7 +267,7 @@ vec3 lambert(vec3 normal, vec3 light,
 void main() {
   vec3 normalW = (model * vec4(normal, 0.0)).xyz;
   vec4 positionW = model * position;
-  for(int i=0; i<8; i++) {
+  for(int i=0; i<4; i++) {
     vec3 lightDirectionW = normalize(lightPositions[i] - positionW.xyz);
     intensity += lambert(normalW, lightDirectionW, lightIntensities[i], color);
   }
@@ -295,8 +295,8 @@ uniform mat4 view;
 uniform mat4 model;
 
 uniform vec3 color;
-uniform vec3 lightIntensities[8];
-uniform vec3 lightPositions[8];
+uniform vec3 lightIntensities[4];
+uniform vec3 lightPositions[4];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
@@ -322,7 +322,7 @@ void main() {
   vec3 normalW = (model * vec4(normal, 0.0)).xyz;
   vec4 positionW = model * position;
   vec3 eyeDirectionW = normalize(eyePosition - positionW.xyz);
-  for(int i=0; i<8; i++) {
+  for(int i=0; i<4; i++) {
     vec3 lightDirectionW = normalize(lightPositions[i] - positionW.xyz);
     intensity += phong(normalW, eyeDirectionW, lightDirectionW, 
                        lightIntensities[i], color);
@@ -350,21 +350,21 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
-uniform vec3 lightPositions[8];
-uniform vec3 lightIntensities[8];
+uniform vec3 lightPositions[4];
+uniform vec3 lightIntensities[4];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
 attribute vec3 normal;
 
 varying vec3 normalW;
-varying vec3 lightDirectionsW[8];
+varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
 
 void main() {
   vec4 positionW = model * position;
   normalW = (model * vec4(normal, 0.0)).xyz;
-  for(int i=0; i<8; i++) {
+  for(int i=0; i<4; i++) {
     lightDirectionsW[i] = normalize(lightPositions[i] - positionW.xyz);
   }
   eyeDirectionW = eyePosition - positionW.xyz;
@@ -377,10 +377,10 @@ void main() {
 precision highp float;
 
 uniform vec3 color;
-uniform vec3 lightIntensities[8];
+uniform vec3 lightIntensities[4];
 
 varying vec3 normalW;
-varying vec3 lightDirectionsW[8];
+varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
 
 vec3 lambert(vec3 normal, vec3 light, 
@@ -398,7 +398,7 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
 
 void main() {
    vec3 newColor = vec3(0,0,0);
-   for(int i = 0; i < 8; i++) {
+   for(int i = 0; i < 4; i++) {
      newColor += phong(
              normalize(normalW), 
              normalize(eyeDirectionW), 
@@ -417,7 +417,7 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
-uniform vec3 lightPositions[8];
+uniform vec3 lightPositions[4];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
@@ -425,14 +425,14 @@ attribute vec3 normal;
 attribute vec2 texCoord;
 
 varying vec3 normalW;
-varying vec3 lightDirectionsW[8];
+varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
 void main() {
   vec4 positionW = model * position;
   normalW = (model * vec4(normal, 0.0)).xyz;
-  for(int i=0; i<8; i++) {
+  for(int i=0; i<4; i++) {
     lightDirectionsW[i] = lightPositions[i] - positionW.xyz;
   }
   eyeDirectionW = eyePosition - positionW.xyz;
@@ -445,11 +445,11 @@ void main() {
 <script id="fs5" type="text/glsl">
 precision highp float;
 
-uniform vec3 lightIntensities[8];
+uniform vec3 lightIntensities[4];
 uniform sampler2D earth;
 
 varying vec3 normalW;
-varying vec3 lightDirectionsW[8];
+varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
@@ -468,7 +468,7 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
 
 void main() {
   vec3 newColor = texture2D(earth, texCoordI).rgb;
-  for(int i = 0; i < 8; i++) {
+  for(int i = 0; i < 4; i++) {
      newColor += phong(
              normalize(normalW), 
              normalize(eyeDirectionW), 

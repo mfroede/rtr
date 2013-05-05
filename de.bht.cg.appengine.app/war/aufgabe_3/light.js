@@ -5,7 +5,7 @@
    
    function createLightPositions(lights) {
       var result = [];
-      for ( var i = 0; i < 8; i++) {
+      for ( var i = 0; i < 4; i++) {
          if (lights[i]) {
             result.push(lights[i].position[0]);
             result.push(lights[i].position[1]);
@@ -21,7 +21,7 @@
 
    function createLightIntensities(lights) {
       var result = [];
-      for ( var i = 0; i < 8; i++) {
+      for ( var i = 0; i < 4; i++) {
          if (lights[i]) {
             result.push(lights[i].color[0]);
             result.push(lights[i].color[1]);

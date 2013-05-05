@@ -20,6 +20,7 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 <link rel="stylesheet" href="../resources/css/style.css" />
 
 <script type="text/javascript" src="aufgabe_3_3.js"></script>
+<script type="text/javascript" src="light.js"></script>
 </head>
 
 <body>
@@ -56,7 +57,7 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
          <h1>WebGL Illuminated Spheres</h1>
       </div>
 
-      <pre id="error" class="alert alert-error"></pre>
+     <!--  <pre id="error" class="alert alert-error"></pre> -->
 
       <h2>Resources</h2>
       <ul>
@@ -74,7 +75,7 @@ uniform mat4 view;
 uniform mat4 model; 
 uniform float time;
 
-uniform vec3 lightPositions[8];
+uniform vec3 lightPositions[4];
 uniform vec3 eyePosition;
 
 attribute vec4 position;
@@ -82,14 +83,14 @@ attribute vec3 normal;
 attribute vec2 texCoord;
 
 varying vec3 normalW;
-varying vec3 lightDirectionsW[8];
+varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
 void main() {
   vec4 positionW = model * position;
   normalW = (model * vec4(normal, 0.0)).xyz;
-  for(int i=0; i<8; i++) {
+  for(int i=0; i<4; i++) {
     lightDirectionsW[i] = lightPositions[i] - positionW.xyz;
   }
   eyeDirectionW = eyePosition - positionW.xyz;
@@ -103,7 +104,7 @@ void main() {
 precision highp float;
 
 uniform vec3 color;
-uniform vec3 lightIntensities[8];
+uniform vec3 lightIntensities[4];
 uniform float radius;
 uniform float number;
 uniform vec3 circleColor;
@@ -111,7 +112,7 @@ uniform vec3 backround;
 uniform bool circleTexture;
 
 varying vec3 normalW;
-varying vec3 lightDirectionsW[8];
+varying vec3 lightDirectionsW[4];
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
 
@@ -153,7 +154,7 @@ void main() {
     }    
 
     vec3 newcolor = vec3(0,0,0);
-    for(int i = 0; i < 8; i++) {
+    for(int i = 0; i < 4; i++) {
        newcolor +=  toon(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionsW[i]), lightIntensities[i], formColor);
     }
     gl_FragColor = vec4(newcolor, 1.0);

@@ -68,7 +68,7 @@ function initialize() {
    
       // Load textures.
    var textures = {
-      earth : tdl.textures.loadTexture('earth-2k-land-ocean-noshade.png'),
+//      earth : tdl.textures.loadTexture('earth-2k-land-ocean-noshade.png'),
    };
 
    var frag = window.location.hash.substring(1);
