@@ -48,34 +48,73 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
          <p>"a"     - Gepunktete Textur auf der Oberfläche an/aus</p>
          <p>"s"     - Ein-/Ausschalten der Rotation</p>        
         </div>
-        </div>       
-      </div>
+        </div>
+         <div style="display:-webkit-box; -webkit-box-orient:horizontal;">
+        <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+         <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_0" checked="true">Light 1</input></div>    
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_x" min="-20" max="20" value="10">PosX</input></div>
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_y" min="-20" max="20" value="10">PosY</input></div>
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_z" min="-20" max="20" value="10">PosZ</input></div>
+         <div style=" -webkit-box-flex:1;"><input id="light_0_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensity</input></div>
+        </div>
+        <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+         <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_1">Light 2</input></div>    
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_x" min="-20" max="20" value="-10">PosX</input></div>
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_y" min="-20" max="20" value="10">PosY</input></div>
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_z" min="-20" max="20" value="10">PosZ</input></div>
+         <div style=" -webkit-box-flex:1;"><input id="light_1_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensity</input></div>
+        </div>
+        <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+         <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_2">Light 3</input></div>    
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_2_x" min="-20" max="20" value="10">PosX</input></div>
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_2_y" min="-20" max="20" value="-10">PosY</input></div>
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_2_z" min="-20" max="20" value="10">PosZ</input></div>
+         <div style=" -webkit-box-flex:1;"><input id="light_2_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensity</input></div>
+        </div>
+        <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+         <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_3">Light 4</input></div>    
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_3_x" min="-20" max="20" value="10">PosX</input></div>
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_3_y" min="-20" max="20" value="10">PosY</input></div>
+         <div style=" -webkit-box-flex:1;"><input type="range" id="light_3_z" min="-20" max="20" value="-10">PosZ</input></div>
+         <div style=" -webkit-box-flex:1;"><input id="light_3_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensity</input></div>
+        </div>
+        </div>
    </div>
 
    <div class='slide-content' style='margin-left: auto; margin-right: auto; display: block;'>
       <div class='slide-description' style='width: 800px; display: block; margin-left: auto; margin-right: auto;'>
          <h3 style='margin: 15px 15px;'>Erläuterung des Lösungsansatzes</h3>
+         
+         <p>
+            <h4>Aufgabe 3.1 - Toon-Shading / Cell-Shading</h4>
+            Das Ziel dieser Aufgabe bestand darin, den Farbverlauf der Objekte auf 4 Farben zu diskretisieren.
+            Um dies zu erreichen wird der Winkel wischen dem Licht und der Normalen der Objekte verwendet. 
+            Mithilfe dieses Winkels wird dann der Grad der Diskretisierung ermittelt. <br><br>
+            Zu sehen ist das Ergebniss bei dem Shader, der mit drücken der Taste-'q' dargestellt wird.
+         </p> <br>
+         <p>
+            <h4>Aufgabe 3.2 - Mehrere Lichtquellen</h4>
+            Durch den Einsatz von Arrays können nun mehrere Lichtquellen, mit ihrer Position und der Farbe, an die Shader übermittelt werden.
+            
+         </p> <br>
+         <p>
+            <h4>Aufgabe 3.3 - modifizierte Textur</h4>
+            Mithilfe der Texturkoordinaten werden die oberflächen der Objekte nciht mehr einfarbig dargestellt sondern glichmässig mit einer
+            einstellbaren Anzahl an Kreisen gefüllt. Zuerst wird durch den Einsatz einer Sinus-Funktion (Abbildung 3.1)wird, abhängig von der X- und 
+            Y-Koordinate der Textur, ermittelt ob das Fragment in einem Kreis liegt. Abhängig von der Position wird anschliesend die zu 
+            zeichnenende Grundfarbe festgelegt. In diese Texturierung ist in 4 Shadern wählbar (Tasten: q, w, e und z).  
+            <br>
+            <img src="../resources/images/Funktion_Aufgabe2_3.svg" height="159px"
+                        style='' /><div style='text-align: center;'>Abb. 3.1: Abwandlung der Sinus Funktion</div>
+            
+         </p>
 
       </div>
    </div>
 
    <div class="container">
-      <div class="page-header">
-         <h1>WebGL Illuminated Spheres</h1>
-      </div>
 
       <pre id="error" class="alert alert-error"></pre>
-
-
-
-      <h2>Usage</h2>
-      <ul>
-         <li>Use keys <span class="label">0</span> - <span class="label">4</span> to switch between shader
-            programs.
-         </li>
-         <li>Use <span class="label label-warning">S</span> to toggle animation.
-         </li>
-      </ul>
 
       <h2>Resources</h2>
       <ul>

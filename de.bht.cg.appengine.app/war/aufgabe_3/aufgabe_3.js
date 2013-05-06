@@ -80,6 +80,42 @@ function initialize() {
 
    var torus = new tdl.models.Model(programs[pnum], tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
    var circleTexture = true;
+   var lightPositions = [];
+   var lightIntensities = [];
+   var readLights = function() {
+      function stringToArray(string, defaulted) {
+         if(!string.match(/-?([0-9]*)\s*,\s*-?([0-9]*)\s*,\s*-?([0-9]*)\s?/)) {
+            return [1,1,1];
+         }
+         var arr = string.split(',');
+         var x = arr[0].trim();
+         var y = arr[1].trim();
+         var z = arr[2].trim();
+         return [x, y, z];
+      };
+      
+      lights = [];
+      for(var i = 0; i < 4; i++) {
+         if(document.getElementById("light_" + i).checked) {
+            var x = document.getElementById("light_" + i + "_x").value;
+            var y = document.getElementById("light_" + i + "_y").value;
+            var z = document.getElementById("light_" + i + "_z").value;
+            lights.push(new Light([x,y,z], stringToArray(document.getElementById("light_" + i + "_i").value)));
+         }
+      }
+      lightPositions = createLightPositions(lights);
+      lightIntensities = createLightIntensities(lights);
+   }
+   
+   readLights();
+   
+   for(var i = 0; i < 4; i++) {
+      document.getElementById("light_" + i).onchange=readLights;
+      document.getElementById("light_" + i + "_x").onchange=readLights;
+      document.getElementById("light_" + i + "_y").onchange=readLights;
+      document.getElementById("light_" + i + "_z").onchange=readLights;
+      document.getElementById("light_" + i + "_i").onchange=readLights;
+   }
    
    // Register a keypress-handler for shader program switching using the number
    // keys.
@@ -119,9 +155,7 @@ function initialize() {
 
    // Uniforms for lighting.
    var color = vec3.create();
-   var lights = [ new Light([ 10, 10, 10 ], [ 1, 1, 1 ]), new Light([ -10, 10, 10 ], [ 1, 1, 1 ]) ];
-   var lightPositions = createLightPositions(lights);
-   var lightIntensities = createLightIntensities(lights);
+   var lights = [];
 
    var eyePosition = vec3.create();
    var target = vec3.create();
@@ -174,6 +208,9 @@ function initialize() {
       torusConst.backround = StringToVec3(document.getElementById("cubecolor").value, backround);
       torusConst.circleTexture = circleTexture;
       
+      torusConst.lightPositions = new Float32Array(lightPositions);
+      torusConst.lightIntensities = new Float32Array(lightIntensities);
+
       // Do the time keeping.
       var now = (new Date()).getTime() * 0.001;
       elapsedTime = (then == 0.0 ? 0.0 : now - then);
@@ -227,7 +264,20 @@ function initialize() {
       }
 
    }
-
+   
+   function setUpLights() {
+      lights = [];
+      for(var i = 0; i < 4; i++) {
+         if(document.getElementById("light_" + i).checked) {
+            var x = document.getElementById("light_" + i + "_x").value;
+            var y = document.getElementById("light_" + i + "_y").value;
+            var z = document.getElementById("light_" + i + "_z").value;
+            lights.push(new Light([x,y,z],stringToArray(document.getElementById("light_" + i + "_i").value)));
+         }
+      }
+      return lights;
+   }
+   
    // Initial call to get the rendering started.
    render();
 }
