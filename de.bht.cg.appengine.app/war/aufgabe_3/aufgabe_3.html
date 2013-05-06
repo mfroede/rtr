@@ -86,19 +86,23 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
          <h3 style='margin: 15px 15px;'>Erläuterung des Lösungsansatzes</h3>
          
          <p>
-            <h4>Aufgabe 3.1 - Toon-Shading / Cell-Shading</h4>
+            <h3>Aufgabe 3.1 - Toon-Shading / Cell-Shading</h3><br/>
             Das Ziel dieser Aufgabe bestand darin, den Farbverlauf der Objekte auf 4 Farben zu diskretisieren.
             Um dies zu erreichen wird der Winkel wischen dem Licht und der Normalen der Objekte verwendet. 
             Mithilfe dieses Winkels wird dann der Grad der Diskretisierung ermittelt. <br><br>
-            Zu sehen ist das Ergebniss bei dem Shader, der mit drücken der Taste-'q' dargestellt wird.
+            Zu sehen ist das Ergebnis bei dem Shader, der mit drücken der Taste-'q' dargestellt wird.
+            
+            Mit Hilfe des Vektorprodukts aus Augenposition und Oberflächennormale wird die Außenkante des zu zeichnenden
+            Objekts ermittelt. Liegt das Vektorprodukt unter einem bestimmten Wert handelt es sich um ein Fragment der
+            Außenkante und wird schwarz eingefärbt.
          </p> <br>
          <p>
-            <h4>Aufgabe 3.2 - Mehrere Lichtquellen</h4>
+            <h3>Aufgabe 3.2 - Mehrere Lichtquellen</h3><br/>
             Durch den Einsatz von Arrays können nun mehrere Lichtquellen, mit ihrer Position und der Farbe, an die Shader übermittelt werden.
             
          </p> <br>
          <p>
-            <h4>Aufgabe 3.3 - modifizierte Textur</h4>
+            <h3>Aufgabe 3.3 - Modifizierte Textur</h3><br/>
             Mithilfe der Texturkoordinaten werden die oberflächen der Objekte nciht mehr einfarbig dargestellt sondern glichmässig mit einer
             einstellbaren Anzahl an Kreisen gefüllt. Zuerst wird durch den Einsatz einer Sinus-Funktion (Abbildung 3.1)wird, abhängig von der X- und 
             Y-Koordinate der Textur, ermittelt ob das Fragment in einem Kreis liegt. Abhängig von der Position wird anschliesend die zu 
