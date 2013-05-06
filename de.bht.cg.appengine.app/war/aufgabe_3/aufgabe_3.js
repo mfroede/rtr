@@ -79,7 +79,7 @@ function initialize() {
    var edgelength = document.getElementById("cubelength").value == 0 ? 0.7 : document.getElementById("cubelength").value;   
 
    var torus = new tdl.models.Model(programs[pnum], tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
-   var circleTexture = true;
+   var circleTexture = false;
    var lightPositions = [];
    var lightIntensities = [];
    var readLights = function() {
@@ -116,6 +116,15 @@ function initialize() {
       document.getElementById("light_" + i + "_z").onchange=readLights;
       document.getElementById("light_" + i + "_i").onchange=readLights;
    }
+   
+   var changeCircleTexture = function() {
+      torusConst.radius = document.getElementById("circleradius").value == 0 ? radius : document.getElementById("circleradius").value;
+      torusConst.number = document.getElementById("circlenumber").value == 0 ? number : document.getElementById("circlenumber").value;
+      torusConst.circleColor = StringToVec3(document.getElementById("circlecolor").value, circleColor);
+      torusConst.backround = StringToVec3(document.getElementById("cubecolor").value, backround);
+      torusConst.circleTexture = circleTexture;
+   };
+   
    document.getElementById("circlenumber").onchange=changeCircleTexture;
    document.getElementById("circleradius").onchange=changeCircleTexture;
    document.getElementById("circlecolor").onchange=changeCircleTexture;
@@ -263,14 +272,6 @@ function initialize() {
       }
 
    }
-   
-   var changeCircleTexture = function() {
-	   torusConst.radius = document.getElementById("circleradius").value == 0 ? radius : document.getElementById("circleradius").value;
-	   torusConst.number = document.getElementById("circlenumber").value == 0 ? number : document.getElementById("circlenumber").value;
-	   torusConst.circleColor = StringToVec3(document.getElementById("circlecolor").value, circleColor);
-	   torusConst.backround = StringToVec3(document.getElementById("cubecolor").value, backround);
-	   torusConst.circleTexture = circleTexture;
-   };
    
    function setUpLights() {
       lights = [];
