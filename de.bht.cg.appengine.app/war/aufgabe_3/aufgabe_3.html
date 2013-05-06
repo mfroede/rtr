@@ -36,11 +36,21 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
          <h3 style='margin: 15px 15px;'>Bedienung der Anwendung</h3>
          <div style="display:-webkit-box; -webkit-box-orient:horizontal;">
          <div style=" -webkit-box-flex:1;">
-         <p>Number of Circle: <input id="circlenumber" value="5" size="2" maxlength="5" type="text"></input></p>
-         <p>Radius of Circle: <input id="circleradius" value="0.8" size="2" maxlength="5" type="text"></input></p>
-         <p>Color of Circle: <input id="circlecolor" value="255, 0, 0" size="5" maxlength="50" type="text"></input></p>
-         <p>Color of Cube: <input id="cubecolor" value="0, 0, 255" size="5" maxlength="50" type="text"></input></p>
-         <p>Edge length of Cube: <input id="cubelength" onchange='initialize()' value="0.7" size="2" maxlength="5" type="text"></input></p>
+         <div style="display:-webkit-box; -webkit-box-orient:horizontal; margin-right:40px;">
+            <p style=" -webkit-box-flex:1;">Number of Circle:   </p><input id="circlenumber" value="10" size="2" maxlength="5" type="text" style=" -webkit-box-flex:1;"></input>
+         </div>
+         <div style="display:-webkit-box; -webkit-box-orient:horizontal; margin-right:40px;">
+            <p style=" -webkit-box-flex:1;">Radius of Circle:   </p><input id="circleradius" value="0.5" size="2" maxlength="5" type="text" style=" -webkit-box-flex:1;"></input>
+         </div>
+         <div style="display:-webkit-box; -webkit-box-orient:horizontal; margin-right:40px;">
+            <p style=" -webkit-box-flex:1;">Color of Circle:       </p><input id="circlecolor" value="255, 0, 0" size="5" maxlength="50" type="text" style=" -webkit-box-flex:1;"></input>
+         </div>
+         <div style="display:-webkit-box; -webkit-box-orient:horizontal; margin-right:40px;">
+            <p style=" -webkit-box-flex:1;">Color of Cube:         </p><input id="cubecolor" value="0, 0, 255" size="5" maxlength="50" type="text" style=" -webkit-box-flex:1;"></input>
+         </div>
+         <div style="display:-webkit-box; -webkit-box-orient:horizontal; margin-right:40px;">
+            <p style=" -webkit-box-flex:1;">Edge length of Cube:   </p><input id="cubelength" onchange='initialize()' value="0.7" size="2" maxlength="5" type="text" style=" -webkit-box-flex:1;"></input>
+         </div>
          </div>
         <div style=" -webkit-box-flex:1;">
          <p>"q-u"   - Verschiedene Shadertypen</p>
@@ -83,46 +93,54 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 
    <div class='slide-content' style='margin-left: auto; margin-right: auto; display: block;'>
       <div class='slide-description' style='width: 800px; display: block; margin-left: auto; margin-right: auto;'>
-         <h3 style='margin: 15px 15px;'>Erläuterung des Lösungsansatzes</h3>
-         <p>
-            <h3>Aufgabe 3.1 - Toon-Shading / Cell-Shading</h3><br/>
+         <h3>Erläuterung des Lösungsansatzes</h3>
+      <div style="margin-top:15px;">
+         <h3>Aufgabe 3.1 - Toon-Shading / Cell-Shading</h3>
+         <p style="margin-top:5px;">
             Das Ziel dieser Aufgabe bestand darin, den Farbverlauf der Objekte auf 4 Farben zu diskretisieren.
             Um dies zu erreichen wird der Winkel wischen dem Licht und der Normalen der Objekte verwendet. 
-            Mithilfe dieses Winkels wird dann der Grad der Diskretisierung ermittelt. <br><br>
+            Mithilfe dieses Winkels wird dann der Grad der Diskretisierung ermittelt.
             Zu sehen ist das Ergebnis bei dem Shader, der mit drücken der Taste-'q' dargestellt wird.
             
             Mit Hilfe des Vektorprodukts aus Augenposition und Oberflächennormale wird die Außenkante des zu zeichnenden
             Objekts ermittelt. Liegt das Vektorprodukt unter einem bestimmten Wert handelt es sich um ein Fragment der
             Außenkante und wird schwarz eingefärbt.
-         </p> <br>
-         <p>
-            <h3>Aufgabe 3.2 - Mehrere Lichtquellen</h3><br/>
-            Durch den Einsatz von Arrays können nun mehrere Lichtquellen, mit ihrer Position und der Farbe, an die Shader übermittelt werden.
-            
-         </p> <br>
-         <p>
-            <h3>Aufgabe 3.3 - Modifizierte Textur</h3><br/>
-            Mithilfe der Texturkoordinaten werden die oberflächen der Objekte nciht mehr einfarbig dargestellt sondern glichmässig mit einer
-            einstellbaren Anzahl an Kreisen gefüllt. Zuerst wird durch den Einsatz einer Sinus-Funktion (Abbildung 3.1)wird, abhängig von der X- und 
-            Y-Koordinate der Textur, ermittelt ob das Fragment in einem Kreis liegt. Abhängig von der Position wird anschliesend die zu 
-            zeichnenende Grundfarbe festgelegt. In diese Texturierung ist in 4 Shadern wählbar (Tasten: q, w, e und z).  
-            <br>
-            <img src="../resources/images/Funktion_Aufgabe2_3.svg" height="159px"
-                        style='' /><div style='text-align: center;'>Abb. 3.1: Abwandlung der Sinus Funktion</div>
-            
          </p>
-      </div>
+         </div>
+          <div style="margin-top:15px; margin-bottom:15px;">
+            <h3>Aufgabe 3.2 - Mehrere Lichtquellen</h3>
+         <p style="margin-top:5px;">
+            Durch den Einsatz von Arrays können nun mehrere Lichtquellen, mit ihrer Position und der Farbe, an die Shader übermittelt werden.
+            Die Anzahl der möglichen Lichtquellen ist auf 4 begrenzt. Eine höhere Anzahl würde bei der aktuellen Implementierung zu einer
+            Fehlermeldung beim Kompilieren des Shaders im Chrome führen, da die maximale Anzahl an varying Variablen überschritten würde.
+         </p>
+         </div>
+          <div style="margin-top:15px;">
+            <h3>Aufgabe 3.3 - Modifizierte Textur</h3>
+         <p style="margin-top:5px;">
+            Mithilfe der Texturkoordinaten werden die Oberflächen der Objekte nicht mehr einfarbig dargestellt sondern gleichmässig mit einer
+            einstellbaren Anzahl an Kreisen gefüllt. Zuerst wird durch den Einsatz einer Arkussinus-Funktion(Abbildung 3.1), abhängig von der X- und 
+            Y-Koordinate der Textur, ermittelt ob ein Fragment in einem Kreis liegt. Abhängig von der Position wird anschliesend die zu 
+            zeichnenende Grundfarbe festgelegt. Diese Texturierung ist in 4 Shadern wählbar (Tasten: q, w, e und z).  
+         </p>
+         </div>
+         <div style="display: -webkit-box; -webkit-box-align: center; margin-top:15px;">
+                    <img src="../resources/images/Funktion_Aufgabe2_3.svg"
+                        style='' /><div style="margin-left: 5px;">Abb. 3.1: Abwandlung der Sinus Funktion</div>
+         </div>
+         <div style='margin-top:30px;!'>Resources
+         <ul>
+            <li>Uses <a href="http://code.google.com/p/threedlibrary/">TDL</a> as a low-level WebGL support library.
+            </li>
+         </ul>
+        </div>
+     </div>
    </div>
 
-   <div class="container">
+   <div>
 
       <pre id="error" class="alert alert-error"></pre>
 
-      <h2>Resources</h2>
-      <ul>
-         <li>Uses <a href="http://code.google.com/p/threedlibrary/">TDL</a> as a low-level WebGL support library.
-         </li>
-      </ul>
    </div>
 </body>
 

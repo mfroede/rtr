@@ -168,7 +168,7 @@ function initialize() {
 
    // Animation parameters for the rotating eye-point.
    var eyeSpeed = 0.2;
-   var eyeHeight = 2;
+   var eyeHeight = 3;
    var eyeRadius = 3.5;
    var animate = true;
 
@@ -206,12 +206,6 @@ function initialize() {
    // Renders one frame and registers itself for the next frame.
    function render() {
       tdl.webgl.requestAnimationFrame(render, canvas);
-
-      torusConst.radius = document.getElementById("circleradius").value == 0 ? radius : document.getElementById("circleradius").value;
-      torusConst.number = document.getElementById("circlenumber").value == 0 ? number : document.getElementById("circlenumber").value;
-      torusConst.circleColor = StringToVec3(document.getElementById("circlecolor").value, circleColor);
-      torusConst.backround = StringToVec3(document.getElementById("cubecolor").value, backround);
-      torusConst.circleTexture = circleTexture;
       
       torusConst.lightPositions = new Float32Array(lightPositions);
       torusConst.lightIntensities = new Float32Array(lightIntensities);
