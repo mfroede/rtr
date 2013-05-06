@@ -116,6 +116,10 @@ function initialize() {
       document.getElementById("light_" + i + "_z").onchange=readLights;
       document.getElementById("light_" + i + "_i").onchange=readLights;
    }
+   document.getElementById("circlenumber").onchange=changeCircleTexture;
+   document.getElementById("circleradius").onchange=changeCircleTexture;
+   document.getElementById("circlecolor").onchange=changeCircleTexture;
+   document.getElementById("cubecolor").onchange=changeCircleTexture;
    
    // Register a keypress-handler for shader program switching using the number
    // keys.
@@ -131,6 +135,7 @@ function initialize() {
          torus.setBuffers(tdl.primitives.createSphere(0.4, 60, 60), textures);
       } else if (n == "a") {
     	  circleTexture = !circleTexture;
+    	  changeCircleTexture();
       }else if (n == "q"){
          torus.setProgram(programs[0]);
       }else if (n == "w"){
@@ -201,7 +206,7 @@ function initialize() {
    // Renders one frame and registers itself for the next frame.
    function render() {
       tdl.webgl.requestAnimationFrame(render, canvas);
-      
+
       torusConst.radius = document.getElementById("circleradius").value == 0 ? radius : document.getElementById("circleradius").value;
       torusConst.number = document.getElementById("circlenumber").value == 0 ? number : document.getElementById("circlenumber").value;
       torusConst.circleColor = StringToVec3(document.getElementById("circlecolor").value, circleColor);
@@ -264,6 +269,14 @@ function initialize() {
       }
 
    }
+   
+   var changeCircleTexture = function() {
+	   torusConst.radius = document.getElementById("circleradius").value == 0 ? radius : document.getElementById("circleradius").value;
+	   torusConst.number = document.getElementById("circlenumber").value == 0 ? number : document.getElementById("circlenumber").value;
+	   torusConst.circleColor = StringToVec3(document.getElementById("circlecolor").value, circleColor);
+	   torusConst.backround = StringToVec3(document.getElementById("cubecolor").value, backround);
+	   torusConst.circleTexture = circleTexture;
+   };
    
    function setUpLights() {
       lights = [];
