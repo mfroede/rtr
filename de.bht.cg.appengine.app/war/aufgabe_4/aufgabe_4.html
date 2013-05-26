@@ -56,11 +56,6 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
                   <input id="cubecolor" value="0, 0, 255" size="10" maxlength="50" type="text"
                      style="-webkit-box-flex: 1; text-align: right"></input>
                </div>
-               <div style="display: -webkit-box; -webkit-box-orient: horizontal; margin-right: 40px;">
-                  <p style="-webkit-box-flex: 1;">Kantenlänge:</p>
-                  <input id="cubelength" onchange='initialize()' value="0.7" size="10" maxlength="5" type="text"
-                     style="-webkit-box-flex: 1; text-align: right"></input>
-               </div>
             </div>
             <div style="-webkit-box-flex: 1;">
                <p>"q-u" - Verschiedene Shadertypen</p>
@@ -232,11 +227,6 @@ precision highp float;
 
 uniform vec3 color;
 uniform vec3 lightIntensities[4];
-uniform float radius;
-uniform float number;
-uniform vec3 circleColor;
-uniform vec3 backround;
-uniform bool circleTexture;
 
 uniform samplerCube env;
 
@@ -274,6 +264,8 @@ void main() {
              lightIntensities[i], formColor);
    }
    gl_FragColor = textureCube(env, normalize(reflect(-eyeDirectionW, normalW)));
+   //gl_FragColor = textureCube(env, normalize(-eyeDirectionW));
+
    gl_FragColor.a = 1.0;
 }
 </script>
