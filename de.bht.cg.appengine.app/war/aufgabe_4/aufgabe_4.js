@@ -51,14 +51,9 @@ function StringToVec3(string, defaulColor) {
 };
 
 function setupSkybox(SkyTextures, SkyProgram) {
-   var arrays = tdl.primitives.createCube(10);
+   var arrays = tdl.primitives.createCube(15);
    tdl.primitives.reorientPositions(arrays.position, mat4.scale(mat4.identity([]), [-1, -1, -1]));
 
-//   tdl.primitives.reorient(arrays,
-//					       [1, 0, 0, 0,
-//					        0, 0, 1, 0,
-//					        0, 1, 0, 0,
-//					        0, 0, 0.9999, 1]);
    return new tdl.models.Model(SkyProgram[0], arrays, SkyTextures);
 };
 
@@ -218,7 +213,8 @@ function initialize() {
       eyePosition : eyePosition,
       lightPositions : lightPositions,
       lightIntensities : lightIntensities,
-      time : clock
+      time : clock,
+      skalar : 1.0
    };
 
    // Uniform variables that change for each torus in a frame.
@@ -228,11 +224,10 @@ function initialize() {
    };
    
    var skymodel = mat4.create();
-   var invertView = mat4.create();
-   mat4.inverse(view, invertView);
+   var invertProjection = mat4.create();
+   mat4.inverse(view, invertProjection);
    var skyConst = {
-		   //view : invertView
-		   
+	  skalar : 0.0
    };
    var skyPer = { 
 	  model : skymodel, 
@@ -273,10 +268,11 @@ function initialize() {
 
       // Calculate the perspective projection matrix.
       mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 20, projection);
+      //mat4.multiply(projection, view, viewProjection);
 
       // Calculate the viewing transfomation.
 
-      mat4.identity(skyPer.model)
+      mat4.identity(skyPer.model);
       skybox.drawPrep(skyConst);
       skybox.draw(skyPer);
       
