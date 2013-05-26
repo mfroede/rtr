@@ -85,7 +85,8 @@ function initialize() {
              "textures/PalmTrees/posy.jpg",
              "textures/PalmTrees/negy.jpg",
              "textures/PalmTrees/posz.jpg",
-             "textures/PalmTrees/negz.jpg" ])
+             "textures/PalmTrees/negz.jpg" ]),
+         bump: tdl.textures.loadTexture("textures/brickwork_normal-map.jpg"), 
      };
 
    var frag = window.location.hash.substring(1);
@@ -142,7 +143,9 @@ function initialize() {
       var n = String.fromCharCode(event.which);
       if (n == "q") {
          animate = !animate;
-      } else if (n == "y") {
+      } else if (n == "e") {
+    	  useBumps = !useBumps;
+      }else if (n == "y") {
          torus.setBuffers(tdl.primitives.createCube(0.75), textures);
       } else if (n == "x") {
          torus.setBuffers(tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
@@ -198,6 +201,7 @@ function initialize() {
    var eyeHeight = 0;
    var eyeRadius = 3.5;
    var animate = false;
+   var useBumps = false;
 
    // Animation needs accurate timing information.
    var elapsedTime = 0.0;
@@ -214,7 +218,8 @@ function initialize() {
       lightPositions : lightPositions,
       lightIntensities : lightIntensities,
       time : clock,
-      skalar : 1.0
+      skalar : 1.0,
+      useBumps : useBumps
    };
 
    // Uniform variables that change for each torus in a frame.
@@ -227,7 +232,8 @@ function initialize() {
    var invertProjection = mat4.create();
    mat4.inverse(view, invertProjection);
    var skyConst = {
-	  skalar : 0.0
+	  skalar : 0.0,
+	  useBumps : false
    };
    var skyPer = { 
 	  model : skymodel, 
@@ -278,6 +284,7 @@ function initialize() {
       
       // Prepare rendering of toruss.
       torusConst.time = clock;
+      torusConst.useBumps = useBumps;
 
       //mat4.translate(mat4.identity(torusPer.model), [ 0, 0, 0 ]);
       mat4.scale(mat4.identity(torusPer.model), [ 1.0, 1.0, 1.0 ]);
