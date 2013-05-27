@@ -103,41 +103,6 @@ function initialize() {
    var circleTexture = false;
    var lightPositions = [];
    var lightIntensities = [];
-   var readLights = function() {
-      function stringToArray(string, defaulted) {
-         if (!string.match(/-?([0-9]*)\s*,\s*-?([0-9]*)\s*,\s*-?([0-9]*)\s?/)) {
-            return [ 1, 1, 1 ];
-         }
-         var arr = string.split(',');
-         var x = arr[0].trim();
-         var y = arr[1].trim();
-         var z = arr[2].trim();
-         return [ x, y, z ];
-      }
-      ;
-
-      lights = [];
-      for ( var i = 0; i < 4; i++) {
-         if (document.getElementById("light_" + i).checked) {
-            var x = document.getElementById("light_" + i + "_x").value;
-            var y = document.getElementById("light_" + i + "_y").value;
-            var z = document.getElementById("light_" + i + "_z").value;
-            lights.push(new Light([ x, y, z ], stringToArray(document.getElementById("light_" + i + "_i").value)));
-         }
-      }
-      lightPositions = createLightPositions(lights);
-      lightIntensities = createLightIntensities(lights);
-   }
-
-   readLights();
-
-   for ( var i = 0; i < 4; i++) {
-      document.getElementById("light_" + i).onchange = readLights;
-      document.getElementById("light_" + i + "_x").onchange = readLights;
-      document.getElementById("light_" + i + "_y").onchange = readLights;
-      document.getElementById("light_" + i + "_z").onchange = readLights;
-      document.getElementById("light_" + i + "_i").onchange = readLights;
-   }
 
    var eyePosition = vec3.create([0.0,0.0,-2.0]);
    var viewTransformMatrix = mat4.create();
@@ -279,9 +244,6 @@ function initialize() {
    function render() {
       tdl.webgl.requestAnimationFrame(render, canvas);
 
-      torusConst.lightPositions = new Float32Array(lightPositions);
-      torusConst.lightIntensities = new Float32Array(lightIntensities);
-
       // Do the time keeping.
       var now = (new Date()).getTime() * 0.001;
       elapsedTime = (then == 0.0 ? 0.0 : now - then);
@@ -328,19 +290,6 @@ function initialize() {
       torus.drawPrep(torusConst);
       // Actually render one torus.
       torus.draw(torusPer);
-   }
-
-   function setUpLights() {
-      lights = [];
-      for ( var i = 0; i < 4; i++) {
-         if (document.getElementById("light_" + i).checked) {
-            var x = document.getElementById("light_" + i + "_x").value;
-            var y = document.getElementById("light_" + i + "_y").value;
-            var z = document.getElementById("light_" + i + "_z").value;
-            lights.push(new Light([ x, y, z ], stringToArray(document.getElementById("light_" + i + "_i").value)));
-         }
-      }
-      return lights;
    }
 
    // Initial call to get the rendering started.

@@ -34,108 +34,13 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
    <div class='slide-content' style='margin-left: auto; margin-riyght: auto; display: block;'>
       <div class='slide-description' style='width: 800px; display: block; margin-left: auto; margin-right: auto;'>
          <h3 style='margin: 15px 15px;'>Bedienung der Anwendung</h3>
-         <div style="display: -webkit-box; -webkit-box-orient: horizontal;">
-            <div style="-webkit-box-flex: 1;">
-               <div style="display: -webkit-box; -webkit-box-orient: horizontal; margin-right: 40px;">
-                  <p style="-webkit-box-flex: 1;">Anzahl Kreise:</p>
-                  <input id="circlenumber" value="10" size="10" maxlength="5" type="text"
-                     style="-webkit-box-flex: 1; text-align: right"></input>
-               </div>
-               <div style="display: -webkit-box; -webkit-box-orient: horizontal; margin-right: 40px;">
-                  <p style="-webkit-box-flex: 1;">Kreisradius:</p>
-                  <input id="circleradius" value="0.5" size="10" maxlength="5" type="text"
-                     style="-webkit-box-flex: 1; text-align: right"></input>
-               </div>
-               <div style="display: -webkit-box; -webkit-box-orient: horizontal; margin-right: 40px;">
-                  <p style="-webkit-box-flex: 1;">Kreisfarbe:</p>
-                  <input id="circlecolor" value="255, 0, 0" size="10" maxlength="50" type="text"
-                     style="-webkit-box-flex: 1; text-align: right"></input>
-               </div>
-               <div style="display: -webkit-box; -webkit-box-orient: horizontal; margin-right: 40px;">
-                  <p style="-webkit-box-flex: 1;">Würfelfarbe:</p>
-                  <input id="cubecolor" value="0, 0, 255" size="10" maxlength="50" type="text"
-                     style="-webkit-box-flex: 1; text-align: right"></input>
-               </div>
-            </div>
             <div style="-webkit-box-flex: 1;">
                <p>"e" - Normalmap An/Aus</p>
-               <p>"w,a,s,d" - Bewegung</p>
-               <p>"shift + w,a,s, oder d" - Drehen</p>
-               <p>"y,x,c" - Wechseln zwischen verschiedenen Modellen</p>
-            </div>
-         </div>
-         <div style="display: -webkit-box; -webkit-box-orient: horizontal;">
-            <div
-               style="display: -webkit-box; -webkit-box-orient: vertical; margin-top: 10px; margin-right: 10px; border: 1px solid white; padding: 5px;">
-               <div style="-webkit-box-flex: 1;">
-                  <input type="checkbox" id="light_0" checked="true">Licht 1</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_0_x" min="-20" max="20" value="10">PosX</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_0_y" min="-20" max="20" value="10">PosY</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_0_z" min="-20" max="20" value="10">PosZ</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input id="light_0_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input>
-               </div>
-            </div>
-            <div
-               style="display: -webkit-box; -webkit-box-orient: vertical; margin-top: 10px; margin-right: 10px; border: 1px solid white; padding: 5px;">
-               <div style="-webkit-box-flex: 1;">
-                  <input type="checkbox" id="light_1">Licht 2</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_1_x" min="-20" max="20" value="-10">PosX</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_1_y" min="-20" max="20" value="10">PosY</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_1_z" min="-20" max="20" value="10">PosZ</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input id="light_1_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input>
-               </div>
-            </div>
-            <div
-               style="display: -webkit-box; -webkit-box-orient: vertical; margin-top: 10px; margin-right: 10px; border: 1px solid white; padding: 5px;">
-               <div style="-webkit-box-flex: 1;">
-                  <input type="checkbox" id="light_2">Licht 3</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_2_x" min="-20" max="20" value="10">PosX</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_2_y" min="-20" max="20" value="-10">PosY</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_2_z" min="-20" max="20" value="10">PosZ</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input id="light_2_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input>
-               </div>
-            </div>
-            <div
-               style="display: -webkit-box; -webkit-box-orient: vertical; margin-top: 10px; margin-right: 10px; border: 1px solid white; padding: 5px;">
-               <div style="-webkit-box-flex: 1;">
-                  <input type="checkbox" id="light_3">Licht 4</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_3_x" min="-20" max="20" value="10">PosX</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_3_y" min="-20" max="20" value="10">PosY</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input type="range" id="light_3_z" min="-20" max="20" value="-10">PosZ</input>
-               </div>
-               <div style="-webkit-box-flex: 1;">
-                  <input id="light_3_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input>
-               </div>
+               <p>"p" - Normalmap wechseln (Normalmap muss aktiviert sein)</p>
+               <p>"w, a, s, d" - Bewegung</p>
+               <p>"shift + w, a, s, d" - Drehen</p>
+               <p>"x,c" - Wechseln zwischen Torus und Kreis</p>
+               <p>"o" - Wechseln zwischen Hintergrundtexturen</p>
             </div>
          </div>
       </div>
@@ -144,37 +49,24 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
          <div class='slide-description' style='width: 800px; display: block; margin-left: auto; margin-right: auto;'>
             <h3>Erläuterung des Lösungsansatzes</h3>
             <div style="margin-top: 15px;">
-               <h3>Aufgabe 3.1 - Toon-Shading / Cell-Shading</h3>
-               <p style="margin-top: 5px;">Das Ziel dieser Aufgabe bestand darin, den Farbverlauf der Objekte auf 4
-                  Farben zu diskretisieren. Um dies zu erreichen wird der Winkel wischen dem Licht und der Normalen der
-                  Objekte verwendet. Mithilfe dieses Winkels wird dann der Grad der Diskretisierung ermittelt. Zu sehen
-                  ist das Ergebnis bei dem Shader, der mit drücken der Taste-'q' dargestellt wird. Mit Hilfe des
-                  Vektorprodukts aus Augenposition und Oberflächennormale wird die Außenkante des zu zeichnenden Objekts
-                  ermittelt. Liegt das Vektorprodukt unter einem bestimmten Wert handelt es sich um ein Fragment der
-                  Außenkante und wird schwarz eingefärbt.</p>
+               <h3>Aufgabe 4.1 - Cube-Mapping</h3>
+               <p style="margin-top: 5px;">Das Ziel dieser Aufgabe war die Implementierung kubischen Reflection Mappings.
+               Dazu wurden zunächst sogenannte Cube-Maps (6 vorbereitete Bilder für die 6 Seiten eines Würfels) als Texturen
+               an den Shader übergeben. Diese werden in einem speziellen GL Sampler vom Typ 'samplerCube' an den Fragment Shader übergeben.
+               Über die integrierte Funktion 'textureCube' die Farbinformationen für ein Fragment aus der Cube-Map gelesen werden.
+               </p>
             </div>
             <div style="margin-top: 15px; margin-bottom: 15px;">
-               <h3>Aufgabe 3.2 - Mehrere Lichtquellen</h3>
-               <p style="margin-top: 5px;">Durch den Einsatz von Arrays können nun mehrere Lichtquellen, mit ihrer
-                  Position und der Farbe, an die Shader übermittelt werden. Die Anzahl der möglichen Lichtquellen ist
-                  auf 4 begrenzt. Eine höhere Anzahl würde bei der aktuellen Implementierung zu einer Fehlermeldung beim
-                  Kompilieren des Shaders im Chrome führen, da die maximale Anzahl an varying Variablen überschritten
-                  würde.</p>
+               <h3>Aufgabe 4.2 - Skybox</h3>
+               <p style="margin-top: 5px;">Um den Betrachter herum wird ein Würfel gezeichnet und an diesem die Cube-Map als Textur angebracht.
+               Der Mittelpunkt des Würfels ist die Kameraposition. Das erzeugt den Hintergrund der Szene.</p>
             </div>
             <div style="margin-top: 15px;">
-               <h3>Aufgabe 3.3 - Modifizierte Textur</h3>
-               <p style="margin-top: 5px;">Mithilfe der Texturkoordinaten werden die Oberflächen der Objekte nicht
-                  mehr einfarbig dargestellt sondern gleichmässig mit einer einstellbaren Anzahl an Kreisen gefüllt.
-                  Zuerst wird durch den Einsatz einer Arkussinus-Funktion(Abbildung 3.1), abhängig von der X- und
-                  Y-Koordinate der Textur, ermittelt ob ein Fragment in einem Kreis liegt. Abhängig von der Position
-                  wird anschliesend die zu zeichnenende Grundfarbe festgelegt. Diese Texturierung ist in 4 Shadern
-                  wählbar (Tasten: q, w, e und z).</p>
+               <h3>Aufgabe 4.3 - Normal Mapping</h3>
+               <p style="margin-top: 5px;"></p>
             </div>
-            <div style="display: -webkit-box; -webkit-box-align: center; margin-top: 15px;">
-               <img src="../resources/images/Funktion_Aufgabe2_3.svg" style='' />
-               <div style="margin-left: 5px;">Abb. 3.1: Abwandlung der Sinus Funktion</div>
-            </div>
-            <div style='margin-top: 30px;'>
+            </br>
+            </br>
                Resources
                <ul>
                   <li>Uses <a href="http://code.google.com/p/threedlibrary/">TDL</a> as a low-level WebGL support
@@ -184,11 +76,8 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
             </div>
          </div>
       </div>
-
       <div>
-
          <pre id="error" class="alert alert-error"></pre>
-
       </div>
 </body>
 <!-- Phong lighting model, Phong shading -->
