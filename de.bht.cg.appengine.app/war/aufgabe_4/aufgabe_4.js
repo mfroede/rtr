@@ -78,15 +78,19 @@ function initialize() {
    document.onmousemove = handleMouseMove;
    
    // Load textures.
+   var texturename = ["PalmTrees","Teide","PiazzaDelPopolo2"];
+   var texturenumber = 0;
+   var bumpname = ["Water_normal.png","Industrial_Wall_normal.png"];
+   var bumpnumber = 0;
    var textures = {
          env: tdl.textures.loadTexture([
-             "textures/PalmTrees/posx.jpg",
-             "textures/PalmTrees/negx.jpg",
-             "textures/PalmTrees/posy.jpg",
-             "textures/PalmTrees/negy.jpg",
-             "textures/PalmTrees/posz.jpg",
-             "textures/PalmTrees/negz.jpg" ]),
-         bump: tdl.textures.loadTexture("textures/brickwork_normal-map.jpg"), 
+             "textures/"+texturename[texturenumber]+"/posx.jpg",
+             "textures/"+texturename[texturenumber]+"/negx.jpg",
+             "textures/"+texturename[texturenumber]+"/posy.jpg",
+             "textures/"+texturename[texturenumber]+"/negy.jpg",
+             "textures/"+texturename[texturenumber]+"/posz.jpg",
+             "textures/"+texturename[texturenumber]+"/negz.jpg" ]),
+         bump: tdl.textures.loadTexture("textures/"+bumpname[bumpnumber]), 
      };
 
    var frag = window.location.hash.substring(1);
@@ -133,62 +137,78 @@ function initialize() {
    }
 
    var eyePosition = vec3.create([0.0,0.0,-2.0]);
-   var viewRotateMatrix = mat4.create();
+   var viewTransformMatrix = mat4.create();
    var target = vec3.create([0.0,0.0,1.0]);
    var up = vec3.create([0.0,1.0,0.0]);
    
    // Register a keypress-handler for shader program switching using the number
    // keys.
    window.onkeypress = function(event) {
-      var n = String.fromCharCode(event.which);
-      if (n == "q") {
-         animate = !animate;
-      } else if (n == "e") {
+      var key = String.fromCharCode(event.which);
+      if (key == "e") {
     	  useBumps = !useBumps;
-      }else if (n == "y") {
+      } else if (key == "y") {
          torus.setBuffers(tdl.primitives.createCube(0.75), textures);
-      } else if (n == "x") {
+      } else if (key == "x") {
          torus.setBuffers(tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
-      } else if (n == "c") {
+      } else if (key == "c") {
          torus.setBuffers(tdl.primitives.createSphere(0.45, 60, 60), textures);
-      } else if (n == "w") {
-    	  mat4.identity(viewRotateMatrix);
-    	  mat4.translate(viewRotateMatrix, [0, 0, 0.5]);
-    	  mat4.multiply(viewRotateMatrix, view, view);
-//    	  vec3.add(eyePosition, [0, 0, 0.5], eyePosition);
-      } else if (n == "a") {
-    	  mat4.identity(viewRotateMatrix);
-    	  mat4.translate(viewRotateMatrix, [-0.5, 0, 0]);
-          mat4.multiply(viewRotateMatrix, view, view);
-      } else if (n == "s") {
-    	  mat4.identity(viewRotateMatrix);
-    	  mat4.translate(viewRotateMatrix, [0, 0, -0.5]);
-          mat4.multiply(viewRotateMatrix, view, view);
-      } else if (n == "d") {
-    	  mat4.identity(viewRotateMatrix);
-    	  mat4.translate(viewRotateMatrix, [0.5, 0, 0]);
-          mat4.multiply(viewRotateMatrix, view, view);
-      } else if (n == "W") {
-    	  mat4.identity(viewRotateMatrix);
-    	  mat4.rotate(viewRotateMatrix, degToRad(-1), [1, 0, 0]);
-          mat4.multiply(viewRotateMatrix, view, view);
-          mat4.multiply(viewRotateMatrix, cloneView, cloneView);
-      } else if (n == "S") {
-    	  mat4.identity(viewRotateMatrix);
-    	  mat4.rotate(viewRotateMatrix, degToRad(1), [1, 0, 0]);
-    	  mat4.multiply(viewRotateMatrix, view, view);
-          mat4.multiply(viewRotateMatrix, cloneView, cloneView);
-      } else if (n == "A") {
-    	  mat4.identity(viewRotateMatrix);
-    	  mat4.rotate(viewRotateMatrix, degToRad(-1), [0, 1, 0]);
-          mat4.multiply(viewRotateMatrix, view, view);
-          mat4.multiply(viewRotateMatrix, cloneView, cloneView);
-      } else if (n == "D") {
-    	  mat4.identity(viewRotateMatrix);
-    	  mat4.rotate(viewRotateMatrix, degToRad(1), [0, 1, 0]);
-          mat4.multiply(viewRotateMatrix, view, view);
-          mat4.multiply(viewRotateMatrix, cloneView, cloneView);
-      } 
+      } else if (key == "w") {
+    	  mat4.identity(viewTransformMatrix);
+    	  mat4.translate(viewTransformMatrix, [0, 0, 0.5]);
+    	  mat4.multiply(viewTransformMatrix, view, view);
+      } else if (key == "a") {
+    	  mat4.identity(viewTransformMatrix);
+    	  mat4.translate(viewTransformMatrix, [-0.5, 0, 0]);
+          mat4.multiply(viewTransformMatrix, view, view);
+      } else if (key == "s") {
+    	  mat4.identity(viewTransformMatrix);
+    	  mat4.translate(viewTransformMatrix, [0, 0, -0.5]);
+          mat4.multiply(viewTransformMatrix, view, view);
+      } else if (key == "d") {
+    	  mat4.identity(viewTransformMatrix);
+    	  mat4.translate(viewTransformMatrix, [0.5, 0, 0]);
+          mat4.multiply(viewTransformMatrix, view, view);
+      } else if (key == "W") {
+    	  mat4.identity(viewTransformMatrix);
+    	  mat4.rotate(viewTransformMatrix, degToRad(-1), [1, 0, 0]);
+          mat4.multiply(viewTransformMatrix, view, view);
+          mat4.multiply(viewTransformMatrix, cloneView, cloneView);
+      } else if (key == "S") {
+    	  mat4.identity(viewTransformMatrix);
+    	  mat4.rotate(viewTransformMatrix, degToRad(1), [1, 0, 0]);
+    	  mat4.multiply(viewTransformMatrix, view, view);
+          mat4.multiply(viewTransformMatrix, cloneView, cloneView);
+      } else if (key == "A") {
+    	  mat4.identity(viewTransformMatrix);
+    	  mat4.rotate(viewTransformMatrix, degToRad(-1), [0, 1, 0]);
+          mat4.multiply(viewTransformMatrix, view, view);
+          mat4.multiply(viewTransformMatrix, cloneView, cloneView);
+      } else if (key == "D") {
+    	  mat4.identity(viewTransformMatrix);
+    	  mat4.rotate(viewTransformMatrix, degToRad(1), [0, 1, 0]);
+          mat4.multiply(viewTransformMatrix, view, view);
+          mat4.multiply(viewTransformMatrix, cloneView, cloneView);
+      }  else if (key == "o" || key == "p") {
+    	  if(key == "o"){
+    		  texturenumber = texturenumber < texturename.length - 1 ? ++texturenumber : 0;
+    	  }
+    	  if(key == "p"){
+    		  bumpnumber = bumpnumber < bumpname.length - 1 ? ++bumpnumber : 0;
+    	  }
+    	  var textures = {
+	         env: tdl.textures.loadTexture([
+	             "textures/"+texturename[texturenumber]+"/posx.jpg",
+	             "textures/"+texturename[texturenumber]+"/negx.jpg",
+	             "textures/"+texturename[texturenumber]+"/posy.jpg",
+	             "textures/"+texturename[texturenumber]+"/negy.jpg",
+	             "textures/"+texturename[texturenumber]+"/posz.jpg",
+	             "textures/"+texturename[texturenumber]+"/negz.jpg" ]),
+	             bump: tdl.textures.loadTexture("textures/"+bumpname[bumpnumber]),
+	     };
+    	 torus.textures = textures;
+    	 skybox.textures = textures;
+      }
    };
 
    // Create some matrices and vectors now to save time later.

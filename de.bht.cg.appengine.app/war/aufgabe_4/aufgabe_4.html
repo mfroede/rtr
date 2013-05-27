@@ -58,10 +58,10 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
                </div>
             </div>
             <div style="-webkit-box-flex: 1;">
-               <p>"q-u" - Verschiedene Shadertypen</p>
+               <p>"e" - Normalmap An/Aus</p>
+               <p>"w,a,s,d" - Bewegung</p>
+               <p>"shift + w,a,s, oder d" - Drehen</p>
                <p>"y,x,c" - Wechseln zwischen verschiedenen Modellen</p>
-               <p>"a" - Gepunktete Textur auf der Oberfläche an/aus</p>
-               <p>"s" - Ein-/Ausschalten der Rotation</p>
             </div>
          </div>
          <div style="display: -webkit-box; -webkit-box-orient: horizontal;">
@@ -274,18 +274,18 @@ void main() {
       newnormal = decode(texture2D(bump, texCoordI).rgb);
    }
 
-   vec3 formColor = color;
+   vec4 formColor = textureCube(env, normalize(reflect(-eyeDirectionW, newnormal)));
    vec3 newColor = vec3(0.0,0.0,0.0);
    for(int i = 0; i < 4; i++) {
      newColor += phong(
              normalize(newnormal), 
              normalize(eyeDirectionW), 
              normalize(lightDirectionsW[i]), 
-             lightIntensities[i], formColor);
+             lightIntensities[i], formColor.rgb);
    }
-   gl_FragColor = textureCube(env, normalize(reflect(-eyeDirectionW, newnormal)));
+   //gl_FragColor = vec4(newColor.rgb, 1.0);
 
-   gl_FragColor.a = 1.0;
+   gl_FragColor = textureCube(env, normalize(reflect(-eyeDirectionW, newnormal)));
 }
 </script>
 <!-- EOF Phong lighting model, Phong shading -->
