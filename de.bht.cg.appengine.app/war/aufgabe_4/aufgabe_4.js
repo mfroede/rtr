@@ -134,6 +134,7 @@ function initialize() {
 
    var eyePosition = vec3.create([0.0,0.0,-2.0]);
    var viewRotateMatrix = mat4.create();
+   var skyTranslateMatrix = mat4.create();
    var target = vec3.create([0.0,0.0,1.0]);
    var up = vec3.create([0.0,1.0,0.0]);
    
@@ -154,6 +155,7 @@ function initialize() {
       } else if (n == "w") {
     	  mat4.identity(viewRotateMatrix);
     	  mat4.translate(viewRotateMatrix, [0, 0, 0.5]);
+    	  mat4.translate(skyTranslateMatrix, [0, 0, 0.5]);
           mat4.multiply(viewRotateMatrix, view, view);
       } else if (n == "a") {
     	  mat4.identity(viewRotateMatrix);
@@ -169,20 +171,24 @@ function initialize() {
           mat4.multiply(viewRotateMatrix, view, view);
       } else if (n == "W") {
     	  mat4.identity(viewRotateMatrix);
-    	  mat4.rotate(viewRotateMatrix, degToRad(1), [1, 0, 0]);
+    	  mat4.rotate(viewRotateMatrix, degToRad(-1), [1, 0, 0]);
           mat4.multiply(viewRotateMatrix, view, view);
+          mat4.multiply(viewRotateMatrix, cloneView, cloneView);
       } else if (n == "S") {
     	  mat4.identity(viewRotateMatrix);
-    	  mat4.rotate(viewRotateMatrix, degToRad(-1), [1, 0, 0]);
+    	  mat4.rotate(viewRotateMatrix, degToRad(1), [1, 0, 0]);
     	  mat4.multiply(viewRotateMatrix, view, view);
+          mat4.multiply(viewRotateMatrix, cloneView, cloneView);
       } else if (n == "A") {
-    	  mat4.identity(viewRotateMatrix);
-    	  mat4.rotate(viewRotateMatrix, degToRad(1), [0, 1, 0]);
-          mat4.multiply(viewRotateMatrix, view, view);
-      } else if (n == "D") {
     	  mat4.identity(viewRotateMatrix);
     	  mat4.rotate(viewRotateMatrix, degToRad(-1), [0, 1, 0]);
           mat4.multiply(viewRotateMatrix, view, view);
+          mat4.multiply(viewRotateMatrix, cloneView, cloneView);
+      } else if (n == "D") {
+    	  mat4.identity(viewRotateMatrix);
+    	  mat4.rotate(viewRotateMatrix, degToRad(1), [0, 1, 0]);
+          mat4.multiply(viewRotateMatrix, view, view);
+          mat4.multiply(viewRotateMatrix, cloneView, cloneView);
       } 
    };
 
@@ -229,9 +235,9 @@ function initialize() {
    };
    
    var skymodel = mat4.create();
-   var invertProjection = mat4.create();
-   mat4.inverse(view, invertProjection);
+   var cloneView = mat4.create(view);
    var skyConst = {
+		   view : cloneView,
 	  skalar : 0.0,
 	  useBumps : false
    };
@@ -279,6 +285,7 @@ function initialize() {
       // Calculate the viewing transfomation.
 
       mat4.identity(skyPer.model);
+      
       skybox.drawPrep(skyConst);
       skybox.draw(skyPer);
       
