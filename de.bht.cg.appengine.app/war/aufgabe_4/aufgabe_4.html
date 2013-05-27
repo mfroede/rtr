@@ -218,14 +218,15 @@ void main() {
   vec4 positionW = model * position;
 
   normalW = (model * vec4(normal, 0.0)).xyz * skalar;  
-  vec3 tangentW = (model * vec4(tangent, 0.0)).xyz * skalar;
-  vec3 binormalW = (model * vec4(binormal, 0.0)).xyz * skalar;
+  vec3 tangentW = (model * vec4(tangent, 0.0)).xyz;
+  vec3 binormalW = (model * vec4(binormal, 0.0)).xyz;
 
   mat3 TBN = mat3(tangentW, binormalW, normalW);
-
+  
   for(int i=0; i<4; i++) {
     lightDirectionsW[i] = normalize(lightPositions[i] - positionW.xyz);
   }
+
   eyeDirectionW = positionW.xyz * eyeCorection;
   eyeDirectionT = eyeDirectionW * TBN;
   texCoordI = texCoord;
@@ -263,7 +264,7 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
 }
 
 vec3 decode(vec3 normal) {
-  return normalize(normal * vec3(2, -2, 1) - vec3(1, -1, 0));
+  return normal * vec3(2, -2, 1) - vec3(1, -1, 0);
 }
 
 void main() {   
@@ -272,9 +273,10 @@ void main() {
    vec3 newnormal = normalW;
    if(useBumps){
       newnormal = decode(texture2D(bump, texCoordI).rgb);
-   }
+      newnormal = normalize(newnormal);
+   } 
 
-   vec4 formColor = textureCube(env, normalize(reflect(-eyeDirectionW, newnormal)));
+   vec4 formColor = vec4(color,0.0);//textureCube(env, normalize(reflect(-eyeDirectionW, newnormal)));
    vec3 newColor = vec3(0.0,0.0,0.0);
    for(int i = 0; i < 4; i++) {
      newColor += phong(
@@ -286,6 +288,7 @@ void main() {
    //gl_FragColor = vec4(newColor.rgb, 1.0);
 
    gl_FragColor = textureCube(env, normalize(reflect(-eyeDirectionW, newnormal)));
+
 }
 </script>
 <!-- EOF Phong lighting model, Phong shading -->

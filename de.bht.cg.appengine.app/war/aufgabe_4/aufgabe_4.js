@@ -80,7 +80,7 @@ function initialize() {
    // Load textures.
    var texturename = ["PalmTrees","Teide","PiazzaDelPopolo2"];
    var texturenumber = 0;
-   var bumpname = ["Water_normal.png","Industrial_Wall_normal.png"];
+   var bumpname = ["Water_normal.png","Industrial_Wall_normal.png","earth-normal-map.png"];
    var bumpnumber = 0;
    var textures = {
          env: tdl.textures.loadTexture([
