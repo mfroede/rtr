@@ -95,8 +95,10 @@ function initialize() {
 
    var frag = window.location.hash.substring(1);
    var pnum = frag ? parseInt(frag) : 0;
-
-   var torus = new tdl.models.Model(programs[pnum], tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
+   
+   var torusmodel = tdl.primitives.createTorus(0.3, 0.15, 60, 60);
+   tdl.primitives.addTangentsAndBinormals(torusmodel);
+   var torus = new tdl.models.Model(programs[pnum], torusmodel, textures);
    var circleTexture = false;
    var lightPositions = [];
    var lightIntensities = [];
