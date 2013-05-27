@@ -99,6 +99,7 @@ function initialize() {
    var torusmodel = tdl.primitives.createTorus(0.3, 0.15, 60, 60);
    tdl.primitives.addTangentsAndBinormals(torusmodel);
    var torus = new tdl.models.Model(programs[pnum], torusmodel, textures);
+   
    var circleTexture = false;
    var lightPositions = [];
    var lightIntensities = [];
@@ -150,11 +151,17 @@ function initialize() {
       if (key == "e") {
     	  useBumps = !useBumps;
       } else if (key == "y") {
-         torus.setBuffers(tdl.primitives.createCube(0.75), textures);
+    	 var newmodel = tdl.primitives.createCube(0.75);
+    	 tdl.primitives.addTangentsAndBinormals(newmodel);
+         torus.setBuffers(newmodel, textures);
       } else if (key == "x") {
-         torus.setBuffers(tdl.primitives.createTorus(0.3, 0.15, 60, 60), textures);
+    	 var newmodel = tdl.primitives.createTorus(0.3, 0.15, 60, 60);
+     	 tdl.primitives.addTangentsAndBinormals(newmodel);
+         torus.setBuffers(newmodel, textures);
       } else if (key == "c") {
-         torus.setBuffers(tdl.primitives.createSphere(0.45, 60, 60), textures);
+    	 var newmodel = tdl.primitives.createSphere(0.45, 60, 60);
+     	 tdl.primitives.addTangentsAndBinormals(newmodel);
+         torus.setBuffers(newmodel, textures);
       } else if (key == "w") {
     	  mat4.identity(viewTransformMatrix);
     	  mat4.translate(viewTransformMatrix, [0, 0, 0.5]);
