@@ -71,8 +71,8 @@ function initialize() {
    var lastMouseX = null;
    var lastMouseY = null;
 
-   var moonRotationMatrix = mat4.create();
-   mat4.identity(moonRotationMatrix);
+   var objectRotationMatrix = mat4.create();
+   mat4.identity(objectRotationMatrix);
    window.canvas.onmousedown = handleMouseDown;
    document.onmouseup = handleMouseUp;
    document.onmousemove = handleMouseMove;
@@ -134,7 +134,6 @@ function initialize() {
 
    var eyePosition = vec3.create([0.0,0.0,-2.0]);
    var viewRotateMatrix = mat4.create();
-   var skyTranslateMatrix = mat4.create();
    var target = vec3.create([0.0,0.0,1.0]);
    var up = vec3.create([0.0,1.0,0.0]);
    
@@ -155,8 +154,8 @@ function initialize() {
       } else if (n == "w") {
     	  mat4.identity(viewRotateMatrix);
     	  mat4.translate(viewRotateMatrix, [0, 0, 0.5]);
-    	  mat4.translate(skyTranslateMatrix, [0, 0, 0.5]);
-          mat4.multiply(viewRotateMatrix, view, view);
+    	  mat4.multiply(viewRotateMatrix, view, view);
+//    	  vec3.add(eyePosition, [0, 0, 0.5], eyePosition);
       } else if (n == "a") {
     	  mat4.identity(viewRotateMatrix);
     	  mat4.translate(viewRotateMatrix, [-0.5, 0, 0]);
@@ -216,11 +215,11 @@ function initialize() {
    
    var skybox = setupSkybox(textures, programs);
 
-   // Uniform variables that are the same for all torus in one frame.
+   // Uniform variables that are the same for all torus in one frame. 
    var torusConst = {
       view : view,
       projection : projection,
-      eyePosition : eyePosition,
+	  eyeCorection : 1.0,
       lightPositions : lightPositions,
       lightIntensities : lightIntensities,
       time : clock,
@@ -237,13 +236,13 @@ function initialize() {
    var skymodel = mat4.create();
    var cloneView = mat4.create(view);
    var skyConst = {
-		   view : cloneView,
+	  view : cloneView,
+	  eyeCorection : -1.0,
 	  skalar : 0.0,
 	  useBumps : false
    };
    var skyPer = { 
-	  model : skymodel, 
-	  color : color 
+	  model : skymodel
    };
    
 
@@ -295,7 +294,7 @@ function initialize() {
 
       //mat4.translate(mat4.identity(torusPer.model), [ 0, 0, 0 ]);
       mat4.scale(mat4.identity(torusPer.model), [ 1.0, 1.0, 1.0 ]);
-      mat4.multiply(torusPer.model, moonRotationMatrix);
+      mat4.multiply(torusPer.model, objectRotationMatrix);
 
       torus.drawPrep(torusConst);
       // Actually render one torus.
@@ -343,7 +342,7 @@ function initialize() {
      var deltaY = newY - lastMouseY;
      mat4.rotate(newRotationMatrix, degToRad(deltaY / 10), [1, 0, 0]);
 
-     mat4.multiply(newRotationMatrix, moonRotationMatrix, moonRotationMatrix);
+     mat4.multiply(newRotationMatrix, objectRotationMatrix, objectRotationMatrix);
 
      lastMouseX = newX
      lastMouseY = newY;

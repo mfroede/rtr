@@ -199,7 +199,7 @@ uniform mat4 model;
 
 uniform vec3 lightPositions[4];
 uniform vec3 lightIntensities[4];
-uniform vec3 eyePosition;
+uniform float eyeCorection;
 uniform float skalar;
 
 attribute vec4 position;
@@ -226,7 +226,7 @@ void main() {
   for(int i=0; i<4; i++) {
     lightDirectionsW[i] = normalize(lightPositions[i] - positionW.xyz);
   }
-  eyeDirectionW = (eyePosition - positionW.xyz);
+  eyeDirectionW = positionW.xyz * eyeCorection;
   eyeDirectionT = eyeDirectionW * TBN;
   texCoordI = texCoord;
   gl_Position = projection * view * positionW;
