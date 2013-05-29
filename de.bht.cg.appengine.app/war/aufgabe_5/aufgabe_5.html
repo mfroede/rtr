@@ -1,0 +1,102 @@
+<!--
+A WebGL example using tdl.js (http:// code.google.com/p/threedlibrary/).
+
+author: Henrik Tramberend (tramberend@beuth-hochschule.de)
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>WebGL using tdl.js</title>
+<script type="text/javascript" src="../resources/tdl/base.js"></script>
+<script type="text/javascript" src="../resources/tdl/gl-matrix.js"></script>
+
+<script src="../resources/common/jquery-1.7.1.min.js"></script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- <link rel="stylesheet" type="text/css" href="../resources/common/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../resources/common/bootstrap/css/b1234ootstrap-responsive.min.css"> -->
+<link rel="stylesheet" href="../resources/css/style.css" />
+
+<script type="text/javascript" src="aufgabe_5.js"></script>
+<script type="text/javascript" src="light.js"></script>
+</head>
+
+<body>
+
+   <input class='backButton' type="button" value="back" onclick="http://interactivethreedee.appspot.com/#/Aufgabe_4">
+   <div class="subpagetitle"
+      style='opacity: 0.8; margin-left: auto; margin-right: auto; display: block; text-align: center; position: relative;'>Aufgabe
+      5: Shadow-Mapping</div>
+   <canvas id="canvas" width="1200" height="700" style='margin-left: auto; margin-right: auto; display: block;'></canvas>
+
+   
+      <div>
+         <pre id="error" class="alert alert-error"></pre>
+      </div>
+</body>
+<!-- Phong lighting model, Phong shading -->
+<script id="vs0" type="text/glsl">
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
+
+uniform vec3 lightPosition;
+uniform vec3 lightIntensity;
+
+attribute vec4 position;
+attribute vec3 normal;
+attribute vec2 texCoord;
+
+varying vec3 normalW;
+varying vec3 lightDirectionW;
+varying vec3 eyeDirectionW;
+varying vec2 texCoordI;
+
+void main() {
+  vec4 positionW = model * position;
+
+  normalW = (model * vec4(normal, 0.0)).xyz;
+  
+  lightDirectionW = lightPosition - positionW.xyz;
+
+  eyeDirectionW = positionW.xyz;
+  texCoordI = texCoord;
+  gl_Position = projection * view * positionW;
+}
+</script>
+
+<script id="fs0" type="text/glsl">
+precision highp float;
+
+uniform vec3 color;
+uniform vec3 lightIntensity;
+
+uniform sampler2D env;
+
+varying vec3 normalW;
+varying vec3 lightDirectionW;
+varying vec3 eyeDirectionW;
+varying vec2 texCoordI;
+
+vec3 lambert(vec3 normal, vec3 light, 
+             vec3 intensity, vec3 reflectivity) {
+  return 0.1 * reflectivity * intensity +
+         0.6 * reflectivity * intensity * max(0.0, dot(normal, light));
+}
+
+vec3 phong(vec3 normal, vec3 eye, vec3 light, 
+           vec3 intensity, vec3 reflectivity) {
+  return lambert(normal, light, intensity, reflectivity) +
+         0.3 * intensity * pow(max(0.0, dot(reflect(-eye, normal), 
+                                      light)), 10.0);
+}
+
+void main() {   
+   gl_FragColor.rgb = phong(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), lightIntensity, texture2D(env, texCoordI).rgb);
+   gl_FragColor.a = 1.0;
+}
+</script>
+<!-- EOF Phong lighting model, Phong shading -->
+</html>
