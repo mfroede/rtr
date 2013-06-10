@@ -20,6 +20,8 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 <link rel="stylesheet" href="../resources/css/style.css" />
 
 <script type="text/javascript" src="aufgabe_5.js"></script>
+<script type="text/javascript" src="Entity.js"></script>
+<script type="text/javascript" src="Monitor.js"></script>
 <script type="text/javascript" src="light.js"></script>
 </head>
 
@@ -99,4 +101,66 @@ void main() {
 }
 </script>
 <!-- EOF Phong lighting model, Phong shading -->
+
+<!-- Plane shading -->
+<script id="vs0" type="text/glsl">
+attribute vec4 position;
+varying vec2 texCoordI;
+
+void main() {
+	texCoordI = (position.xy + 1.0) / 2.0;
+	gl_Position = position;
+}
+</script>
+
+<script id="fs0" type="text/glsl">
+precision highp float;
+
+varying vec2 texCoordI;
+uniform sampler2D colorBuffer;
+
+uniform float blurSize;
+const int samples = 5;
+const float center = (float(samples) - 1.0) / 2.0;
+
+void main() {
+	vec3 color = vec3(0.0);
+	for (int x = 0; x < samples; x++) {
+		for (int y = 0; y < samples; y++) {
+			vec2 tc = texCoordI + (vec2(x, y) - center) * blurSize;
+			color += texture2D(colorBuffer, tc).rgb;
+		}
+	}
+
+	gl_FragColor.rgb = color / float(samples * samples);
+	gl_FragColor.a = 1.0;
+}
+</script>
+<!-- EOF Plane -->
+
+<!-- Monitor shading -->
+<script id="vs0" type="text/glsl">
+attribute vec4 position;
+varying vec2 texCoordI;
+
+uniform mat4 model;
+
+void main() {
+	texCoordI = (position.xy + 1.0) / 2.0;
+	gl_Position = model * position;
+}
+</script>
+
+<script id="fs0" type="text/glsl">
+precision highp float;
+
+varying vec2 texCoordI;
+uniform sampler2D colorBuffer;
+
+void main() {
+	gl_FragColor.rgb = texture2D(colorBuffer, texCoordI).rgb;
+	gl_FragColor.a = 1.0;
+}
+</script>
+<!-- EOF Monitor -->
 </html>
