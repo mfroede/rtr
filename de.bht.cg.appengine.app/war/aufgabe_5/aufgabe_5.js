@@ -59,10 +59,7 @@ function initialize() {
 	document.onmouseup = handleMouseUp;
 	document.onmousemove = handleMouseMove;
 
-	// Load textures.
-	var textures = {
-			env: tdl.textures.loadTexture("textures/earth-2k-land-ocean-noshade.png"),
-	};
+	
 
 	var framebuffer = tdl.framebuffers.createFramebuffer(window.canvas.width, window.canvas.height, true);
 	var backbuffer = new tdl.framebuffers.BackBuffer(canvas);
@@ -72,6 +69,19 @@ function initialize() {
 		depthBuffer: framebuffer.depthTexture
 	};
 
+	var shadowbuffer = tdl.framebuffers.createFramebuffer(window.canvas.width, window.canvas.height, true);
+	var shadowTextures = {
+		shadowMap: shadowbuffer.depthTexture
+	};
+
+	// Load textures.
+	var textures = {
+			env: tdl.textures.loadTexture("textures/earth-2k-land-ocean-noshade.png"),
+			shadowMap: shadowbuffer.depthTexture
+	};
+	var groundTextures = {
+			env: tdl.textures.loadTexture("textures/PalmTrees/negy.jpg")
+	};
 	$('window').resize(function() {
 		framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
 		quadTextures.colorBuffer = framebuffer.texture;
@@ -85,15 +95,17 @@ function initialize() {
 	var torusmodel = tdl.primitives.createSphere(0.45, 60, 60);
 	tdl.primitives.addTangentsAndBinormals(torusmodel);
 	var torus = new tdl.models.Model(programs[pnum], torusmodel, textures);
-
+	
+	var floorModel = tdl.primitives.createPlane(30,30, 1, 1);
+	var floor = new tdl.models.Model(programs[pnum], floorModel, groundTextures);
 
 	var showMonitor = false;
-	var lightPosition = vec3.create([10.0,10.0,0.0]);
+	var lightPosition = vec3.create([0.0,2.0,-2.0]);
 	var lightIntensity = vec3.create([1,1,1]);
 
 	var eyePosition = vec3.create([0.0,0.0,-2.0]);
 	var viewTransformMatrix = mat4.create();
-	var target = vec3.create([0.0,0.0,1.0]);
+	var target = vec3.create([0.0,0.0,0.0]);
 	var up = vec3.create([0.0,1.0,0.0]);
 
 	// Register a keypress-handler for shader program switching using the number
@@ -156,6 +168,7 @@ function initialize() {
 	var view = mat4.create();
 	mat4.lookAt(eyePosition, target, up, view);
 	var model = mat4.create();
+	var floorModel = mat4.create();
 
 	// Uniforms for lighting.
 	var color = vec3.create([1.0,0.0,0.0]);
@@ -168,18 +181,58 @@ function initialize() {
 			lightIntensity : lightIntensity
 	};
 
+	var floorConst = {
+			lightPosition : lightPosition,
+			lightIntensity : lightIntensity
+	};
+
 	// Uniform variables that change for each torus in a frame.
 	var torusPer = {
-			model : model,
-			color : color
+			model : model
 	};
+	var floorPer = {
+			model : floorModel
+	};
+
+	mat4.translate(mat4.identity(floorPer.model), [1.0, -1.0, 1.0]);
+	mat4.translate(mat4.identity(torusPer.model), [0.0, 0.0, 0.0]);
 
 	var screen = Entity.createQuad(programs[1], quadTextures);	
 	Entity.loadProgramFromUrl('pass2.vs', 'pass2.fs', [screen]);
 	
-	var monitor = new Monitor(programs, [framebuffer.texture, framebuffer.depthTexture]);
+	var monitor = new Monitor(programs, [framebuffer.texture, framebuffer.depthTexture, textures.shadowMap]);
 
 	// Renders one frame and registers itself for the next frame.
+	function renderShadowMap() {
+		tdl.webgl.requestAnimationFrame(renderShadowMap, canvas);
+
+		// Setup global WebGL rendering behavior.
+		gl.enable(gl.BLEND);
+		gl.viewport(0, 0, canvas.width, canvas.width * 0.6);
+		gl.colorMask(true, true, true, true);
+		
+		shadowbuffer.bind();
+		gl.depthMask(true);
+		mat4.lookAt(lightPosition, target, up, view);
+		gl.clear(gl.DEPTH_BUFFER_BIT);
+
+		gl.enable(gl.CULL_FACE);
+		gl.enable(gl.DEPTH_TEST);
+
+		// Calculate the perspective projection matrix.
+		mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 20, projection);
+
+		// mat4.scale(torusPer.model, [ 1.0, 1.0, 1.0 ]);
+		
+		torus.drawPrep(torusConst);
+		torus.draw(torusPer);
+		floor.drawPrep(floorConst);
+		floor.draw(floorPer);
+
+		render();
+	}
+
+// Renders one frame and registers itself for the next frame.
 	function render() {
 		tdl.webgl.requestAnimationFrame(render, canvas);
 
@@ -190,7 +243,8 @@ function initialize() {
 		
 		framebuffer.bind();
 		gl.depthMask(true);
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
+		mat4.lookAt(eyePosition, target, up, view);
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 		gl.enable(gl.CULL_FACE);
 		gl.enable(gl.DEPTH_TEST);
@@ -198,26 +252,31 @@ function initialize() {
 		// Calculate the perspective projection matrix.
 		mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 20, projection);
 
-		mat4.scale(mat4.identity(torusPer.model), [ 1.0, 1.0, 1.0 ]);
-		mat4.multiply(torusPer.model, objectRotationMatrix);
-
+		// mat4.scale(torusPer.model, [ 1.0, 1.0, 1.0 ]);
+		
 		torus.drawPrep(torusConst);
 		torus.draw(torusPer);
-		
-		//Backbuffer Screen
+		floor.drawPrep(floorConst);
+		floor.draw(floorPer);
+
+		finishRender();
+	}
+
+
+	function finishRender() {
 		backbuffer.bind();
         gl.depthMask(false);
         gl.disable(gl.DEPTH_TEST);
-        
-        screen.draw();
+		screen.draw();
         
         if (showMonitor) {
         	monitor.draw();
         }
 	}
 
+
 	// Initial call to get the rendering started.
-	render();
+	renderShadowMap();
 
 	function handleMouseDown(event) {
 		mouseDown = true;
@@ -227,6 +286,7 @@ function initialize() {
 
 	function handleMouseUp(event) {
 		mouseDown = false;
+		mat4.identity(objectRotationMatrix);
 	}
 
 	function handleMouseMove(event) {
@@ -239,15 +299,17 @@ function initialize() {
 		var deltaX = newX - lastMouseX;
 		var newRotationMatrix = mat4.create();
 		mat4.identity(newRotationMatrix);
-		mat4.rotate(newRotationMatrix, degToRad(deltaX / 10), [0, 1, 0]);
+		mat4.rotate(newRotationMatrix, degToRad(deltaX / 50), [0, 1, 0]);
 
 		var deltaY = newY - lastMouseY;
-		mat4.rotate(newRotationMatrix, degToRad(deltaY / 10), [1, 0, 0]);
+		mat4.rotate(newRotationMatrix, degToRad(deltaY / 50), [1, 0, 0]);
 
 		mat4.multiply(newRotationMatrix, objectRotationMatrix, objectRotationMatrix);
 
 		lastMouseX = newX
 		lastMouseY = newY;
+
+		mat4.multiply(torusPer.model, objectRotationMatrix);
 	}
 
 	function degToRad(degrees) {
