@@ -38,6 +38,31 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
          <pre id="error" class="alert alert-error"></pre>
       </div>
 </body>
+
+
+<!-- ShadowShader -->
+<script id="vs1" type="text/glsl">
+uniform mat4 projection;
+uniform mat4 view;
+uniform mat4 model;
+
+attribute vec4 position;
+
+void main() {
+  vec4 positionW = model * position;
+  gl_Position = projection * view * positionW;
+}
+</script>
+
+<script id="fs1" type="text/glsl">
+precision highp float;
+
+void main() {
+   gl_FragColor = vec4(0.0,0.0,0.0, 0.0);
+}
+</script>
+<!-- EOF Shadow Shader -->
+
 <!-- Phong lighting model, Phong shading -->
 <script id="vs0" type="text/glsl">
 uniform mat4 projection;
@@ -76,6 +101,7 @@ uniform vec3 color;
 uniform vec3 lightIntensity;
 
 uniform sampler2D env;
+uniform sampler2D shadowMap;
 
 varying vec3 normalW;
 varying vec3 lightDirectionW;
@@ -95,36 +121,21 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
                                       light)), 10.0);
 }
 
-void main() {   
-   gl_FragColor.rgb = phong(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), lightIntensity, texture2D(env, texCoordI).rgb);
+void main() {
+   vec3 color = phong(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), lightIntensity, texture2D(env, texCoordI).rgb);
+   if(false){
+      color = vec3(0.0,0.0,0.0);
+   }
+
+   gl_FragColor.rgb += color;
    gl_FragColor.a = 1.0;
 }
 </script>
 <!-- EOF Phong lighting model, Phong shading -->
 
-<!-- Plane shading -->
-<script id="vs1" type="text/glsl">
-attribute vec4 position;
-varying vec2 texCoordI;
 
-void main() {
-	texCoordI = (position.xy + 1.0) / 2.0;
-	gl_Position = position;
-}
-</script>
 
-<script id="fs1" type="text/glsl">
-precision highp float;
 
-varying vec2 texCoordI;
-uniform sampler2D colorBuffer;
-
-void main() {
-	gl_FragColor.rgb = texture2D(colorBuffer, texCoordI).rgb;
-	gl_FragColor.a = 1.0;
-}
-</script>
-<!-- EOF Plane -->
 
 <!-- Monitor shading -->
 <script id="vs2" type="text/glsl">

@@ -70,17 +70,14 @@ function initialize() {
 	};
 
 	var shadowbuffer = tdl.framebuffers.createFramebuffer(window.canvas.width, window.canvas.height, true);
-	var shadowTextures = {
-		shadowMap: shadowbuffer.depthTexture
-	};
 
 	// Load textures.
 	var textures = {
-			env: tdl.textures.loadTexture("textures/earth-2k-land-ocean-noshade.png"),
-			shadowMap: shadowbuffer.depthTexture
+		env: tdl.textures.loadTexture("textures/earth-2k-land-ocean-noshade.png"),
+		shadowMap: shadowbuffer.depthTexture
 	};
 	var groundTextures = {
-			env: tdl.textures.loadTexture("textures/PalmTrees/negy.jpg")
+		env: tdl.textures.loadTexture("textures/PalmTrees/negy.jpg")
 	};
 	$('window').resize(function() {
 		framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
@@ -164,34 +161,41 @@ function initialize() {
 	};
 
 	// Create some matrices and vectors now to save time later.
-	var projection = mat4.create();
+	var projection = mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 20, projection);
 	var view = mat4.create();
 	mat4.lookAt(eyePosition, target, up, view);
 	var model = mat4.create();
 	var floorModel = mat4.create();
 
+	var shadowView = mat4.lookAt(lightPosition, target, up, shadowView);
+	var shadowprojection = mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 20, shadowprojection);
 	// Uniforms for lighting.
 	var color = vec3.create([1.0,0.0,0.0]);
 
+	var lightBiasMVP = mat4.create();
+	var biasMatrix = mat4.create(
+		0.5, 0.0, 0.0, 0.0,
+		0.0, 0.5, 0.0, 0.0,
+		0.0, 0.0, 0.5, 0.0,
+		0.5, 0.5, 0.5, 1.0
+		);
+
 	// Uniform variables that are the same for all torus in one frame. 
 	var torusConst = {
-			view : view,
-			projection : projection,
-			lightPosition : lightPosition,
-			lightIntensity : lightIntensity
-	};
-
-	var floorConst = {
-			lightPosition : lightPosition,
-			lightIntensity : lightIntensity
+		view : view,
+		projection : projection,
+		lightPosition : lightPosition,
+		lightIntensity : lightIntensity
 	};
 
 	// Uniform variables that change for each torus in a frame.
 	var torusPer = {
-			model : model
+		model : model,
+		lightBiasMVP : lightBiasMVP
 	};
 	var floorPer = {
-			model : floorModel
+		model : floorModel,
+		lightBiasMVP : lightBiasMVP
 	};
 
 	mat4.translate(mat4.identity(floorPer.model), [1.0, -1.0, 1.0]);
@@ -200,10 +204,14 @@ function initialize() {
 	var screen = Entity.createQuad(programs[1], quadTextures);	
 	Entity.loadProgramFromUrl('pass2.vs', 'pass2.fs', [screen]);
 	
-	var monitor = new Monitor(programs, [framebuffer.texture, framebuffer.depthTexture, textures.shadowMap]);
+	var monitor = new Monitor(programs, [framebuffer.texture, textures.shadowMap]);
 
 	// Renders one frame and registers itself for the next frame.
 	function renderShadowMap() {
+
+		torus.setProgram(programs[0]);
+		floor.setProgram(programs[0]);
+
 		tdl.webgl.requestAnimationFrame(renderShadowMap, canvas);
 
 		// Setup global WebGL rendering behavior.
@@ -213,28 +221,28 @@ function initialize() {
 		
 		shadowbuffer.bind();
 		gl.depthMask(true);
-		mat4.lookAt(lightPosition, target, up, view);
 		gl.clear(gl.DEPTH_BUFFER_BIT);
 
 		gl.enable(gl.CULL_FACE);
 		gl.enable(gl.DEPTH_TEST);
 
-		// Calculate the perspective projection matrix.
-		mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 20, projection);
+		torusConst.view = shadowView;
+		torusConst.projection = shadowprojection;
 
-		// mat4.scale(torusPer.model, [ 1.0, 1.0, 1.0 ]);
-		
 		torus.drawPrep(torusConst);
 		torus.draw(torusPer);
-		floor.drawPrep(floorConst);
+		floor.drawPrep(torusConst);
 		floor.draw(floorPer);
 
 		render();
 	}
 
 // Renders one frame and registers itself for the next frame.
-	function render() {
-		tdl.webgl.requestAnimationFrame(render, canvas);
+function render() {
+
+	torus.setProgram(programs[1]);
+	floor.setProgram(programs[1]);
+	tdl.webgl.requestAnimationFrame(render, canvas);
 
 		// Setup global WebGL rendering behavior.
 		gl.enable(gl.BLEND);
@@ -243,20 +251,33 @@ function initialize() {
 		
 		framebuffer.bind();
 		gl.depthMask(true);
-		mat4.lookAt(eyePosition, target, up, view);
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 		gl.enable(gl.CULL_FACE);
 		gl.enable(gl.DEPTH_TEST);
 
-		// Calculate the perspective projection matrix.
-		mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 20, projection);
-
 		// mat4.scale(torusPer.model, [ 1.0, 1.0, 1.0 ]);
 		
+		torusConst.view = view;
+		torusConst.projection = projection;
+
+
 		torus.drawPrep(torusConst);
+
+		var lightMVP = mat4.create();
+		mat4.multiply(shadowprojection, shadowView, lightMVP);
+	    mat4.multiply(lightMVP, torusPer.model, lightMVP);
+		mat4.multiply(biasMatrix, lightMVP, torusPer.lightBiasMVP);
+
 		torus.draw(torusPer);
-		floor.drawPrep(floorConst);
+		
+		floor.drawPrep(torusConst);
+
+lightMVP = mat4.create();
+		mat4.multiply(shadowprojection, shadowView, lightMVP);
+	    mat4.multiply(lightMVP, torusPer.model, lightMVP);
+		mat4.multiply(biasMatrix, lightMVP, floorPer.lightBiasMVP);
+
 		floor.draw(floorPer);
 
 		finishRender();
@@ -265,13 +286,13 @@ function initialize() {
 
 	function finishRender() {
 		backbuffer.bind();
-        gl.depthMask(false);
-        gl.disable(gl.DEPTH_TEST);
+		gl.depthMask(false);
+		gl.disable(gl.DEPTH_TEST);
 		screen.draw();
-        
-        if (showMonitor) {
-        	monitor.draw();
-        }
+
+		if (showMonitor) {
+			monitor.draw();
+		}
 	}
 
 
