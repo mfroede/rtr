@@ -10,7 +10,8 @@ var Monitor = function(programs, textures) {
 			transform: transform
 		});
 	}
-	this.quad = Entity.createQuad(programs[2], { colorBuffer: null});
+	monitorshader = tdl.programs.loadProgramFromScriptTags('vs2', 'fs2');
+	this.quad = Entity.createQuad(monitorshader, { colorBuffer: null});
 //    Entity.loadProgramFromUrl('monitor.vs', 'monitor.fs', [this.quad]);
 };
 
@@ -18,7 +19,7 @@ Monitor.prototype.draw = function() {
 	var n = this.textures.length;
 	for (var i = 0; i != n; i++) {
 		this.quad.transform = this.textures[i].transform;
-		this.quad.model.textures = this.textures[i].texture;
+		this.quad.model.textures = {colorBuffer: this.textures[i].texture};
 		this.quad.draw();
 	}	
 };
