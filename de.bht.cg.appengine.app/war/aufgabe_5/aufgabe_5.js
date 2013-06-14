@@ -86,7 +86,8 @@ function initialize() {
 	tdl.primitives.addTangentsAndBinormals(torusmodel);
 	var torus = new tdl.models.Model(programs[pnum], torusmodel, textures);
 
-	var circleTexture = false;
+
+	var showMonitor = false;
 	var lightPosition = vec3.create([10.0,10.0,0.0]);
 	var lightIntensity = vec3.create([1,1,1]);
 
@@ -145,7 +146,9 @@ function initialize() {
 			mat4.identity(viewTransformMatrix);
 			mat4.rotate(viewTransformMatrix, degToRad(1), [0, 1, 0]);
 			mat4.multiply(viewTransformMatrix, view, view);
-		}
+		} else if (key == 'm') {
+			showMonitor = !showMonitor;
+		}	
 	};
 
 	// Create some matrices and vectors now to save time later.
@@ -176,12 +179,6 @@ function initialize() {
 	
 	var monitor = new Monitor(programs, [framebuffer.texture, framebuffer.depthTexture]);
 
-	var showMonitor = false;
-	window.addEventListener('keypress', function(event) {
-		if (String.fromCharCode(event.which) == 'm')
-			showMonitor = !showMonitor;
-	});
-
 	// Renders one frame and registers itself for the next frame.
 	function render() {
 		tdl.webgl.requestAnimationFrame(render, canvas);
@@ -190,10 +187,9 @@ function initialize() {
 		gl.enable(gl.BLEND);
 		gl.viewport(0, 0, canvas.width, canvas.width * 0.6);
 		gl.colorMask(true, true, true, true);
+		
 		framebuffer.bind();
 		gl.depthMask(true);
-//		gl.clearColor(0.5, 0.5, 0.5, 1.0);
-//		gl.clearDepth(1);
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 
 		gl.enable(gl.CULL_FACE);
@@ -208,6 +204,7 @@ function initialize() {
 		torus.drawPrep(torusConst);
 		torus.draw(torusPer);
 		
+		//Backbuffer Screen
 		backbuffer.bind();
         gl.depthMask(false);
         gl.disable(gl.DEPTH_TEST);
