@@ -69,15 +69,16 @@ function initialize() {
 		depthBuffer: framebuffer.depthTexture
 	};
 
-	var shadowbuffer = tdl.framebuffers.createFramebuffer(window.canvas.width, window.canvas.height, true);
+	var shadowbuffer = tdl.framebuffers.createFramebuffer(2048, 2048, true);
 
 	// Load textures.
 	var textures = {
 		env: tdl.textures.loadTexture("textures/earth-2k-land-ocean-noshade.png"),
-		shadowMap: shadowbuffer.depthTexture
+		shadowMap : shadowbuffer.depthTexture
 	};
 	var groundTextures = {
-		env: tdl.textures.loadTexture("textures/PalmTrees/negy.jpg")
+		env: tdl.textures.loadTexture("textures/PalmTrees/negy.jpg"),
+		shadowMap: shadowbuffer.depthTexture
 	};
 	$('window').resize(function() {
 		framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
@@ -89,6 +90,9 @@ function initialize() {
 	var frag = window.location.hash.substring(1);
 	var pnum = frag ? parseInt(frag) : 0;
 
+	var obj2model = tdl.primitives.createTorus(0.4, 0.15, 60, 60);
+	var obj2 = new tdl.models.Model(programs[pnum], obj2model, textures);
+
 	var torusmodel = tdl.primitives.createSphere(0.45, 60, 60);
 	tdl.primitives.addTangentsAndBinormals(torusmodel);
 	var torus = new tdl.models.Model(programs[pnum], torusmodel, textures);
@@ -97,13 +101,14 @@ function initialize() {
 	var floor = new tdl.models.Model(programs[pnum], floorModel, groundTextures);
 
 	var showMonitor = false;
-	var lightPosition = vec3.create([0.0,2.0,-2.0]);
+	var lightPosition = vec3.create([0.0,3.0,0.0]);
 	var lightIntensity = vec3.create([1,1,1]);
 
-	var eyePosition = vec3.create([0.0,0.0,-2.0]);
+	var eyePosition = vec3.create([0.0,5.0,-5.0]);
 	var viewTransformMatrix = mat4.create();
 	var target = vec3.create([0.0,0.0,0.0]);
 	var up = vec3.create([0.0,1.0,0.0]);
+	var lightup = vec3.create([0.0,0.0,1.0]);
 
 	// Register a keypress-handler for shader program switching using the number
 	// keys.
@@ -116,7 +121,7 @@ function initialize() {
 			tdl.primitives.addTangentsAndBinormals(newmodel);
 			torus.setBuffers(newmodel, textures);
 		} else if (key == "x") {
-			var newmodel = tdl.primitives.createTorus(0.3, 0.15, 60, 60);
+			var newmodel = tdl.primitives.createTorus(0.4, 0.15, 60, 60);
 			tdl.primitives.addTangentsAndBinormals(newmodel);
 			torus.setBuffers(newmodel, textures);
 		} else if (key == "c") {
@@ -165,9 +170,10 @@ function initialize() {
 	var view = mat4.create();
 	mat4.lookAt(eyePosition, target, up, view);
 	var model = mat4.create();
+	var model2 = mat4.create();
 	var floorModel = mat4.create();
 
-	var shadowView = mat4.lookAt(lightPosition, target, up, shadowView);
+	var shadowView = mat4.lookAt(lightPosition, target, lightup, shadowView);
 	var shadowprojection = mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 20, shadowprojection);
 	// Uniforms for lighting.
 	var color = vec3.create([1.0,0.0,0.0]);
@@ -185,21 +191,27 @@ function initialize() {
 		view : view,
 		projection : projection,
 		lightPosition : lightPosition,
-		lightIntensity : lightIntensity
+		lightIntensity : lightIntensity,
+		lightSourceProjectionMatrix : shadowprojection,
+		lightSourceViewMatrix : shadowView
 	};
 
 	// Uniform variables that change for each torus in a frame.
 	var torusPer = {
-		model : model,
-		lightBiasMVP : lightBiasMVP
-	};
-	var floorPer = {
-		model : floorModel,
-		lightBiasMVP : lightBiasMVP
+		model : model
 	};
 
-	mat4.translate(mat4.identity(floorPer.model), [1.0, -1.0, 1.0]);
+	var torus2Per = {
+		model : model2
+	}; 
+
+	var floorPer = {
+		model : floorModel
+	};
+
+	mat4.translate(mat4.identity(floorPer.model), [0.0, -1.0, 0.0]);
 	mat4.translate(mat4.identity(torusPer.model), [0.0, 0.0, 0.0]);
+	mat4.translate(mat4.identity(torus2Per.model), [2.0, 0.0, 0.0]);
 
 	var screen = Entity.createQuad(programs[1], quadTextures);	
 	Entity.loadProgramFromUrl('pass2.vs', 'pass2.fs', [screen]);
@@ -210,6 +222,7 @@ function initialize() {
 	function renderShadowMap() {
 
 		torus.setProgram(programs[0]);
+		obj2.setProgram(programs[0]);
 		floor.setProgram(programs[0]);
 
 		tdl.webgl.requestAnimationFrame(renderShadowMap, canvas);
@@ -231,6 +244,8 @@ function initialize() {
 
 		torus.drawPrep(torusConst);
 		torus.draw(torusPer);
+		obj2.drawPrep(torusConst);
+		obj2.draw(torus2Per);
 		floor.drawPrep(torusConst);
 		floor.draw(floorPer);
 
@@ -241,8 +256,8 @@ function initialize() {
 function render() {
 
 	torus.setProgram(programs[1]);
+	obj2.setProgram(programs[1]);
 	floor.setProgram(programs[1]);
-	tdl.webgl.requestAnimationFrame(render, canvas);
 
 		// Setup global WebGL rendering behavior.
 		gl.enable(gl.BLEND);
@@ -255,8 +270,6 @@ function render() {
 
 		gl.enable(gl.CULL_FACE);
 		gl.enable(gl.DEPTH_TEST);
-
-		// mat4.scale(torusPer.model, [ 1.0, 1.0, 1.0 ]);
 		
 		torusConst.view = view;
 		torusConst.projection = projection;
@@ -264,19 +277,12 @@ function render() {
 
 		torus.drawPrep(torusConst);
 
-		var lightMVP = mat4.create();
-		mat4.multiply(shadowprojection, shadowView, lightMVP);
-	    mat4.multiply(lightMVP, torusPer.model, lightMVP);
-		mat4.multiply(biasMatrix, lightMVP, torusPer.lightBiasMVP);
-
 		torus.draw(torusPer);
+		obj2.drawPrep(torusConst);
+		obj2.draw(torus2Per);
 		
 		floor.drawPrep(torusConst);
 
-lightMVP = mat4.create();
-		mat4.multiply(shadowprojection, shadowView, lightMVP);
-	    mat4.multiply(lightMVP, torusPer.model, lightMVP);
-		mat4.multiply(biasMatrix, lightMVP, floorPer.lightBiasMVP);
 
 		floor.draw(floorPer);
 
@@ -320,7 +326,7 @@ lightMVP = mat4.create();
 		var deltaX = newX - lastMouseX;
 		var newRotationMatrix = mat4.create();
 		mat4.identity(newRotationMatrix);
-		mat4.rotate(newRotationMatrix, degToRad(deltaX / 50), [0, 1, 0]);
+		mat4.rotate(newRotationMatrix, degToRad(deltaX / 50), [0, 0, 1]);
 
 		var deltaY = newY - lastMouseY;
 		mat4.rotate(newRotationMatrix, degToRad(deltaY / 50), [1, 0, 0]);
