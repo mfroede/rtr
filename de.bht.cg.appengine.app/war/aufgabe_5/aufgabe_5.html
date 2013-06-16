@@ -60,28 +60,7 @@ precision highp float;
 
 varying vec4 vPosition;
 
-const float Near = 0.1;
-const float Far = 20.0;
-const float LinearDepthConstant = 1.0 / (Far - Near);
-
-vec4 pack (float depth) {
-  const vec4 bias = vec4(1.0 / 255.0,
-              1.0 / 255.0,
-              1.0 / 255.0,
-              0.0);
-
-  float r = depth;
-  float g = fract(r * 255.0);
-  float b = fract(g * 255.0);
-  float a = fract(b * 255.0);
-  vec4 colour = vec4(r, g, b, a);
-  
-  return colour - (colour.yzww * bias);
-}
-
 void main() {
-  float linearDepth = length(vPosition) * LinearDepthConstant;
-  // gl_FragColor = pack(linearDepth);
   gl_FragColor = vec4(0.0,0.0,0.0,0.0);
 }
 </script>
@@ -111,7 +90,6 @@ varying vec3 normalW;
 varying vec3 lightDirectionW;
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
-varying vec4 shadowCoord;
 varying vec4 vPosition;
 varying vec4 positionW;
 
@@ -126,7 +104,7 @@ void main() {
   eyeDirectionW = positionW.xyz;
   texCoordI = texCoord;
 
-  vPosition = scaleMatrix * lightSourceProjectionMatrix * lightSourceViewMatrix * positionW;
+  vPosition = scaleMatrix * lightSourceProjectionMatrix * lightSourceViewMatrix * positionW;  
   gl_Position = projection * view * positionW;
 }
 </script>
@@ -145,7 +123,6 @@ varying vec3 normalW;
 varying vec3 lightDirectionW;
 varying vec3 eyeDirectionW;
 varying vec2 texCoordI;
-varying vec4 shadowCoord;
 varying vec4 positionW;
 varying vec4 vPosition;
 
@@ -184,7 +161,8 @@ void main() {
       gl_FragColor.rgb = vec3(1.0,0.0,0.0); 
     }
 
-     //gl_FragColor.rgb = vec3(depth.z, depth.z, depth.z);
+    // gl_FragColor.rgb = vec3(1.0-shadowDepth, 1.0-shadowDepth, 1.0-shadowDepth);
+      // gl_FragColor.rgb = color;
     gl_FragColor.a = 1.0;
 }
 </script>

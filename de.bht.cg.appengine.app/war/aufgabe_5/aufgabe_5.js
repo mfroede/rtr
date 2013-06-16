@@ -59,8 +59,6 @@ function initialize() {
 	document.onmouseup = handleMouseUp;
 	document.onmousemove = handleMouseMove;
 
-	
-
 	var framebuffer = tdl.framebuffers.createFramebuffer(window.canvas.width, window.canvas.height, true);
 	var backbuffer = new tdl.framebuffers.BackBuffer(canvas);
 
@@ -80,12 +78,6 @@ function initialize() {
 		env: tdl.textures.loadTexture("textures/PalmTrees/negy.jpg"),
 		shadowMap: shadowbuffer.depthTexture
 	};
-	$('window').resize(function() {
-		framebuffer = tdl.framebuffers.createFramebuffer(canvas.width, canvas.height, true);
-		quadTextures.colorBuffer = framebuffer.texture;
-		quadTextures.depthBuffer = framebuffer.depthTexture;
-	});
-	$('window').resize();
 
 	var frag = window.location.hash.substring(1);
 	var pnum = frag ? parseInt(frag) : 0;
@@ -178,13 +170,6 @@ function initialize() {
 	// Uniforms for lighting.
 	var color = vec3.create([1.0,0.0,0.0]);
 
-	var lightBiasMVP = mat4.create();
-	var biasMatrix = mat4.create(
-		0.5, 0.0, 0.0, 0.0,
-		0.0, 0.5, 0.0, 0.0,
-		0.0, 0.0, 0.5, 0.0,
-		0.5, 0.5, 0.5, 1.0
-		);
 
 	// Uniform variables that are the same for all torus in one frame. 
 	var torusConst = {
