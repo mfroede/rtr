@@ -67,16 +67,20 @@ function initialize() {
 		depthBuffer: framebuffer.depthTexture
 	};
 
-	var shadowbuffer = tdl.framebuffers.createFramebuffer(2048, 2048, true);
+	var shadowbuffer = [];
+	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
+	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
+	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
+	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
 
 	// Load textures.
 	var textures = {
 		env: tdl.textures.loadTexture("textures/earth-2k-land-ocean-noshade.png"),
-		shadowMap : shadowbuffer.depthTexture
+		shadowMap : shadowbuffer[0].depthTexture
 	};
 	var groundTextures = {
 		env: tdl.textures.loadTexture("textures/PalmTrees/negy.jpg"),
-		shadowMap: shadowbuffer.depthTexture
+		shadowMap: shadowbuffer[0].depthTexture
 	};
 
 	var frag = window.location.hash.substring(1);
@@ -96,11 +100,49 @@ function initialize() {
 	var lightPosition = vec3.create([0.0,3.0,0.0]);
 	var lightIntensity = vec3.create([1,1,1]);
 
-	var eyePosition = vec3.create([0.0,5.0,-5.0]);
+	var eyePosition = vec3.create([0.0, 3.0, -6.0]);
 	var viewTransformMatrix = mat4.create();
 	var target = vec3.create([0.0,0.0,0.0]);
 	var up = vec3.create([0.0,1.0,0.0]);
-	var lightup = vec3.create([0.0,0.0,1.0]);
+	var lightup = vec3.create([0.0,1.0,0.0]);
+
+   var readLights = function() {
+      function stringToArray(string, defaulted) {
+         if(!string.match(/-?([0-9]*)\s*,\s*-?([0-9]*)\s*,\s*-?([0-9]*)\s?/)) {
+            return [1,1,1];
+         }
+         var arr = string.split(',');
+         var x = arr[0].trim();
+         var y = arr[1].trim();
+         var z = arr[2].trim();
+         return [x, y, z];
+      };
+      
+      lights = [];
+      for(var i = 0; i < 4; i++) {
+         if(document.getElementById("light_" + i).checked) {
+            var x = document.getElementById("light_" + i + "_x").value;
+            var y = document.getElementById("light_" + i + "_y").value;
+            var z = document.getElementById("light_" + i + "_z").value;
+            lights.push(new Light([x,y,z], stringToArray(document.getElementById("light_" + i + "_i").value)));
+         }
+      }
+      lightPosition = vec3.create(lights[0].position);
+      lightIntensity = vec3.create(lights[0].color);
+      // mat4.multiply(mat4.identity(shadowView), getCameraTransformationMatrix(lightPosition, 0.0, -90.0));
+   }
+   
+   readLights();
+   
+   for(var i = 0; i < 4; i++) {
+      document.getElementById("light_" + i).onchange=readLights;
+      document.getElementById("light_" + i + "_x").onchange=readLights;
+      document.getElementById("light_" + i + "_y").onchange=readLights;
+      document.getElementById("light_" + i + "_z").onchange=readLights;
+      document.getElementById("light_" + i + "_i").onchange=readLights;
+   }
+
+
 
 	// Register a keypress-handler for shader program switching using the number
 	// keys.
@@ -159,14 +201,16 @@ function initialize() {
 
 	// Create some matrices and vectors now to save time later.
 	var projection = mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 20, projection);
-	var view = mat4.create();
-	mat4.lookAt(eyePosition, target, up, view);
+	
+	var view = mat4.identity();//mat4.lookAt(eyePosition, target, up, view);
+	mat4.multiply(view, getCameraTransformationMatrix(eyePosition, 180.0, -30.0));
 	var model = mat4.create();
 	var model2 = mat4.create();
 	var floorModel = mat4.create();
 
-	var shadowView = mat4.lookAt(lightPosition, target, lightup, shadowView);
-	var shadowprojection = mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 20, shadowprojection);
+	var shadowView = mat4.identity();
+	mat4.multiply(shadowView, getCameraTransformationMatrix(lightPosition, 0.0, -90.0));//mat4.lookAt(lightPosition, target, lightup, shadowView);
+	var shadowprojection = mat4.perspective(2024, canvas.clientWidth / canvas.clientHeight, 1.0, 50, shadowprojection);
 	// Uniforms for lighting.
 	var color = vec3.create([1.0,0.0,0.0]);
 
@@ -201,7 +245,25 @@ function initialize() {
 	var screen = Entity.createQuad(programs[1], quadTextures);	
 	Entity.loadProgramFromUrl('pass2.vs', 'pass2.fs', [screen]);
 	
-	var monitor = new Monitor(programs, [framebuffer.texture, textures.shadowMap]);
+	var monitor = new Monitor(programs, [framebuffer.texture, shadowbuffer[0].depthTexture, shadowbuffer[1].depthTexture]);
+
+	function render() {
+
+		tdl.webgl.requestAnimationFrame(render, canvas);
+
+		for (var i = 0; i < lights.length; i++) {
+			if(lights[i]){
+		        lightPosition = vec3.create(lights[i].position);
+		        lightIntensity = vec3.create(lights[i].color);
+		        shadowView = mat4.identity();
+		        mat4.multiply(shadowView, getCameraTransformationMatrix(lightPosition, 0.0, -90.0));
+		        textures.shadowMap = shadowbuffer[i].depthTexture;
+		        groundTextures.shadowMap = shadowbuffer[i].depthTexture;
+		        shadowbuffer[i].bind();
+				renderShadowMap();
+			}
+		}
+	}
 
 	// Renders one frame and registers itself for the next frame.
 	function renderShadowMap() {
@@ -217,12 +279,16 @@ function initialize() {
 		gl.viewport(0, 0, canvas.width, canvas.width * 0.6);
 		gl.colorMask(true, true, true, true);
 		
-		shadowbuffer.bind();
+		shadowbuffer[0].bind();
 		gl.depthMask(true);
-		gl.clear(gl.DEPTH_BUFFER_BIT);
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 		gl.enable(gl.CULL_FACE);
 		gl.enable(gl.DEPTH_TEST);
+
+		torusConst.lightPosition = lightPosition;
+		torusConst.lightIntensity = lightIntensity;
+		mat4.multiply(mat4.identity(shadowView), getCameraTransformationMatrix(lightPosition, 0.0, -90.0));
 
 		torusConst.view = shadowView;
 		torusConst.projection = shadowprojection;
@@ -234,11 +300,11 @@ function initialize() {
 		floor.drawPrep(torusConst);
 		floor.draw(floorPer);
 
-		render();
+		renderScene();
 	}
 
 // Renders one frame and registers itself for the next frame.
-function render() {
+function renderScene() {
 
 	torus.setProgram(programs[1]);
 	obj2.setProgram(programs[1]);
@@ -325,6 +391,31 @@ function render() {
 	}
 
 	function degToRad(degrees) {
-		return degrees * Math.PI / 100;
+		return degrees * Math.PI / 180.0;
 	}
+
+	function setUpLights() {
+      lights = [];
+      for(var i = 0; i < 4; i++) {
+         if(document.getElementById("light_" + i).checked) {
+            var x = document.getElementById("light_" + i + "_x").value;
+            var y = document.getElementById("light_" + i + "_y").value;
+            var z = document.getElementById("light_" + i + "_z").value;
+            lights.push(new Light([x,y,z],stringToArray(document.getElementById("light_" + i + "_i").value)));
+         }
+      }
+      return lights;
+    } 
+
+    function getCameraTransformationMatrix(translate, rotateY, rotateX){
+    	var result = mat4.create();
+    	mat4.identity(result);
+ /*   	mat4.rotate(result, degToRad(rotateX), [-1,0,0]);
+    	mat4.rotate(result, degToRad(rotateY), [0,-1,0]);
+    	mat4.translate(result, vec3.multiply(translate, [-1,-1,-1]));*/
+    	mat4.translate(result, translate);
+    	mat4.rotate(result, degToRad(rotateY), [0,1,0]);
+    	mat4.rotate(result, degToRad(rotateX), [1,0,0]);
+    	return mat4.inverse(result);
+    }
 }

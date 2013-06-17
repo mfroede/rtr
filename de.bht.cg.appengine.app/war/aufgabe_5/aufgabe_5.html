@@ -31,12 +31,46 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
  <div class="subpagetitle"
  style='opacity: 0.8; margin-left: auto; margin-right: auto; display: block; text-align: center; position: relative;'>Aufgabe
  5: Shadow-Mapping</div>
- <canvas id="canvas" width="1200" height="700" style='margin-left: auto; margin-right: auto; display: block;'></canvas>
 
-
- <div>
-   <pre id="error" class="alert alert-error"></pre>
+ <div style='margin-left: auto; margin-right: auto; display: block;'>
+    <canvas id="canvas" width="1200" height="700" style='margin-left: auto; margin-right: auto; display: block;'></canvas>
  </div>
+
+ <div style='margin-left: 300px;'>
+   <div style="display:-webkit-box; -webkit-box-orient:horizontal;">
+    <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+     <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_0" checked="true">Licht 1</input></div>    
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_x" min="-20" max="20" value="0">PosX</input></div>
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_y" min="0" max="20" value="3">PosY</input></div>
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_z" min="-20" max="20" value="0">PosZ</input></div>
+     <div style=" -webkit-box-flex:1;"><input id="light_0_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input></div>
+   </div>
+   <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+     <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_1">Licht 2</input></div>    
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_x" min="-20" max="20" value="-10">PosX</input></div>
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_y" min="0" max="20" value="10">PosY</input></div>
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_z" min="-20" max="20" value="10">PosZ</input></div>
+     <div style=" -webkit-box-flex:1;"><input id="light_1_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input></div>
+   </div>
+   <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+     <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_2">Licht 3</input></div>    
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_2_x" min="-20" max="20" value="10">PosX</input></div>
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_2_y" min="0" max="20" value="-10">PosY</input></div>
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_2_z" min="-20" max="20" value="10">PosZ</input></div>
+     <div style=" -webkit-box-flex:1;"><input id="light_2_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input></div>
+   </div>
+   <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+     <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_3">Licht 4</input></div>    
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_3_x" min="-20" max="20" value="10">PosX</input></div>
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_3_y" min="0" max="20" value="10">PosY</input></div>
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_3_z" min="-20" max="20" value="-10">PosZ</input></div>
+     <div style=" -webkit-box-flex:1;"><input id="light_3_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input></div>
+   </div>
+</div>
+
+<div>
+ <pre id="error" class="alert alert-error"></pre>
+</div>
 </body>
 
 
@@ -47,21 +81,16 @@ uniform mat4 view;
 uniform mat4 model;
 
 attribute vec4 position;
-varying vec4 vPosition;
 void main() {
-  vec4 positionW = model * position;
-  vPosition = view * positionW;
-  gl_Position = projection * vPosition;
+  gl_Position = projection * view * model * position;
 }
 </script>
 
 <script id="fs1" type="text/glsl">
 precision highp float;
 
-varying vec4 vPosition;
-
 void main() {
-  gl_FragColor = vec4(0.0,0.0,0.0,0.0);
+  gl_FragColor = vec4(0.0,0.0,1.0,0.0);
 }
 </script>
 <!-- EOF Shadow Shader -->
@@ -78,9 +107,9 @@ uniform mat4 lightSourceProjectionMatrix;
 uniform mat4 lightSourceViewMatrix;
 
 const mat4 scaleMatrix = mat4(0.5, 0.0, 0.0, 0.0, 
-                              0.0, 0.5, 0.0, 0.0, 
-                              0.0, 0.0, 0.5, 0.0, 
-                              0.5, 0.5, 0.5, 1.0);
+  0.0, 0.5, 0.0, 0.0, 
+  0.0, 0.0, 0.5, 0.0, 
+  0.5, 0.5, 0.5, 1.0);
 
 attribute vec4 position;
 attribute vec3 normal;
@@ -94,7 +123,7 @@ varying vec4 vPosition;
 varying vec4 positionW;
 
 void main() {
-  
+
   positionW = model * position;
 
   normalW = (model * vec4(normal, 0.0)).xyz;
@@ -142,7 +171,7 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
 void main() {
  vec3 color = phong(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), lightIntensity, texture2D(env, texCoordI).rgb);
 
-  vec3 depth = vPosition.xyz / vPosition.w;
+ vec3 depth = vPosition.xyz / vPosition.w;
   //depth.z = distance(positionW.xyz, lightPosition);// * linearDepthConstant;
 
     //
@@ -151,50 +180,50 @@ void main() {
     
     // Offset depth a bit
     // This causes "Peter Panning", but solves "Shadow Acne"
-     depth.z *= 0.998;
+    depth.z *= 0.98;
     
     float shadowDepth = texture2D(shadowMap, depth.xy).a;
 
     if ( depth.z < shadowDepth || shadowDepth > 0.98) {
-      gl_FragColor.rgb = color;
+      gl_FragColor.rgb += color;
     }else {
-      gl_FragColor.rgb = vec3(1.0,0.0,0.0); 
+      gl_FragColor.rgb += vec3(1.0,0.0,0.0); 
     }
 
-    // gl_FragColor.rgb = vec3(1.0-shadowDepth, 1.0-shadowDepth, 1.0-shadowDepth);
+    // gl_FragColor.rgb = vec3(shadowDepth, shadowDepth, shadowDepth);
       // gl_FragColor.rgb = color;
-    gl_FragColor.a = 1.0;
-}
-</script>
-<!-- EOF Phong lighting model, Phong shading -->
+      gl_FragColor.a = 1.0;
+    }
+    </script>
+    <!-- EOF Phong lighting model, Phong shading -->
 
 
 
 
 
-<!-- Monitor shading -->
-<script id="vs2" type="text/glsl">
-attribute vec4 position;
-varying vec2 texCoordI;
+    <!-- Monitor shading -->
+    <script id="vs2" type="text/glsl">
+    attribute vec4 position;
+    varying vec2 texCoordI;
 
-uniform mat4 model;
+    uniform mat4 model;
 
-void main() {
-	texCoordI = (position.xy + 1.0) / 2.0;
-	gl_Position = model * position;
-}
-</script>
+    void main() {
+     texCoordI = (position.xy + 1.0) / 2.0;
+     gl_Position = model * position;
+   }
+   </script>
 
-<script id="fs2" type="text/glsl">
-precision highp float;
+   <script id="fs2" type="text/glsl">
+   precision highp float;
 
-varying vec2 texCoordI;
-uniform sampler2D colorBuffer;
+   varying vec2 texCoordI;
+   uniform sampler2D colorBuffer;
 
-void main() {
-	gl_FragColor.rgb = texture2D(colorBuffer, texCoordI).rgb;
-	gl_FragColor.a = 1.0;
-}
-</script>
-<!-- EOF Monitor -->
-</html>
+   void main() {
+     gl_FragColor.rgb = texture2D(colorBuffer, texCoordI).rgb;
+     gl_FragColor.a = 1.0;
+   }
+   </script>
+   <!-- EOF Monitor -->
+   </html>
