@@ -41,14 +41,14 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
     <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
      <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_0" checked="true">Licht 1</input></div>    
      <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_x" min="-20" max="20" value="0">PosX</input></div>
-     <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_y" min="0" max="20" value="3">PosY</input></div>
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_y" min="2" max="20" value="3">PosY</input></div>
      <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_z" min="-20" max="20" value="0">PosZ</input></div>
      <div style=" -webkit-box-flex:1;"><input id="light_0_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input></div>
    </div>
    <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
      <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_1">Licht 2</input></div>    
      <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_x" min="-20" max="20" value="-10">PosX</input></div>
-     <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_y" min="0" max="20" value="10">PosY</input></div>
+     <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_y" min="2" max="20" value="10">PosY</input></div>
      <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_z" min="-20" max="20" value="10">PosZ</input></div>
      <div style=" -webkit-box-flex:1;"><input id="light_1_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input></div>
    </div>
@@ -180,7 +180,7 @@ void main() {
     
     // Offset depth a bit
     // This causes "Peter Panning", but solves "Shadow Acne"
-    depth.z *= 0.98;
+    depth.z *= 0.92;
     
     float shadowDepth = texture2D(shadowMap, depth.xy).a;
 

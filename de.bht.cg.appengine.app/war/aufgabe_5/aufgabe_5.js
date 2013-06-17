@@ -45,6 +45,7 @@ function initialize() {
 	// Setup the canvas widget for WebGL.
 	window.canvas = document.getElementById("canvas");
 	window.gl = tdl.webgl.setupWebGL(canvas);
+	gl.blendFunc(gl.SRC_COLOR, gl.SRC_COLOR);
 
 	// Create the shader programs.
 	var programs = createProgramsFromTags();
@@ -129,7 +130,6 @@ function initialize() {
       }
       lightPosition = vec3.create(lights[0].position);
       lightIntensity = vec3.create(lights[0].color);
-      // mat4.multiply(mat4.identity(shadowView), getCameraTransformationMatrix(lightPosition, 0.0, -90.0));
    }
    
    readLights();
@@ -210,7 +210,7 @@ function initialize() {
 
 	var shadowView = mat4.identity();
 	mat4.multiply(shadowView, getCameraTransformationMatrix(lightPosition, 0.0, -90.0));//mat4.lookAt(lightPosition, target, lightup, shadowView);
-	var shadowprojection = mat4.perspective(2024, canvas.clientWidth / canvas.clientHeight, 1.0, 50, shadowprojection);
+	var shadowprojection = mat4.perspective(2024, canvas.clientWidth / canvas.clientHeight, 1.0, 10.0, shadowprojection);
 	// Uniforms for lighting.
 	var color = vec3.create([1.0,0.0,0.0]);
 
@@ -238,7 +238,7 @@ function initialize() {
 		model : floorModel
 	};
 
-	mat4.translate(mat4.identity(floorPer.model), [0.0, -1.0, 0.0]);
+	mat4.translate(mat4.identity(floorPer.model), [0.0, -5.0, 0.0]);
 	mat4.translate(mat4.identity(torusPer.model), [0.0, 0.0, 0.0]);
 	mat4.translate(mat4.identity(torus2Per.model), [2.0, 0.0, 0.0]);
 
@@ -248,50 +248,50 @@ function initialize() {
 	var monitor = new Monitor(programs, [framebuffer.texture, shadowbuffer[0].depthTexture, shadowbuffer[1].depthTexture]);
 
 	function render() {
-
 		tdl.webgl.requestAnimationFrame(render, canvas);
 
+		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		for (var i = 0; i < lights.length; i++) {
 			if(lights[i]){
 		        lightPosition = vec3.create(lights[i].position);
 		        lightIntensity = vec3.create(lights[i].color);
-		        shadowView = mat4.identity();
-		        mat4.multiply(shadowView, getCameraTransformationMatrix(lightPosition, 0.0, -90.0));
 		        textures.shadowMap = shadowbuffer[i].depthTexture;
 		        groundTextures.shadowMap = shadowbuffer[i].depthTexture;
-		        shadowbuffer[i].bind();
-				renderShadowMap();
+		        //shadowbuffer[i].bind();
+				renderShadowMap(i);
 			}
 		}
+		finishRender();
 	}
 
 	// Renders one frame and registers itself for the next frame.
-	function renderShadowMap() {
+	function renderShadowMap(i) {
 
 		torus.setProgram(programs[0]);
 		obj2.setProgram(programs[0]);
 		floor.setProgram(programs[0]);
 
-		tdl.webgl.requestAnimationFrame(renderShadowMap, canvas);
+		// tdl.webgl.requestAnimationFrame(renderShadowMap, canvas);
 
 		// Setup global WebGL rendering behavior.
 		gl.enable(gl.BLEND);
 		gl.viewport(0, 0, canvas.width, canvas.width * 0.6);
 		gl.colorMask(true, true, true, true);
 		
-		shadowbuffer[0].bind();
+		shadowbuffer[i].bind();
 		gl.depthMask(true);
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		gl.clear(gl.DEPTH_BUFFER_BIT);
 
 		gl.enable(gl.CULL_FACE);
 		gl.enable(gl.DEPTH_TEST);
 
 		torusConst.lightPosition = lightPosition;
 		torusConst.lightIntensity = lightIntensity;
+
 		mat4.multiply(mat4.identity(shadowView), getCameraTransformationMatrix(lightPosition, 0.0, -90.0));
 
 		torusConst.view = shadowView;
-		torusConst.projection = shadowprojection;
+		torusConst.projection = mat4.perspective(2024, canvas.clientWidth / canvas.clientHeight, lightPosition[1] - 0.5, lightPosition[1] + 10.0, shadowprojection);
 
 		torus.drawPrep(torusConst);
 		torus.draw(torusPer);
@@ -317,14 +317,13 @@ function renderScene() {
 		
 		framebuffer.bind();
 		gl.depthMask(true);
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		gl.clear(gl.DEPTH_BUFFER_BIT);
 
 		gl.enable(gl.CULL_FACE);
 		gl.enable(gl.DEPTH_TEST);
 		
 		torusConst.view = view;
 		torusConst.projection = projection;
-
 
 		torus.drawPrep(torusConst);
 
@@ -336,8 +335,6 @@ function renderScene() {
 
 
 		floor.draw(floorPer);
-
-		finishRender();
 	}
 
 
@@ -354,7 +351,7 @@ function renderScene() {
 
 
 	// Initial call to get the rendering started.
-	renderShadowMap();
+	render();
 
 	function handleMouseDown(event) {
 		mouseDown = true;
