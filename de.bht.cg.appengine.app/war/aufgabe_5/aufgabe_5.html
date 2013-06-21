@@ -23,6 +23,7 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 <script type="text/javascript" src="Entity.js"></script>
 <script type="text/javascript" src="Monitor.js"></script>
 <script type="text/javascript" src="light.js"></script>
+<script type="text/javascript" src="Camera.js"></script>
 </head>
 
 <body>
@@ -185,7 +186,7 @@ void main() {
     
     float shadowDepth = texture2D(shadowMap, depth.xy).a;
 
-    if ( depth.z < shadowDepth || shadowDepth > 0.98) {
+    if ( depth.z < shadowDepth || shadowDepth > depth.z) {
       gl_FragColor.rgb += color;
     } else {
       gl_FragColor.rgb += vec3(0.0,0.0,0.0); 

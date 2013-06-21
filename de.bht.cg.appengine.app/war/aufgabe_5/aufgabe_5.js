@@ -46,8 +46,7 @@ function initialize() {
 	window.canvas = document.getElementById("canvas");
 	window.gl = tdl.webgl.setupWebGL(canvas);
 	gl.blendFunc(gl.SRC_COLOR, gl.DST_ALPHA);
-	//gl.blendFunc(gl.ONE, gl.ONE);
-	//gl.clearColor(0,0,0,0);
+
 
 	// Create the shader programs.
 	var programs = createProgramsFromTags();
@@ -103,11 +102,9 @@ function initialize() {
 	var lightPosition = vec3.create([0.0,3.0,0.0]);
 	var lightIntensity = vec3.create([1,1,1]);
 
-	var eyePosition = vec3.create([0.0, 3.0, -6.0]);
-	var viewTransformMatrix = mat4.create();
-	var target = vec3.create([0.0,0.0,0.0]);
-	var up = vec3.create([0.0,1.0,0.0]);
-	var lightup = vec3.create([0.0,1.0,0.0]);
+	var cameraY = 0.0;
+	var camera = new Camera(vec3.create([0.0, 3.0, 10.0]), -30.0, 0.0);
+
 	var diffuseConst = document.getElementById("diffuse").value/100;
 
 	var readLights = function() {
@@ -128,7 +125,10 @@ function initialize() {
 				var x = document.getElementById("light_" + i + "_x").value/10;
 				var y = document.getElementById("light_" + i + "_y").value/10;
 				var z = document.getElementById("light_" + i + "_z").value/10;
-				lights.push(new Light([x,y,z], stringToArray(document.getElementById("light_" + i + "_i").value)));
+
+				var arcX = -90.0;
+				var arcY = 0.0;
+				lights.push(new Light([x,y,z], stringToArray(document.getElementById("light_" + i + "_i").value), arcX, arcY));
 			}
 		}
 		lightPosition = vec3.create(lights[0].position);
@@ -148,15 +148,36 @@ function initialize() {
 		diffuseConst = document.getElementById("diffuse").value/100;
 	};
 
-
+	window.onkeydown = function() {
+		var key = String.fromCharCode(event.which);
+		if (key == "W") {
+			camera.fw = true;
+		} else if (key == "A") {
+			camera.l = true;
+		} else if (key == "S") {
+			camera.bw = true;
+		} else if (key == "D") {
+			camera.r = true;
+		}
+	}
+	window.onkeyup = function() {
+		var key = String.fromCharCode(event.which);
+		if (key == "W") {
+			camera.fw = false;
+		} else if (key == "A") {
+			camera.l = false;
+		} else if (key == "S") {
+			camera.bw = false;
+		} else if (key == "D") {
+			camera.r = false;
+		}
+	}
 
 	// Register a keypress-handler for shader program switching using the number
 	// keys.
 	window.onkeypress = function(event) {
 		var key = String.fromCharCode(event.which);
-		if (key == "e") {
-			useBumps = !useBumps;
-		} else if (key == "y") {
+		if (key == "y") {
 			var newmodel = tdl.primitives.createCube(0.75);
 			tdl.primitives.addTangentsAndBinormals(newmodel);
 			torus.setBuffers(newmodel, textures);
@@ -168,55 +189,22 @@ function initialize() {
 			var newmodel = tdl.primitives.createSphere(0.45, 60, 60);
 			tdl.primitives.addTangentsAndBinormals(newmodel);
 			torus.setBuffers(newmodel, textures);
-		} else if (key == "w") {
-			mat4.identity(viewTransformMatrix);
-			mat4.translate(viewTransformMatrix, [0, 0, 0.5]);
-			mat4.multiply(viewTransformMatrix, view, view);
-		} else if (key == "a") {
-			mat4.identity(viewTransformMatrix);
-			mat4.translate(viewTransformMatrix, [-0.5, 0, 0]);
-			mat4.multiply(viewTransformMatrix, view, view);
-		} else if (key == "s") {
-			mat4.identity(viewTransformMatrix);
-			mat4.translate(viewTransformMatrix, [0, 0, -0.5]);
-			mat4.multiply(viewTransformMatrix, view, view);
-		} else if (key == "d") {
-			mat4.identity(viewTransformMatrix);
-			mat4.translate(viewTransformMatrix, [0.5, 0, 0]);
-			mat4.multiply(viewTransformMatrix, view, view);
-		} else if (key == "W") {
-			mat4.identity(viewTransformMatrix);
-			mat4.rotate(viewTransformMatrix, degToRad(-1), [1, 0, 0]);
-			mat4.multiply(viewTransformMatrix, view, view);
-		} else if (key == "S") {
-			mat4.identity(viewTransformMatrix);
-			mat4.rotate(viewTransformMatrix, degToRad(1), [1, 0, 0]);
-			mat4.multiply(viewTransformMatrix, view, view);
-		} else if (key == "A") {
-			mat4.identity(viewTransformMatrix);
-			mat4.rotate(viewTransformMatrix, degToRad(-1), [0, 1, 0]);
-			mat4.multiply(viewTransformMatrix, view, view);
-		} else if (key == "D") {
-			mat4.identity(viewTransformMatrix);
-			mat4.rotate(viewTransformMatrix, degToRad(1), [0, 1, 0]);
-			mat4.multiply(viewTransformMatrix, view, view);
-		} else if (key == 'm') {
+		}else if (key == 'm') {
 			showMonitor = !showMonitor;
 		}	
 	};
 
 	// Create some matrices and vectors now to save time later.
-	var projection = mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 20, projection);
+	var projection = mat4.perspective(60, canvas.clientWidth / canvas.clientHeight, 0.1, 200, projection);
 	
-	var view = mat4.identity();//mat4.lookAt(eyePosition, target, up, view);
-	mat4.multiply(view, getCameraTransformationMatrix(eyePosition, 180.0, -30.0));
+	var view = mat4.identity();
+	mat4.multiply(view, camera.getTransformationMatrix());
 	var model = mat4.create();
 	var model2 = mat4.create();
 	var floorModel = mat4.create();
 
 	var shadowView = mat4.identity();
-	mat4.multiply(shadowView, getCameraTransformationMatrix(lightPosition, 0.0, -90.0));//mat4.lookAt(lightPosition, target, lightup, shadowView);
-	var shadowprojection = mat4.perspective(2024, canvas.clientWidth / canvas.clientHeight, 1.0, 10.0, shadowprojection);
+	var shadowprojection = mat4.identity();
 	// Uniforms for lighting.
 	var color = vec3.create([1.0,0.0,0.0]);
 
@@ -255,6 +243,7 @@ function initialize() {
 	var monitor = new Monitor(programs, [framebuffer.texture, shadowbuffer[0].depthTexture, shadowbuffer[1].depthTexture]);
 
 	function render() {
+		mat4.multiply(mat4.identity(view), camera.getTransformationMatrix());
 		tdl.webgl.requestAnimationFrame(render, canvas);
 		torus.setProgram(programs[3]);
 		obj2.setProgram(programs[3]);
@@ -280,11 +269,12 @@ function initialize() {
 		floor.draw(floorPer);
 		for (var i = 0; i < lights.length; i++) {
 			if(lights[i]){
-		        lightPosition = vec3.create(lights[i].position);
-		        lightIntensity = vec3.create(lights[i].color);
-		        textures.shadowMap = shadowbuffer[i].depthTexture;
-		        groundTextures.shadowMap = shadowbuffer[i].depthTexture;
+				lightPosition = vec3.create(lights[i].position);
+				lightIntensity = vec3.create(lights[i].color);
+				textures.shadowMap = shadowbuffer[i].depthTexture;
+				groundTextures.shadowMap = shadowbuffer[i].depthTexture;
 				renderShadowMap(i);
+				renderScene();
 			}
 		}
 		finishRender();
@@ -314,10 +304,12 @@ function initialize() {
 		torusConst.lightPosition = lightPosition;
 		torusConst.lightIntensity = lightIntensity;
 
-		mat4.multiply(mat4.identity(shadowView), getCameraTransformationMatrix(lightPosition, 0.0, -90.0));
-
+		mat4.multiply(mat4.identity(shadowView), getCameraTransformationMatrix(lightPosition, lights[i].arcX, lights[i].arcY));
 		torusConst.view = shadowView;
-		torusConst.projection = mat4.perspective(2024, canvas.clientWidth / canvas.clientHeight, lightPosition[1] - 1.5, lightPosition[1] + 20.0, shadowprojection);
+		mat4.perspective(2024, canvas.clientWidth / canvas.clientHeight, lightPosition[1] - 1.5, lightPosition[1] + 20.0, shadowprojection);
+		torusConst.projection = shadowprojection;
+		torusConst.lightSourceViewMatrix = shadowView;
+		torusConst.lightSourceProjectionMatrix = shadowprojection;
 
 		torus.drawPrep(torusConst);
 		torus.draw(torusPer);
@@ -325,8 +317,6 @@ function initialize() {
 		obj2.draw(torus2Per);
 		floor.drawPrep(torusConst);
 		floor.draw(floorPer);
-
-		renderScene();
 	}
 
 // Renders one frame and registers itself for the next frame.
@@ -391,26 +381,24 @@ function renderScene() {
 	}
 
 	function handleMouseMove(event) {
-		if (!mouseDown) {
-			return;
-		}
 		var newX = event.clientX;
 		var newY = event.clientY;
-
 		var deltaX = newX - lastMouseX;
-		var newRotationMatrix = mat4.create();
-		mat4.identity(newRotationMatrix);
-		mat4.rotate(newRotationMatrix, degToRad(deltaX / 50), [0, 0, 1]);
-
 		var deltaY = newY - lastMouseY;
-		mat4.rotate(newRotationMatrix, degToRad(deltaY / 50), [1, 0, 0]);
-
-		mat4.multiply(newRotationMatrix, objectRotationMatrix, objectRotationMatrix);
-
+		if(!mouseDown) {
+			// camera.arcX = newY - window.innerHeight;
+			// camera.arcY = newX - window.innerWidth;
+		}
+		if (mouseDown) {
+			var newRotationMatrix = mat4.create();
+			mat4.identity(newRotationMatrix);
+			mat4.rotate(newRotationMatrix, degToRad(deltaX / 50), [0, 0, 1]);
+			mat4.rotate(newRotationMatrix, degToRad(deltaY / 50), [1, 0, 0]);
+			mat4.multiply(newRotationMatrix, objectRotationMatrix, objectRotationMatrix);
+			mat4.multiply(torusPer.model, objectRotationMatrix);
+		}
 		lastMouseX = newX
 		lastMouseY = newY;
-
-		mat4.multiply(torusPer.model, objectRotationMatrix);
 	}
 
 	function degToRad(degrees) {
@@ -430,15 +418,12 @@ function renderScene() {
 		return lights;
 	} 
 
-	function getCameraTransformationMatrix(translate, rotateY, rotateX){
+	function getCameraTransformationMatrix(translate, rotateX, rotateY){
 		var result = mat4.create();
 		mat4.identity(result);
- /*   	mat4.rotate(result, degToRad(rotateX), [-1,0,0]);
-    	mat4.rotate(result, degToRad(rotateY), [0,-1,0]);
-    	mat4.translate(result, vec3.multiply(translate, [-1,-1,-1]));*/
-    	mat4.translate(result, translate);
-    	mat4.rotate(result, degToRad(rotateY), [0,1,0]);
-    	mat4.rotate(result, degToRad(rotateX), [1,0,0]);
-    	return mat4.inverse(result);
-    }
+		mat4.translate(result, translate);
+		mat4.rotate(result, degToRad(rotateY), [0,1,0]);
+		mat4.rotate(result, degToRad(rotateX), [1,0,0]);
+		return mat4.inverse(result);
+	}
 }
