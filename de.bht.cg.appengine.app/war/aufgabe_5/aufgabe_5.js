@@ -45,7 +45,9 @@ function initialize() {
 	// Setup the canvas widget for WebGL.
 	window.canvas = document.getElementById("canvas");
 	window.gl = tdl.webgl.setupWebGL(canvas);
-	gl.blendFunc(gl.SRC_COLOR, gl.SRC_COLOR);
+	gl.blendFunc(gl.SRC_COLOR, gl.DST_ALPHA);
+	//gl.blendFunc(gl.ONE, gl.ONE);
+	//gl.clearColor(0,0,0,0);
 
 	// Create the shader programs.
 	var programs = createProgramsFromTags();
@@ -76,11 +78,11 @@ function initialize() {
 
 	// Load textures.
 	var textures = {
-		env: tdl.textures.loadTexture("textures/earth-2k-land-ocean-noshade.png"),
+		env: tdl.textures.loadTexture("textures/blank_floor.png"),
 		shadowMap : shadowbuffer[0].depthTexture
 	};
 	var groundTextures = {
-		env: tdl.textures.loadTexture("textures/PalmTrees/negy.jpg"),
+		env: tdl.textures.loadTexture("textures/blank_floor.png"),
 		shadowMap: shadowbuffer[0].depthTexture
 	};
 
@@ -106,6 +108,7 @@ function initialize() {
 	var target = vec3.create([0.0,0.0,0.0]);
 	var up = vec3.create([0.0,1.0,0.0]);
 	var lightup = vec3.create([0.0,1.0,0.0]);
+	var diffuseConst = document.getElementById("diffuse").value/100;
 
 	var readLights = function() {
 		function stringToArray(string, defaulted) {
@@ -122,9 +125,9 @@ function initialize() {
 		lights = [];
 		for(var i = 0; i < 4; i++) {
 			if(document.getElementById("light_" + i).checked) {
-				var x = document.getElementById("light_" + i + "_x").value;
-				var y = document.getElementById("light_" + i + "_y").value;
-				var z = document.getElementById("light_" + i + "_z").value;
+				var x = document.getElementById("light_" + i + "_x").value/10;
+				var y = document.getElementById("light_" + i + "_y").value/10;
+				var z = document.getElementById("light_" + i + "_z").value/10;
 				lights.push(new Light([x,y,z], stringToArray(document.getElementById("light_" + i + "_i").value)));
 			}
 		}
@@ -141,6 +144,9 @@ function initialize() {
 		document.getElementById("light_" + i + "_z").onchange=readLights;
 		document.getElementById("light_" + i + "_i").onchange=readLights;
 	}
+	document.getElementById("diffuse").onchange=function() {
+		diffuseConst = document.getElementById("diffuse").value/100;
+	};
 
 
 
@@ -222,7 +228,8 @@ function initialize() {
 		lightPosition : lightPosition,
 		lightIntensity : lightIntensity,
 		lightSourceProjectionMatrix : shadowprojection,
-		lightSourceViewMatrix : shadowView
+		lightSourceViewMatrix : shadowView,
+		diffuseConst : diffuseConst
 	};
 
 	// Uniform variables that change for each torus in a frame.
@@ -252,15 +259,18 @@ function initialize() {
 		torus.setProgram(programs[3]);
 		obj2.setProgram(programs[3]);
 		floor.setProgram(programs[3]);
+		framebuffer.bind();
+		gl.clear(gl.COLOR_BUFFER_BIT);
 
 		gl.enable(gl.BLEND);
 		gl.viewport(0, 0, canvas.width, canvas.width * 0.6);
 		gl.colorMask(true, true, true, true);
-		framebuffer.bind();
 		gl.depthMask(true);
 		gl.enable(gl.CULL_FACE);
 		gl.enable(gl.DEPTH_TEST);
 		gl.clear(gl.DEPTH_BUFFER_BIT);
+
+		torusConst.diffuseConst = diffuseConst;
 
 		torus.drawPrep(torusConst);
 		torus.draw(torusPer);
@@ -268,15 +278,12 @@ function initialize() {
 		obj2.draw(torus2Per);
 		floor.drawPrep(torusConst);
 		floor.draw(floorPer);
-
-		gl.clear(gl.DEPTH_BUFFER_BIT);
 		for (var i = 0; i < lights.length; i++) {
 			if(lights[i]){
 		        lightPosition = vec3.create(lights[i].position);
 		        lightIntensity = vec3.create(lights[i].color);
 		        textures.shadowMap = shadowbuffer[i].depthTexture;
 		        groundTextures.shadowMap = shadowbuffer[i].depthTexture;
-		        //shadowbuffer[i].bind();
 				renderShadowMap(i);
 			}
 		}
@@ -310,7 +317,7 @@ function initialize() {
 		mat4.multiply(mat4.identity(shadowView), getCameraTransformationMatrix(lightPosition, 0.0, -90.0));
 
 		torusConst.view = shadowView;
-		torusConst.projection = mat4.perspective(2024, canvas.clientWidth / canvas.clientHeight, lightPosition[1] - 0.5, lightPosition[1] + 10.0, shadowprojection);
+		torusConst.projection = mat4.perspective(2024, canvas.clientWidth / canvas.clientHeight, lightPosition[1] - 1.5, lightPosition[1] + 20.0, shadowprojection);
 
 		torus.drawPrep(torusConst);
 		torus.draw(torusPer);
