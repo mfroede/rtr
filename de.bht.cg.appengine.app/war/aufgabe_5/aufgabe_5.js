@@ -107,40 +107,40 @@ function initialize() {
 	var up = vec3.create([0.0,1.0,0.0]);
 	var lightup = vec3.create([0.0,1.0,0.0]);
 
-   var readLights = function() {
-      function stringToArray(string, defaulted) {
-         if(!string.match(/-?([0-9]*)\s*,\s*-?([0-9]*)\s*,\s*-?([0-9]*)\s?/)) {
-            return [1,1,1];
-         }
-         var arr = string.split(',');
-         var x = arr[0].trim();
-         var y = arr[1].trim();
-         var z = arr[2].trim();
-         return [x, y, z];
-      };
-      
-      lights = [];
-      for(var i = 0; i < 4; i++) {
-         if(document.getElementById("light_" + i).checked) {
-            var x = document.getElementById("light_" + i + "_x").value;
-            var y = document.getElementById("light_" + i + "_y").value;
-            var z = document.getElementById("light_" + i + "_z").value;
-            lights.push(new Light([x,y,z], stringToArray(document.getElementById("light_" + i + "_i").value)));
-         }
-      }
-      lightPosition = vec3.create(lights[0].position);
-      lightIntensity = vec3.create(lights[0].color);
-   }
-   
-   readLights();
-   
-   for(var i = 0; i < 4; i++) {
-      document.getElementById("light_" + i).onchange=readLights;
-      document.getElementById("light_" + i + "_x").onchange=readLights;
-      document.getElementById("light_" + i + "_y").onchange=readLights;
-      document.getElementById("light_" + i + "_z").onchange=readLights;
-      document.getElementById("light_" + i + "_i").onchange=readLights;
-   }
+	var readLights = function() {
+		function stringToArray(string, defaulted) {
+			if(!string.match(/-?([0-9]*)\s*,\s*-?([0-9]*)\s*,\s*-?([0-9]*)\s?/)) {
+				return [1,1,1];
+			}
+			var arr = string.split(',');
+			var x = arr[0].trim();
+			var y = arr[1].trim();
+			var z = arr[2].trim();
+			return [x, y, z];
+		};
+
+		lights = [];
+		for(var i = 0; i < 4; i++) {
+			if(document.getElementById("light_" + i).checked) {
+				var x = document.getElementById("light_" + i + "_x").value;
+				var y = document.getElementById("light_" + i + "_y").value;
+				var z = document.getElementById("light_" + i + "_z").value;
+				lights.push(new Light([x,y,z], stringToArray(document.getElementById("light_" + i + "_i").value)));
+			}
+		}
+		lightPosition = vec3.create(lights[0].position);
+		lightIntensity = vec3.create(lights[0].color);
+	}
+
+	readLights();
+
+	for(var i = 0; i < 4; i++) {
+		document.getElementById("light_" + i).onchange=readLights;
+		document.getElementById("light_" + i + "_x").onchange=readLights;
+		document.getElementById("light_" + i + "_y").onchange=readLights;
+		document.getElementById("light_" + i + "_z").onchange=readLights;
+		document.getElementById("light_" + i + "_i").onchange=readLights;
+	}
 
 
 
@@ -249,8 +249,27 @@ function initialize() {
 
 	function render() {
 		tdl.webgl.requestAnimationFrame(render, canvas);
+		torus.setProgram(programs[3]);
+		obj2.setProgram(programs[3]);
+		floor.setProgram(programs[3]);
 
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+		gl.enable(gl.BLEND);
+		gl.viewport(0, 0, canvas.width, canvas.width * 0.6);
+		gl.colorMask(true, true, true, true);
+		framebuffer.bind();
+		gl.depthMask(true);
+		gl.enable(gl.CULL_FACE);
+		gl.enable(gl.DEPTH_TEST);
+		gl.clear(gl.DEPTH_BUFFER_BIT);
+
+		torus.drawPrep(torusConst);
+		torus.draw(torusPer);
+		obj2.drawPrep(torusConst);
+		obj2.draw(torus2Per);
+		floor.drawPrep(torusConst);
+		floor.draw(floorPer);
+
+		gl.clear(gl.DEPTH_BUFFER_BIT);
 		for (var i = 0; i < lights.length; i++) {
 			if(lights[i]){
 		        lightPosition = vec3.create(lights[i].position);
@@ -392,21 +411,21 @@ function renderScene() {
 	}
 
 	function setUpLights() {
-      lights = [];
-      for(var i = 0; i < 4; i++) {
-         if(document.getElementById("light_" + i).checked) {
-            var x = document.getElementById("light_" + i + "_x").value;
-            var y = document.getElementById("light_" + i + "_y").value;
-            var z = document.getElementById("light_" + i + "_z").value;
-            lights.push(new Light([x,y,z],stringToArray(document.getElementById("light_" + i + "_i").value)));
-         }
-      }
-      return lights;
-    } 
+		lights = [];
+		for(var i = 0; i < 4; i++) {
+			if(document.getElementById("light_" + i).checked) {
+				var x = document.getElementById("light_" + i + "_x").value;
+				var y = document.getElementById("light_" + i + "_y").value;
+				var z = document.getElementById("light_" + i + "_z").value;
+				lights.push(new Light([x,y,z],stringToArray(document.getElementById("light_" + i + "_i").value)));
+			}
+		}
+		return lights;
+	} 
 
-    function getCameraTransformationMatrix(translate, rotateY, rotateX){
-    	var result = mat4.create();
-    	mat4.identity(result);
+	function getCameraTransformationMatrix(translate, rotateY, rotateX){
+		var result = mat4.create();
+		mat4.identity(result);
  /*   	mat4.rotate(result, degToRad(rotateX), [-1,0,0]);
     	mat4.rotate(result, degToRad(rotateY), [0,-1,0]);
     	mat4.translate(result, vec3.multiply(translate, [-1,-1,-1]));*/
