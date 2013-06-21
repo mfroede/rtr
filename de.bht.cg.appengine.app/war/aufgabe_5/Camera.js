@@ -11,16 +11,16 @@ var Camera = function(position, arcX, arcY) {
 Camera.prototype.getTransformationMatrix = function() {
 	var result = mat4.create();
 	if(this.fw) {
-		this.position[2] += 0.5;
-	}
-	if(this.bw) {
 		this.position[2] -= 0.5;
 	}
+	if(this.bw) {
+		this.position[2] += 0.5;
+	}
 	if(this.r) {
-		this.position[0] -= 0.5;
+		this.position[0] += 0.5;
 	}
 	if(this.l) {
-		this.position[0] += 0.5;
+		this.position[0] -= 0.5;
 	}
 
 

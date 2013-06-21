@@ -98,6 +98,9 @@ function initialize() {
 	var floorModel = tdl.primitives.createPlane(30,30, 1, 1);
 	var floor = new tdl.models.Model(programs[pnum], floorModel, groundTextures);
 
+	var cylinderModel = tdl.primitives.createCylinder(0.45, 2.0, 60, 60);
+	var cylinder = new tdl.models.Model(programs[pnum], cylinderModel, textures);
+
 	var showMonitor = false;
 	var lightPosition = vec3.create([0.0,3.0,0.0]);
 	var lightIntensity = vec3.create([1,1,1]);
@@ -202,7 +205,7 @@ function initialize() {
 	var model = mat4.create();
 	var model2 = mat4.create();
 	var floorModel = mat4.create();
-
+	var cylinderModel = mat4.create();
 	var shadowView = mat4.identity();
 	var shadowprojection = mat4.identity();
 	// Uniforms for lighting.
@@ -233,7 +236,12 @@ function initialize() {
 		model : floorModel
 	};
 
+	var cylinderPer = {
+		model : cylinderModel
+	};
+
 	mat4.translate(mat4.identity(floorPer.model), [0.0, -5.0, 0.0]);
+	mat4.translate(mat4.identity(cylinderPer.model), [5.0, 0.0, 0.0]);
 	mat4.translate(mat4.identity(torusPer.model), [0.0, 0.0, 0.0]);
 	mat4.translate(mat4.identity(torus2Per.model), [2.0, 0.0, 0.0]);
 
@@ -248,6 +256,7 @@ function initialize() {
 		torus.setProgram(programs[3]);
 		obj2.setProgram(programs[3]);
 		floor.setProgram(programs[3]);
+		cylinder.setProgram(programs[3]);
 		framebuffer.bind();
 		gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -260,13 +269,7 @@ function initialize() {
 		gl.clear(gl.DEPTH_BUFFER_BIT);
 
 		torusConst.diffuseConst = diffuseConst;
-
-		torus.drawPrep(torusConst);
-		torus.draw(torusPer);
-		obj2.drawPrep(torusConst);
-		obj2.draw(torus2Per);
-		floor.drawPrep(torusConst);
-		floor.draw(floorPer);
+		drawScene();
 		for (var i = 0; i < lights.length; i++) {
 			if(lights[i]){
 				lightPosition = vec3.create(lights[i].position);
@@ -286,6 +289,7 @@ function initialize() {
 		torus.setProgram(programs[0]);
 		obj2.setProgram(programs[0]);
 		floor.setProgram(programs[0]);
+		cylinder.setProgram(programs[0]);
 
 		// tdl.webgl.requestAnimationFrame(renderShadowMap, canvas);
 
@@ -311,12 +315,7 @@ function initialize() {
 		torusConst.lightSourceViewMatrix = shadowView;
 		torusConst.lightSourceProjectionMatrix = shadowprojection;
 
-		torus.drawPrep(torusConst);
-		torus.draw(torusPer);
-		obj2.drawPrep(torusConst);
-		obj2.draw(torus2Per);
-		floor.drawPrep(torusConst);
-		floor.draw(floorPer);
+		drawScene();
 	}
 
 // Renders one frame and registers itself for the next frame.
@@ -325,6 +324,7 @@ function renderScene() {
 	torus.setProgram(programs[1]);
 	obj2.setProgram(programs[1]);
 	floor.setProgram(programs[1]);
+	cylinder.setProgram(programs[1]);
 
 		// Setup global WebGL rendering behavior.
 		gl.enable(gl.BLEND);
@@ -341,16 +341,7 @@ function renderScene() {
 		torusConst.view = view;
 		torusConst.projection = projection;
 
-		torus.drawPrep(torusConst);
-
-		torus.draw(torusPer);
-		obj2.drawPrep(torusConst);
-		obj2.draw(torus2Per);
-		
-		floor.drawPrep(torusConst);
-
-
-		floor.draw(floorPer);
+		drawScene();
 	}
 
 
@@ -425,5 +416,32 @@ function renderScene() {
 		mat4.rotate(result, degToRad(rotateY), [0,1,0]);
 		mat4.rotate(result, degToRad(rotateX), [1,0,0]);
 		return mat4.inverse(result);
+	}
+
+	function drawScene() {
+		torus.drawPrep(torusConst);
+		torus.draw(torusPer);
+		obj2.drawPrep(torusConst);
+		obj2.draw(torus2Per);
+		
+		mat4.translate(mat4.identity(cylinderPer.model), [2.5, -2.5, 2.5]);
+		cylinder.drawPrep(torusConst);
+		cylinder.draw(cylinderPer);
+
+				mat4.translate(mat4.identity(cylinderPer.model), [-2.5, -2.5, -2.5]);
+		cylinder.drawPrep(torusConst);
+		cylinder.draw(cylinderPer);
+
+				mat4.translate(mat4.identity(cylinderPer.model), [2.5, -2.5, -2.5]);
+		cylinder.drawPrep(torusConst);
+		cylinder.draw(cylinderPer);
+
+				mat4.translate(mat4.identity(cylinderPer.model), [-2.5, -2.5, 2.5]);
+		cylinder.drawPrep(torusConst);
+		cylinder.draw(cylinderPer);
+
+
+		floor.drawPrep(torusConst);
+		floor.draw(floorPer);
 	}
 }
