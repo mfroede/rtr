@@ -240,7 +240,7 @@ function initialize() {
 		model : cylinderModel
 	};
 
-	mat4.translate(mat4.identity(floorPer.model), [0.0, -5.0, 0.0]);
+	mat4.translate(mat4.identity(floorPer.model), [0.0, -4.0, 0.0]);
 	mat4.translate(mat4.identity(cylinderPer.model), [5.0, 0.0, 0.0]);
 	mat4.translate(mat4.identity(torusPer.model), [0.0, 0.0, 0.0]);
 	mat4.translate(mat4.identity(torus2Per.model), [2.0, 0.0, 0.0]);
