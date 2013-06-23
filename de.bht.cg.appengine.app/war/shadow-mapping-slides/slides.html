@@ -70,14 +70,75 @@ URL: https://code.google.com/p/io-2012-slides
         <h2>Rendern der Shadow Map</h2>
       </hgroup>
     </slide>
+
+    <slide>
+      <hgroup>
+        <h2>Shadow Map aus Sicht der Lichtquelle</h2>
+      </hgroup>
+      <article class="flexbox vcenter">
+        <img style="height: 100%;" src="images/shadowmap_shadow.svg" alt="Shadow Map aus Sicht der Lichtquelle" title="Shadow Map aus Sicht der Lichtquelle">
+        <footer class="source">source: place source info here</footer>
+      </article>
+    </slide>
+
   <slide>
     <hgroup>
-      <p>Shadow Map aus Sicht der Lichtquelle</p>
+      <h2>Scene aus Sicht der Lichtquelle rendern</h2>
     </hgroup>
-    <article>
-      <iframe data-src="../aufgabe_5/shadowmap.html"></iframe>
+    <article article class="smaller">
+      <p>JavaScript</p>
+      <pre class="prettyprint" data-lang="javascript">
+        function renderShadowMap() {
+          obj.setProgram(/*shadow shader program here */);
+          shadowbuffer.bind();<b>
+         mat4.multiply(
+              mat4.identity(shadowView),
+              getCameraTransformationMatrix(lightPosition, 
+                                            light.arcX, 
+                                            light.arcY));
+         objConst.view = shadowView;</b>
+          objConst.lightSourceViewMatrix = shadowView;
+
+          drawScene();
+        }
+      </pre>
     </article>
   </slide>
+
+  <slide>
+    <hgroup>
+      <h2>Shadow Map Shader</h2>
+    </hgroup>
+    <article article class="smaller">
+      <p>Vertex Shader</p>
+      <pre class="prettyprint" data-lang="webgl">
+        uniform mat4 projection;
+        uniform mat4 view;
+        uniform mat4 model;
+
+        attribute vec4 position;
+        void main() {
+          <b>gl_Position = projection * view * model * position;</b>
+        }
+      </pre>
+      <p>Fragment Shader</p>
+      <pre class="prettyprint" data-lang="webgl">
+        void main() {
+          gl_FragColor = vec4(0.0, 0.0, 1.0, 0.0);
+        }
+      </pre>
+    </article>
+  </slide>
+
+      <slide>
+      <hgroup>
+        <h2>Ergebnis</h2>
+      </hgroup>
+      <article>
+        <iframe style="height: 510px; border:none;" data-src="../aufgabe_5/shadowmap.html"></iframe>
+      </article>
+    </slide>
+
     <slide class="segue dark nobackground">
       <aside class="gdbar"><img src="images/bht-logo.png"></aside>
       <hgroup class="auto-fadein">
