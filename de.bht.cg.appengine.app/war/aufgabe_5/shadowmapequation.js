@@ -4,7 +4,6 @@ tdl.require('tdl.models');
 tdl.require('tdl.primitives');
 tdl.require('tdl.textures');
 tdl.require('tdl.framebuffers');
-
 //Loads all shader programs from the DOM and return them in an array.
 function createProgramsFromTags() {
 	var vs = $('script[id^="vs"]');
@@ -12,7 +11,7 @@ function createProgramsFromTags() {
 	var programs = [];
 	for ( var i = 0; i != vs.length; i++)
 		programs[i] = tdl.programs.loadProgram(vs[i].text, fs[i].text);
-	return programs;
+	return programs;	
 }
 
 window.onload = function() {
@@ -45,8 +44,6 @@ function initialize() {
 	// Setup the canvas widget for WebGL.
 	window.canvas = document.getElementById("canvas");
 	window.gl = tdl.webgl.setupWebGL(canvas);
-	gl.blendFunc(gl.SRC_COLOR, gl.DST_ALPHA);
-
 
 	// Create the shader programs.
 	var programs = createProgramsFromTags();
@@ -66,15 +63,11 @@ function initialize() {
 
 	var shadowbuffer = [];
 	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
-	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
-	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
-	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
 
 	var quadTextures = {
 		colorBuffer: framebuffer.texture,
 		depthBuffer: framebuffer.depthTexture
 	};
-
 	// Load textures.
 	var textures = {
 		env: tdl.textures.loadTexture("textures/blank_floor.png"),
@@ -88,10 +81,10 @@ function initialize() {
 	var frag = window.location.hash.substring(1);
 	var pnum = frag ? parseInt(frag) : 0;
 
-	var obj2model = tdl.primitives.createSphere(0.45, 60, 60);
+	var obj2model = tdl.primitives.createTorus(0.4, 0.15, 60, 60);
 	var obj2 = new tdl.models.Model(programs[pnum], obj2model, textures);
 
-	var torusmodel = tdl.primitives.createTorus(0.4, 0.15, 60, 60);
+	var torusmodel = tdl.primitives.createSphere(0.45, 60, 60);
 	tdl.primitives.addTangentsAndBinormals(torusmodel);
 	var torus = new tdl.models.Model(programs[pnum], torusmodel, textures);
 	
@@ -107,9 +100,6 @@ function initialize() {
 
 	var cameraY = 0.0;
 	var camera = new Camera(vec3.create([0.0, 3.0, 10.0]), -30.0, 0.0);
-	// var camera = new Camera(vec3.create([0.0, -4.5, 30.0]), 0.0, 0.0);
-
-	var diffuseConst = document.getElementById("diffuse").value/100;
 
 	var readLights = function() {
 		function stringToArray(string, defaulted) {
@@ -124,58 +114,27 @@ function initialize() {
 		};
 
 		lights = [];
-		for(var i = 0; i < 4; i++) {
-			if(document.getElementById("light_" + i).checked) {
-				var x = document.getElementById("light_" + i + "_x").value/10;
-				var y = document.getElementById("light_" + i + "_y").value/10;
-				var z = document.getElementById("light_" + i + "_z").value/10;
+		if(document.getElementById("light_" + 0).checked) {
+			var x = document.getElementById("light_" + 0 + "_x").value/10;
+			var y = document.getElementById("light_" + 0 + "_y").value/10;
+			var z = document.getElementById("light_" + 0 + "_z").value/10;
 
-				var arcX = -90.0;
-				var arcY = 0.0;
-				lights.push(new Light([x,y,z], stringToArray(document.getElementById("light_" + i + "_i").value), arcX, arcY));
-			}
+			var arcX = -90.0;
+			var arcY = 0.0;
+			lights.push(new Light([x,y,z], stringToArray(document.getElementById("light_" + 0 + "_i").value), arcX, arcY));
 		}
+		
 		lightPosition = vec3.create(lights[0].position);
 		lightIntensity = vec3.create(lights[0].color);
 	}
 
 	readLights();
 
-	for(var i = 0; i < 4; i++) {
-		document.getElementById("light_" + i).onchange=readLights;
-		document.getElementById("light_" + i + "_x").onchange=readLights;
-		document.getElementById("light_" + i + "_y").onchange=readLights;
-		document.getElementById("light_" + i + "_z").onchange=readLights;
-		document.getElementById("light_" + i + "_i").onchange=readLights;
-	}
-	document.getElementById("diffuse").onchange=function() {
-		diffuseConst = document.getElementById("diffuse").value/100;
-	};
-
-	window.onkeydown = function() {
-		var key = String.fromCharCode(event.which);
-		if (key == "W") {
-			camera.fw = true;
-		} else if (key == "A") {
-			camera.l = true;
-		} else if (key == "S") {
-			camera.bw = true;
-		} else if (key == "D") {
-			camera.r = true;
-		}
-	}
-	window.onkeyup = function() {
-		var key = String.fromCharCode(event.which);
-		if (key == "W") {
-			camera.fw = false;
-		} else if (key == "A") {
-			camera.l = false;
-		} else if (key == "S") {
-			camera.bw = false;
-		} else if (key == "D") {
-			camera.r = false;
-		}
-	}
+	document.getElementById("light_" + 0).onchange=readLights;
+	document.getElementById("light_" + 0 + "_x").onchange=readLights;
+	document.getElementById("light_" + 0 + "_y").onchange=readLights;
+	document.getElementById("light_" + 0 + "_z").onchange=readLights;
+	document.getElementById("light_" + 0 + "_i").onchange=readLights;
 
 	// Register a keypress-handler for shader program switching using the number
 	// keys.
@@ -220,8 +179,7 @@ function initialize() {
 		lightPosition : lightPosition,
 		lightIntensity : lightIntensity,
 		lightSourceProjectionMatrix : shadowprojection,
-		lightSourceViewMatrix : shadowView,
-		diffuseConst : diffuseConst
+		lightSourceViewMatrix : shadowView
 	};
 
 	// Uniform variables that change for each torus in a frame.
@@ -241,45 +199,28 @@ function initialize() {
 		model : cylinderModel
 	};
 
-	mat4.translate(mat4.identity(floorPer.model), [0.0, -5.0, 0.0]);
+	mat4.translate(mat4.identity(floorPer.model), [0.0, -4.0, 0.0]);
+	mat4.translate(mat4.identity(cylinderPer.model), [5.0, 0.0, 0.0]);
 	mat4.translate(mat4.identity(torusPer.model), [0.0, 0.0, 0.0]);
 	mat4.translate(mat4.identity(torus2Per.model), [2.0, 0.0, 0.0]);
 
 	var screen = Entity.createQuad(programs[1], quadTextures);	
 	Entity.loadProgramFromUrl('pass2.vs', 'pass2.fs', [screen]);
 	
-	var monitor = new Monitor(programs, [framebuffer.texture, shadowbuffer[3].depthTexture]);
+	var monitor = new Monitor(programs, [shadowbuffer[0].depthTexture]);
 
 	function render() {
 		mat4.multiply(mat4.identity(view), camera.getTransformationMatrix());
 		tdl.webgl.requestAnimationFrame(render, canvas);
-		torus.setProgram(programs[3]);
-		obj2.setProgram(programs[3]);
-		floor.setProgram(programs[3]);
-		cylinder.setProgram(programs[3]);
-		framebuffer.bind();
-		gl.clear(gl.COLOR_BUFFER_BIT);
 
-		gl.enable(gl.BLEND);
-		gl.viewport(0, 0, canvas.width, canvas.width * 0.6);
-		gl.colorMask(true, true, true, true);
-		gl.depthMask(true);
-		gl.enable(gl.CULL_FACE);
-		gl.enable(gl.DEPTH_TEST);
-		gl.clear(gl.DEPTH_BUFFER_BIT);
-
-		torusConst.diffuseConst = diffuseConst;
-		drawScene();
-		for (var i = 0; i < lights.length; i++) {
-			if(lights[i]){
-				lightPosition = vec3.create(lights[i].position);
-				lightIntensity = vec3.create(lights[i].color);
-				textures.shadowMap = shadowbuffer[i].depthTexture;
-				groundTextures.shadowMap = shadowbuffer[i].depthTexture;
-				renderShadowMap(i);
-				renderScene();
-			}
-		}
+		lightPosition = vec3.create(lights[0].position);
+		lightIntensity = vec3.create(lights[0].color);
+		textures.shadowMap = shadowbuffer[0].depthTexture;
+		groundTextures.shadowMap = shadowbuffer[0].depthTexture;
+		renderShadowMap(0);
+		renderScene();
+		
+		
 		finishRender();
 	}
 
@@ -318,13 +259,13 @@ function initialize() {
 		drawScene();
 	}
 
-// Renders one frame and registers itself for the next frame.
-function renderScene() {
+	// Renders one frame and registers itself for the next frame.
+	function renderScene() {
 
-	torus.setProgram(programs[1]);
-	obj2.setProgram(programs[1]);
-	floor.setProgram(programs[1]);
-	cylinder.setProgram(programs[1]);
+		torus.setProgram(programs[1]);
+		obj2.setProgram(programs[1]);
+		floor.setProgram(programs[1]);
+		cylinder.setProgram(programs[1]);
 
 		// Setup global WebGL rendering behavior.
 		gl.enable(gl.BLEND);
@@ -343,7 +284,6 @@ function renderScene() {
 
 		drawScene();
 	}
-
 
 	function finishRender() {
 		backbuffer.bind();
@@ -398,13 +338,11 @@ function renderScene() {
 
 	function setUpLights() {
 		lights = [];
-		for(var i = 0; i < 4; i++) {
-			if(document.getElementById("light_" + i).checked) {
-				var x = document.getElementById("light_" + i + "_x").value;
-				var y = document.getElementById("light_" + i + "_y").value;
-				var z = document.getElementById("light_" + i + "_z").value;
-				lights.push(new Light([x,y,z],stringToArray(document.getElementById("light_" + i + "_i").value)));
-			}
+		if(document.getElementById("light_" + 0).checked) {
+			var x = document.getElementById("light_" + 0 + "_x").value;
+			var y = document.getElementById("light_" + 0 + "_y").value;
+			var z = document.getElementById("light_" + 0 + "_z").value;
+			lights.push(new Light([x,y,z],stringToArray(document.getElementById("light_" + 0 + "_i").value)));
 		}
 		return lights;
 	} 
@@ -424,20 +362,19 @@ function renderScene() {
 		obj2.drawPrep(torusConst);
 		obj2.draw(torus2Per);
 		
-		// mat4.translate(mat4.identity(cylinderPer.model), [5.0, 0.0, 0.0]);
-		mat4.translate(mat4.identity(cylinderPer.model), [2.5, -4.0, 2.5]);
+		mat4.translate(mat4.identity(cylinderPer.model), [2.5, -2.5, 2.5]);
 		cylinder.drawPrep(torusConst);
 		cylinder.draw(cylinderPer);
 
-		mat4.translate(mat4.identity(cylinderPer.model), [-2.5, -4.0, -2.5]);
+				mat4.translate(mat4.identity(cylinderPer.model), [-2.5, -2.5, -2.5]);
 		cylinder.drawPrep(torusConst);
 		cylinder.draw(cylinderPer);
 
-		mat4.translate(mat4.identity(cylinderPer.model), [2.5, -4.0, -2.5]);
+				mat4.translate(mat4.identity(cylinderPer.model), [2.5, -2.5, -2.5]);
 		cylinder.drawPrep(torusConst);
 		cylinder.draw(cylinderPer);
 
-		mat4.translate(mat4.identity(cylinderPer.model), [-2.5, -4.0, 2.5]);
+				mat4.translate(mat4.identity(cylinderPer.model), [-2.5, -2.5, 2.5]);
 		cylinder.drawPrep(torusConst);
 		cylinder.draw(cylinderPer);
 
