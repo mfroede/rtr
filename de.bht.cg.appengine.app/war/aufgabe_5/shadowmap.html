@@ -28,10 +28,6 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 
 <body>
 
-<input class='backButton' type="button" value="back" onclick="http://interactivethreedee.appspot.com/#/Aufgabe_4">
-<div class="subpagetitle"
-style='opacity: 0.8; margin-left: auto; margin-right: auto; display: block; text-align: center; position: relative;'>Aufgabe 5: Shadow-Mapping</div>
-
 <div style='margin-left: auto; margin-right: auto; display: block;'>
 <canvas id="canvas" width="1200" height="700" style='margin-left: auto; margin-right: auto; display: block;'></canvas>
 </div>
@@ -45,30 +41,6 @@ style='opacity: 0.8; margin-left: auto; margin-right: auto; display: block; text
 <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_z" min="-200" max="200" value="0">PosZ</input></div>
 <div style=" -webkit-box-flex:1;"><input id="light_0_i" value="1, 0, 0" size="5" maxlength="50" type="text">Intensität</input></div>
 </div>
-<div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
-<div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_1" checked="true">Licht 2</input></div>    
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_1_x" min="-200" max="200" value="0">PosX</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_1_y" min="20" max="200" value="24">PosY</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_1_z" min="-200" max="200" value="-10">PosZ</input></div>
-<div style=" -webkit-box-flex:1;"><input id="light_1_i" value="0, 1, 0" size="5" maxlength="50" type="text">Intensität</input></div>
-</div>
-<div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
-<div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_2" checked="true">Licht 3</input></div>    
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_2_x" min="-200" max="200" value="-8">PosX</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_2_y" min="20" max="200" value="24">PosY</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_2_z" min="-200" max="200" value="-5">PosZ</input></div>
-<div style=" -webkit-box-flex:1;"><input id="light_2_i" value="0, 0, 1" size="5" maxlength="50" type="text">Intensität</input></div>
-</div>
-<div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
-<div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_3" checked="true">Licht 4</input></div>    
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_3_x" min="-200" max="200" value="0">PosX</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_3_y" min="20" max="200" value="50">PosY</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_3_z" min="-200" max="200" value="50">PosZ</input></div>
-<div style=" -webkit-box-flex:1;"><input id="light_3_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input></div>
-</div>
-</div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="diffuse" min="1" max="100" value="20">Diffuse Light</input></div>
-
 
 <div>
 <pre id="error" class="alert alert-error"></pre>
@@ -246,7 +218,7 @@ void main() {
 precision highp float;
 varying vec2 texCoordI;
 uniform sampler2D env;
-uniform float diffuseConst;
+const float diffuseConst = 0.2;
 
 void main() {
       gl_FragColor.rgb = texture2D(env, texCoordI).rgb * diffuseConst; 
