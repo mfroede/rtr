@@ -44,7 +44,7 @@ function initialize() {
 	// Setup the canvas widget for WebGL.
 	window.canvas = document.getElementById("canvas");
 	window.gl = tdl.webgl.setupWebGL(canvas);
-	gl.blendFunc(gl.SRC_COLOR, gl.DST_ALPHA);
+	// gl.blendFunc(gl.SRC_COLOR, gl.DST_ALPHA);
 
 
 	// Create the shader programs.
