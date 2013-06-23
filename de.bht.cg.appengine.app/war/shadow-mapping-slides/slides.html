@@ -60,13 +60,6 @@ URL: https://code.google.com/p/io-2012-slides
     <slide class="segue dark nobackground">
       <aside class="gdbar"><img src="images/bht-logo.png"></aside>
       <hgroup class="auto-fadein">
-        <h2>Shadow Map Theorie</h2>
-      </hgroup>
-    </slide>
-
-    <slide class="segue dark nobackground">
-      <aside class="gdbar"><img src="images/bht-logo.png"></aside>
-      <hgroup class="auto-fadein">
         <h2>Rendern der Shadow Map</h2>
       </hgroup>
     </slide>
@@ -81,23 +74,23 @@ URL: https://code.google.com/p/io-2012-slides
       </article>
     </slide>
 
-  <slide>
-    <hgroup>
-      <h2>Scene aus Sicht der Lichtquelle rendern</h2>
-    </hgroup>
-    <article article class="smaller">
-      <p>JavaScript</p>
-      <pre class="prettyprint" data-lang="javascript">
+    <slide>
+      <hgroup>
+        <h2>Scene aus Sicht der Lichtquelle rendern</h2>
+      </hgroup>
+      <article article>
+        <p></p>
+        <pre class="prettyprint" data-lang="javascript">
         function renderShadowMap() {
           obj.setProgram(/*shadow shader program here */);
           shadowbuffer.bind();<b>
-         mat4.multiply(
-              mat4.identity(shadowView),
-              getCameraTransformationMatrix(lightPosition, 
-                                            light.arcX, 
-                                            light.arcY));
-         objConst.view = shadowView;</b>
-          objConst.lightSourceViewMatrix = shadowView;
+          mat4.multiply(
+          mat4.identity(shadowView),
+          getCameraTransformationMatrix(lightPosition, 
+          light.arcX, 
+          light.arcY));
+          objConst.view = lightView;</b>
+          objConst.lightSourceViewMatrix = lightView;
 
           drawScene();
         }
@@ -109,78 +102,146 @@ URL: https://code.google.com/p/io-2012-slides
     <hgroup>
       <h2>Shadow Map Shader</h2>
     </hgroup>
-    <article article class="smaller">
+    <article article>
       <p>Vertex Shader</p>
       <pre class="prettyprint" data-lang="webgl">
-        uniform mat4 projection;
-        uniform mat4 view;
-        uniform mat4 model;
+      void main() {
+        <b>gl_Position = projection * view * model * position;</b>
+      }
+    </pre>
+    <p>Fragment Shader</p>
+    <pre class="prettyprint" data-lang="webgl">
+    void main() {
+      gl_FragColor = vec4(0.0, 0.0, 1.0, 0.0);
+    }
+  </pre>
+</article>
+</slide>
 
-        attribute vec4 position;
-        void main() {
-          <b>gl_Position = projection * view * model * position;</b>
-        }
-      </pre>
-      <p>Fragment Shader</p>
+<slide>
+  <hgroup>
+    <h2>Ergebnis</h2>
+  </hgroup>
+  <article>
+    <iframe style="height: 510px; border:none;" data-src="../aufgabe_5/shadowmap.html"></iframe>
+  </article>
+</slide>
+
+<slide class="segue dark nobackground">
+  <aside class="gdbar"><img src="images/bht-logo.png"></aside>
+  <hgroup class="auto-fadein">
+    <h2>Auswerten der Shadow Map</h2>
+  </hgroup>
+</slide>
+
+<slide>
+  <hgroup>
+    <h2>Auswerten der Shadow Map</h2>
+  </hgroup>
+  <article class="flexbox vcenter">
+    <img style="height: 100%;" src="images/shadowmap_eye.svg" alt="Shadow Map aus Sicht der Lichtquelle" title="Shadow Map aus Sicht der Lichtquelle">
+    <footer class="source">source: place source info here</footer>
+  </article>
+</slide>
+
+<slide>
+  <hgroup>
+    <h2>Scene aus Sicht der Kamera rendern</h2>
+  </hgroup>
+  <article article>
+    <p></p>
+    <pre class="prettyprint" data-lang="javascript">
+    function render() {
+      obj.setProgram(/*your real (phong?!) shader program here */);
+      framebuffer.bind();
+      objConst.view = view; // replace light view with camera view
+      drawScene();
+    }
+  </pre>
+</article>
+</slide>
+
+  <slide>
+    <hgroup>
+      <h2>Scene aus Sicht der Kamera rendern</h2>
+    </hgroup>
+    <article article>
+      <p>Vertex Shader</p>
       <pre class="prettyprint" data-lang="webgl">
-        void main() {
-          gl_FragColor = vec4(0.0, 0.0, 1.0, 0.0);
-        }
-      </pre>
-    </article>
-  </slide>
+      const mat4 scaleMatrix = mat4( 0.5, 0.0, 0.0, 0.0, 
+                                     0.0, 0.5, 0.0, 0.0, 
+                                     0.0, 0.0, 0.5, 0.0, 
+                                     0.5, 0.5, 0.5, 1.0);
+      varying vec4 vPosition;
 
-      <slide>
-      <hgroup>
-        <h2>Ergebnis</h2>
-      </hgroup>
-      <article>
-        <iframe style="height: 510px; border:none;" data-src="../aufgabe_5/shadowmap.html"></iframe>
-      </article>
-    </slide>
+      void main() {
+        positionW = model * position;
+        vPosition = scaleMatrix * lightProjectionMatrix * lightViewMatrix * positionW;  
+      }
+    </pre>
+</article>
+</slide>
+
+  <slide>
+    <hgroup>
+      <h2>Scene aus Sicht der Kamera rendern</h2>
+    </hgroup>
+    <article article>
+    <p>Fragment Shader</p>
+    <pre class="prettyprint" data-lang="webgl">
+    void main() {
+      vec3 shadowCoods = vPosition.xyz / vPosition.w;
+      float distanceToLight = shadowCoods.z *= 0.997;
+      float distanceInShadowMap = texture2D(shadowMap, shadowCoods.xy).a;
+
+      if ( distanceToLight < distanceInShadowMap ) {
+        gl_FragColor.rgb += color; // visible
+      } else {
+        gl_FragColor.rgb += vec3(0.0,0.0,0.0); // in shadow
+      }
+    }
+  </pre>
+</article>
+</slide>
+
+<slide>
+  <hgroup>
+    <h2>Entfernungen zur Lichtquelle</h2>
+  </hgroup>
+  <article>
+    <iframe style="height: 510px; border:none;" data-src="../aufgabe_5/objectdistancetolight.html"></iframe>
+  </article>
+</slide>
+
+<slide>
+  <hgroup>
+    <h2>Ausgelesene Shadow Map</h2>
+  </hgroup>
+  <article>
+    <iframe style="height: 510px; border:none;" data-src="../aufgabe_5/shadowmapequation.html"></iframe>
+  </article>
+</slide>
+
+<slide class="segue dark nobackground">
+  <aside class="gdbar"><img src="images/bht-logo.png"></aside>
+  <hgroup class="auto-fadein">
+    <h2>Shadow Mapping Probleme</h2>
+  </hgroup>
+</slide>
 
     <slide class="segue dark nobackground">
       <aside class="gdbar"><img src="images/bht-logo.png"></aside>
       <hgroup class="auto-fadein">
-        <h2>Auswerten der Shadow Map</h2>
+        <h2><a style='color:white; border:none;' href="../aufgabe_5/aufgabe_5.html">Demo</a></h2>
       </hgroup>
     </slide>
 
-    <slide class="segue dark nobackground">
-      <aside class="gdbar"><img src="images/bht-logo.png"></aside>
-      <hgroup class="auto-fadein">
-        <h2>Shadow Mapping Probleme</h2>
-      </hgroup>
-    </slide>
-
-    <slide class="segue dark nobackground">
-      <aside class="gdbar"><img src="images/bht-logo.png"></aside>
-      <hgroup class="auto-fadein">
-        <h2>Demo</h2>
-      </hgroup>
-    </slide>
-
-
-    <slide>
-      <hgroup>
-        <h2>Slide with Iframe</h2>
-      </hgroup>
-      <article>
-        <iframe data-src="../aufgabe_5/shadowmap.html"></iframe>
-      </article>
-    </slide>
-
-    <slide>
-      <article>
-        <iframe data-src="http://www.google.com/doodle4google/resources/history.html"></iframe>
-      </article>
-    </slide>
 
 
     <slide class="thank-you-slide dark nobackground">
       <aside class="gdbar right"><img src="images/bht-logo.png"></aside>
       <article class="flexbox vleft auto-fadein">
-        <h2>Vielen Dank</h2>
+        <h2>Vielen Dank</h2><br>
         <h2>für Ihre Aufmerksamkeit</h2>
       </article>
     <!-- <p class="auto-fadein" data-config-contact>

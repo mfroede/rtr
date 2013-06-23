@@ -31,9 +31,9 @@ author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 <div style="display:-webkit-box; -webkit-box-orient:horizontal; height:400px; width:600px;">
 <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
 <div style=" display:none;"><input type="checkbox" id="light_0" checked="true">Licht 1</input></div>    
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_0_x" min="-200" max="200" value="0">PosX</input></div>
+<div style="display:none; -webkit-box-flex:1;"><input type="range" id="light_0_x" min="-200" max="200" value="0">PosX</input></div>
 <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_y" min="20" max="200" value="30">PosY</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_0_z" min="-200" max="200" value="0">PosZ</input></div>
+<div style="display:none; -webkit-box-flex:1;"><input type="range" id="light_0_z" min="-200" max="200" value="0">PosZ</input></div>
 <div style="display:none; -webkit-box-flex:1;"><input id="light_0_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input></div>
 </div>
 <canvas id="canvas" width="700" height="400" style='margin-left: auto; margin-right: auto; display:-webkit-box;'></canvas>
@@ -145,7 +145,7 @@ void main() {
     
     float shadowDepth = texture2D(shadowMap, depth.xy).a;
 
-    gl_FragColor.rgb = vec3(shadowDepth, shadowDepth, shadowDepth);
+    gl_FragColor.rgb = vec3(depth.z, depth.z, depth.z);
     gl_FragColor.a = 1.0;
 } 
     </script>
