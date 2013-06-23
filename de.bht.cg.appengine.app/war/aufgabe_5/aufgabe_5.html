@@ -92,7 +92,7 @@ void main() {
 precision highp float;
 
 void main() {
-  gl_FragColor = vec4(0.0,0.0,1.0,0.0);
+  gl_FragColor = vec4(1.0,0.0,1.0,1.0);
 }
 </script>
 <!-- EOF Shadow Shader -->
@@ -172,9 +172,9 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
 }
 
 void main() {
- vec3 color = phong(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), lightIntensity, texture2D(env, texCoordI).rgb);
+    vec3 color = phong(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), lightIntensity, texture2D(env, texCoordI).rgb);
 
- vec3 depth = vPosition.xyz / vPosition.w;
+    vec3 depth = vPosition.xyz / vPosition.w;
 
     //
     // No filtering, just render the shadow map
@@ -182,10 +182,9 @@ void main() {
     
     // Offset depth a bit
     // This causes "Peter Panning", but solves "Shadow Acne"
-    depth.z *= depth.z;
+    depth.z *= 0.997;
     
     float shadowDepth = texture2D(shadowMap, depth.xy).a;
-
     if ( depth.z < shadowDepth || shadowDepth > depth.z) {
       gl_FragColor.rgb += color;
     } else {
@@ -193,11 +192,11 @@ void main() {
     }
 
     // gl_FragColor.rgb = vec3(shadowDepth, shadowDepth, shadowDepth);
-      // gl_FragColor.rgb = color;
-      gl_FragColor.a = 1.0;
-    }
-    </script>
-    <!-- EOF Phong lighting model, Phong shading -->
+    // gl_FragColor.rgb = color;
+    gl_FragColor.a = 1.0;
+} 
+</script>
+<!-- EOF Phong lighting model, Phong shading -->
 
     <!-- Monitor shading -->
     <script id="vs2" type="text/glsl">

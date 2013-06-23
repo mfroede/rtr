@@ -64,16 +64,16 @@ function initialize() {
 	var framebuffer = tdl.framebuffers.createFramebuffer(window.canvas.width, window.canvas.height, true);
 	var backbuffer = new tdl.framebuffers.BackBuffer(canvas);
 
-	var quadTextures = {
-		colorBuffer: framebuffer.texture,
-		depthBuffer: framebuffer.depthTexture
-	};
-
 	var shadowbuffer = [];
 	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
 	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
 	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
 	shadowbuffer.push(tdl.framebuffers.createFramebuffer(4096, 4096, true));
+
+	var quadTextures = {
+		colorBuffer: framebuffer.texture,
+		depthBuffer: framebuffer.depthTexture
+	};
 
 	// Load textures.
 	var textures = {
@@ -88,10 +88,10 @@ function initialize() {
 	var frag = window.location.hash.substring(1);
 	var pnum = frag ? parseInt(frag) : 0;
 
-	var obj2model = tdl.primitives.createTorus(0.4, 0.15, 60, 60);
+	var obj2model = tdl.primitives.createSphere(0.45, 60, 60);
 	var obj2 = new tdl.models.Model(programs[pnum], obj2model, textures);
 
-	var torusmodel = tdl.primitives.createSphere(0.45, 60, 60);
+	var torusmodel = tdl.primitives.createTorus(0.4, 0.15, 60, 60);
 	tdl.primitives.addTangentsAndBinormals(torusmodel);
 	var torus = new tdl.models.Model(programs[pnum], torusmodel, textures);
 	
@@ -107,6 +107,7 @@ function initialize() {
 
 	var cameraY = 0.0;
 	var camera = new Camera(vec3.create([0.0, 3.0, 10.0]), -30.0, 0.0);
+	// var camera = new Camera(vec3.create([0.0, -4.5, 30.0]), 0.0, 0.0);
 
 	var diffuseConst = document.getElementById("diffuse").value/100;
 
@@ -240,15 +241,14 @@ function initialize() {
 		model : cylinderModel
 	};
 
-	mat4.translate(mat4.identity(floorPer.model), [0.0, -4.0, 0.0]);
-	mat4.translate(mat4.identity(cylinderPer.model), [5.0, 0.0, 0.0]);
+	mat4.translate(mat4.identity(floorPer.model), [0.0, -5.0, 0.0]);
 	mat4.translate(mat4.identity(torusPer.model), [0.0, 0.0, 0.0]);
 	mat4.translate(mat4.identity(torus2Per.model), [2.0, 0.0, 0.0]);
 
 	var screen = Entity.createQuad(programs[1], quadTextures);	
 	Entity.loadProgramFromUrl('pass2.vs', 'pass2.fs', [screen]);
 	
-	var monitor = new Monitor(programs, [framebuffer.texture, shadowbuffer[0].depthTexture, shadowbuffer[1].depthTexture]);
+	var monitor = new Monitor(programs, [framebuffer.texture, shadowbuffer[3].depthTexture]);
 
 	function render() {
 		mat4.multiply(mat4.identity(view), camera.getTransformationMatrix());
@@ -424,19 +424,20 @@ function renderScene() {
 		obj2.drawPrep(torusConst);
 		obj2.draw(torus2Per);
 		
-		mat4.translate(mat4.identity(cylinderPer.model), [2.5, -2.5, 2.5]);
+		// mat4.translate(mat4.identity(cylinderPer.model), [5.0, 0.0, 0.0]);
+		mat4.translate(mat4.identity(cylinderPer.model), [2.5, -4.0, 2.5]);
 		cylinder.drawPrep(torusConst);
 		cylinder.draw(cylinderPer);
 
-				mat4.translate(mat4.identity(cylinderPer.model), [-2.5, -2.5, -2.5]);
+		mat4.translate(mat4.identity(cylinderPer.model), [-2.5, -4.0, -2.5]);
 		cylinder.drawPrep(torusConst);
 		cylinder.draw(cylinderPer);
 
-				mat4.translate(mat4.identity(cylinderPer.model), [2.5, -2.5, -2.5]);
+		mat4.translate(mat4.identity(cylinderPer.model), [2.5, -4.0, -2.5]);
 		cylinder.drawPrep(torusConst);
 		cylinder.draw(cylinderPer);
 
-				mat4.translate(mat4.identity(cylinderPer.model), [-2.5, -2.5, 2.5]);
+		mat4.translate(mat4.identity(cylinderPer.model), [-2.5, -4.0, 2.5]);
 		cylinder.drawPrep(torusConst);
 		cylinder.draw(cylinderPer);
 
