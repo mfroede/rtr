@@ -199,7 +199,7 @@ URL: https://code.google.com/p/io-2012-slides
     <pre class="prettyprint" data-lang="webgl">
     void main() {
       vec3 shadowCoods = vPosition.xyz / vPosition.w;
-      float distanceToLight = shadowCoods.z *= 0.997;
+      float distanceToLight = shadowCoods.z * 0.997;
       float distanceInShadowMap = texture2D(shadowMap, shadowCoods.xy).a;
 
       if ( distanceToLight < distanceInShadowMap ) {
@@ -250,7 +250,7 @@ URL: https://code.google.com/p/io-2012-slides
         <img style="height: 25%;" src="images/self_shadowing.svg" alt="self_shadowing" title="self_shadowing">
         <img style="height: 25%;" src="images/self_shadowing_bias.svg" alt="self_shadowing_bias" title="self_shadowing_bias">
         <pre class="prettyprint" data-lang="webgl">
-          float distanceToLight = shadowCoods.z *= 0.997;
+          float distanceToLight = shadowCoods.z * 0.997;
         </pre>
       </article>
     </slide>

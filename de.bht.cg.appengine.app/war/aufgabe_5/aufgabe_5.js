@@ -111,7 +111,6 @@ function initialize() {
 
 	var cameraY = 0.0;
 	var camera = new Camera(vec3.create([0.0, 3.0, 10.0]), -30.0, 0.0);
-	// var camera = new Camera(vec3.create([0.0, -4.5, 30.0]), 0.0, 0.0);
 
 	var diffuseConst = document.getElementById("diffuse").value/100;
 
@@ -188,34 +187,51 @@ function initialize() {
           y: evt.clientY - rect.top
         };
     }
-	canvas.addEventListener('mousemove', function(evt) {
-        var mousePos = getMousePos(canvas, evt);
-        console.log('Mouse position: ' + mousePos.x + ',' + mousePos.y);
-        if(mousePos.x <= 200) {
-        	camera.lookLeft = true;
-        }
-        if(mousePos.x > 200) {
-        	camera.lookLeft = false;
-        }
-        if(mousePos.x >= 1000) {
-        	camera.lookRight = true;
-        }
-        if(mousePos.x < 1000) {
-        	camera.lookRight = false;
-        }
-        if(mousePos.y >= 550) {
-        	camera.lookDown = true;
-        }
-        if(mousePos.y < 550) {
-        	camera.lookDown = false;
-        }
-        if(mousePos.y <= 150) {
-        	camera.lookUp = true;
-        }
-        if(mousePos.y > 150) {
-        	camera.lookUp = false;
-        }
-      }, false);
+
+  function canvasMouseMove(evt) {
+	    var mousePos = getMousePos(canvas, evt);
+	    // console.log('Mouse position: ' + mousePos.x + ',' + mousePos.y);
+	    if(mousePos.x <= 200) {
+	    	camera.lookLeft = true;
+	    }
+	    if(mousePos.x > 200) {
+	    	camera.lookLeft = false;
+	    }
+	    if(mousePos.x >= 1000) {
+	    	camera.lookRight = true;
+	    }
+	    if(mousePos.x < 1000) {
+	    	camera.lookRight = false;
+	    }
+	    if(mousePos.y >= 550) {
+	    	camera.lookDown = true;
+	    }
+	    if(mousePos.y < 550) {
+	    	camera.lookDown = false;
+	    }
+	    if(mousePos.y <= 150) {
+	    	camera.lookUp = true;
+	    }
+	    if(mousePos.y > 150) {
+	    	camera.lookUp = false;
+	    }
+	  }
+
+	canvas.onmouseover= function(evt) {
+		canvas.addEventListener('mousemove', canvasMouseMove, false);
+	};
+	canvas.onmouseout = function(evt) {
+		canvas.removeEventListener('mousemove', canvasMouseMove);
+		camera.fw = false;
+		camera.bw = false;
+		camera.l = false;
+		camera.r = false;
+
+    	camera.lookLeft = false;
+    	camera.lookRight = false;
+    	camera.lookDown = false;
+    	camera.lookUp = false;
+	};
 
 	// Register a keypress-handler for shader program switching using the number
 	// keys.
@@ -346,8 +362,6 @@ function initialize() {
 		floor.setProgram(programs[0]);
 		cylinder.setProgram(programs[0]);
 
-		// tdl.webgl.requestAnimationFrame(renderShadowMap, canvas);
-
 		// Setup global WebGL rendering behavior.
 		gl.enable(gl.BLEND);
 		gl.viewport(0, 0, canvas.width, canvas.width * 0.6);
@@ -432,10 +446,6 @@ function renderScene() {
 		var newY = event.clientY;
 		var deltaX = newX - lastMouseX;
 		var deltaY = newY - lastMouseY;
-		if(!mouseDown) {
-			// camera.arcX = newY - window.innerHeight;
-			// camera.arcY = newX - window.innerWidth;
-		}
 		if (mouseDown) {
 			var newRotationMatrix = mat4.create();
 			mat4.identity(newRotationMatrix);
@@ -483,7 +493,6 @@ function renderScene() {
 		obj3.drawPrep(torusConst);
 		obj3.draw(cubePer);
 		
-		// mat4.translate(mat4.identity(cylinderPer.model), [5.0, 0.0, 0.0]);
 		mat4.translate(mat4.identity(cylinderPer.model), [2.5, -4.0, 2.5]);
 		cylinder.drawPrep(torusConst);
 		cylinder.draw(cylinderPer);
