@@ -47,7 +47,6 @@ function initialize() {
 	window.gl = tdl.webgl.setupWebGL(canvas);
 	gl.blendFunc(gl.SRC_COLOR, gl.DST_ALPHA);
 
-
 	// Create the shader programs.
 	var programs = createProgramsFromTags();
 
@@ -87,6 +86,11 @@ function initialize() {
 
 	var frag = window.location.hash.substring(1);
 	var pnum = frag ? parseInt(frag) : 0;
+
+	var obj3model = tdl.primitives.createCube(0.75);
+	var obj3 = new tdl.models.Model(programs[pnum], obj3model, textures);
+	var cubeRotX = 0.0;
+	var cubeRotY = 0.0;
 
 	var obj2model = tdl.primitives.createSphere(0.45, 60, 60);
 	var obj2 = new tdl.models.Model(programs[pnum], obj2model, textures);
@@ -177,6 +181,42 @@ function initialize() {
 		}
 	}
 
+	function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+    }
+	canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = getMousePos(canvas, evt);
+        console.log('Mouse position: ' + mousePos.x + ',' + mousePos.y);
+        if(mousePos.x <= 200) {
+        	camera.lookLeft = true;
+        }
+        if(mousePos.x > 200) {
+        	camera.lookLeft = false;
+        }
+        if(mousePos.x >= 1000) {
+        	camera.lookRight = true;
+        }
+        if(mousePos.x < 1000) {
+        	camera.lookRight = false;
+        }
+        if(mousePos.y >= 550) {
+        	camera.lookDown = true;
+        }
+        if(mousePos.y < 550) {
+        	camera.lookDown = false;
+        }
+        if(mousePos.y <= 150) {
+        	camera.lookUp = true;
+        }
+        if(mousePos.y > 150) {
+        	camera.lookUp = false;
+        }
+      }, false);
+
 	// Register a keypress-handler for shader program switching using the number
 	// keys.
 	window.onkeypress = function(event) {
@@ -206,6 +246,7 @@ function initialize() {
 	var model = mat4.create();
 	var model2 = mat4.create();
 	var floorModel = mat4.create();
+	var cubeModel = mat4.create();
 	var cylinderModel = mat4.create();
 	var shadowView = mat4.identity();
 	var shadowprojection = mat4.identity();
@@ -231,7 +272,11 @@ function initialize() {
 
 	var torus2Per = {
 		model : model2
-	}; 
+	};
+
+	var cubePer = {
+		model : cubeModel
+	};
 
 	var floorPer = {
 		model : floorModel
@@ -244,6 +289,7 @@ function initialize() {
 	mat4.translate(mat4.identity(floorPer.model), [0.0, -5.0, 0.0]);
 	mat4.translate(mat4.identity(torusPer.model), [0.0, 0.0, 0.0]);
 	mat4.translate(mat4.identity(torus2Per.model), [2.0, 0.0, 0.0]);
+	
 
 	var screen = Entity.createQuad(programs[1], quadTextures);	
 	Entity.loadProgramFromUrl('pass2.vs', 'pass2.fs', [screen]);
@@ -252,9 +298,17 @@ function initialize() {
 
 	function render() {
 		mat4.multiply(mat4.identity(view), camera.getTransformationMatrix());
+
+		cubeRotX += 1;
+		cubeRotY += 1;
+		mat4.translate(mat4.identity(cubeModel), [-2.0, 0.0, 0.0]);
+		mat4.rotateY(cubeModel, cubeRotY * Math.PI / 180.0);
+		mat4.rotateX(cubeModel, cubeRotX * Math.PI / 180.0);
+
 		tdl.webgl.requestAnimationFrame(render, canvas);
 		torus.setProgram(programs[3]);
 		obj2.setProgram(programs[3]);
+		obj3.setProgram(programs[3]);
 		floor.setProgram(programs[3]);
 		cylinder.setProgram(programs[3]);
 		framebuffer.bind();
@@ -288,6 +342,7 @@ function initialize() {
 
 		torus.setProgram(programs[0]);
 		obj2.setProgram(programs[0]);
+		obj3.setProgram(programs[0]);
 		floor.setProgram(programs[0]);
 		cylinder.setProgram(programs[0]);
 
@@ -323,6 +378,7 @@ function renderScene() {
 
 	torus.setProgram(programs[1]);
 	obj2.setProgram(programs[1]);
+	obj3.setProgram(programs[1]);
 	floor.setProgram(programs[1]);
 	cylinder.setProgram(programs[1]);
 
@@ -419,10 +475,13 @@ function renderScene() {
 	}
 
 	function drawScene() {
+
 		torus.drawPrep(torusConst);
 		torus.draw(torusPer);
 		obj2.drawPrep(torusConst);
 		obj2.draw(torus2Per);
+		obj3.drawPrep(torusConst);
+		obj3.draw(cubePer);
 		
 		// mat4.translate(mat4.identity(cylinderPer.model), [5.0, 0.0, 0.0]);
 		mat4.translate(mat4.identity(cylinderPer.model), [2.5, -4.0, 2.5]);

@@ -48,7 +48,6 @@ URL: https://code.google.com/p/io-2012-slides
       </hgroup>
       <article>
         <ul class="build" >
-          <li>Shadow Map Theorie</li>
           <li>Rendern der Shadow Map</li>
           <li>Auswerten der Shadow Map</li>
           <li>Shadow Mapping Probleme</li>
@@ -66,11 +65,10 @@ URL: https://code.google.com/p/io-2012-slides
 
     <slide>
       <hgroup>
-        <h2>Shadow Map aus Sicht der Lichtquelle</h2>
+        <h2>Scene aus Sicht der Lichtquelle rendern</h2>
       </hgroup>
       <article class="flexbox vcenter">
         <img style="height: 100%;" src="images/shadowmap_shadow.svg" alt="Shadow Map aus Sicht der Lichtquelle" title="Shadow Map aus Sicht der Lichtquelle">
-        <footer class="source">source: place source info here</footer>
       </article>
     </slide>
 
@@ -81,16 +79,17 @@ URL: https://code.google.com/p/io-2012-slides
       <article article>
         <p></p>
         <pre class="prettyprint" data-lang="javascript">
+        var shadowbuffer = tdl.framebuffers.createFramebuffer(..);
+        // shadowMap -> shadowbuffer.depthTexture
         function renderShadowMap() {
           obj.setProgram(/*shadow shader program here */);
-          shadowbuffer.bind();<b>
-          mat4.multiply(
-          mat4.identity(shadowView),
-          getCameraTransformationMatrix(lightPosition, 
-          light.arcX, 
-          light.arcY));
-          objConst.view = lightView;</b>
-          objConst.lightSourceViewMatrix = lightView;
+          shadowbuffer.bind();
+          mat4.multiply(mat4.identity(lightView),
+                        getCameraTransformationMatrix(lightPosition, 
+                                                      light.arcX, 
+                                                      light.arcY));
+          objConst.view = lightView;
+          objConst.lightViewMatrix = lightView; // not yet used
 
           drawScene();
         }
@@ -100,7 +99,7 @@ URL: https://code.google.com/p/io-2012-slides
 
   <slide>
     <hgroup>
-      <h2>Shadow Map Shader</h2>
+      <h2>Scene aus Sicht der Lichtquelle rendern</h2>
     </hgroup>
     <article article>
       <p>Vertex Shader</p>
@@ -112,7 +111,7 @@ URL: https://code.google.com/p/io-2012-slides
     <p>Fragment Shader</p>
     <pre class="prettyprint" data-lang="webgl">
     void main() {
-      gl_FragColor = vec4(0.0, 0.0, 1.0, 0.0);
+      gl_FragColor = vec4(0.0, 0.0, 1.0, 0.0); // debug - not needed
     }
   </pre>
 </article>
@@ -120,7 +119,7 @@ URL: https://code.google.com/p/io-2012-slides
 
 <slide>
   <hgroup>
-    <h2>Ergebnis</h2>
+    <h2>Scene aus Sicht der Lichtquelle rendern</h2>
   </hgroup>
   <article>
     <iframe style="height: 510px; border:none;" data-src="../aufgabe_5/shadowmap.html"></iframe>
@@ -228,6 +227,104 @@ URL: https://code.google.com/p/io-2012-slides
     <h2>Shadow Mapping Probleme</h2>
   </hgroup>
 </slide>
+
+    <slide>
+      <hgroup>
+        <h2>Self Shadow Aliasing (surface acne)</h2></br>
+        <ul>
+          <li>Diskrete Entfernungen in der Shadow Map</li>
+          <li>Berechnete Distanz evtl. kleiner als Äquivalent in Shadow Map</li>
+          <li>Korrektur durch 'bias' (Minimale Verringerung der berechneten Distanz zur Lichtquelle)</li>
+        </ul>
+      </hgroup>
+      <article class="flexbox vcenter">
+        <img style="height: 25%;" src="images/self_shadowing.svg" alt="self_shadowing" title="self_shadowing">
+        <img style="height: 25%;" src="images/self_shadowing_bias.svg" alt="self_shadowing_bias" title="self_shadowing_bias">
+        <pre class="prettyprint" data-lang="webgl">
+          float distanceToLight = shadowCoods.z *= 0.997;
+        </pre>
+      </article>
+    </slide>
+
+    <slide>
+      <hgroup>
+        <h2>Self Shadow Aliasing</h2>
+        <p>Self Shadowing</p>
+      </hgroup>
+      <article class="flexbox vcenter">
+        <img style="height: 80%;" src="images/self_shadows.png" alt="self_shadowing" title="self_shadowing">
+
+      </article>
+    </slide>
+
+    <slide>
+      <hgroup>
+        <h2>Self Shadow Aliasing</h2>
+        <p>Kein Self Shadowing</p>
+      </hgroup>
+      <article class="flexbox vcenter">
+        <img style="height: 80%;" src="images/no_self_shadows.png" alt="self_shadowing_bias" title="self_shadowing_bias">
+      </article>
+    </slide>
+
+    <slide>
+      <hgroup>
+        <h2>Peter Panning</h2>
+        <p>'Schwebe' Effekt bei durch 'bias'</p>
+      </hgroup>
+      <article class="flexbox vcenter">
+
+        <img style="height: 80%;" src="images/peter_panning.png" alt="peter panning" title="self_shadowing_bias">
+      </article>
+    </slide>
+
+      <slide>
+      <hgroup>
+        <h2>Peter Panning</h2>
+        <p>Verringern</p>
+      </hgroup>
+      <article class="flexbox vcenter">
+        <ul>
+          <li>Maximale Ausnutzung des Wertebereichs durch:</li>
+          <li>Near Plane so weit entfernt von der Lichtquelle wie möglich</li>
+          <li>Far Plane des Lichts so nah an der Lichtquelle wie möglich</li>
+        </ul>
+        <img style="height: 60%;" src="images/peter_panning_reduction.svg" alt="peter panning" title="self_shadowing_bias">
+      </article>
+    </slide>
+
+    <slide>
+      <hgroup>
+        <h2>Shadow Map Resolution</h2>
+        <p>256 * 256</p>
+      </hgroup>
+      <article class="flexbox vcenter">
+
+        <img style="height: 80%;" src="images/shadow_map_256.png" alt="shadow_map_256.png" title="Shadow Map Resolution 256px">
+      </article>
+    </slide>
+
+    <slide>
+      <hgroup>
+        <h2>Shadow Map Resolution</h2>
+        <p>1024 * 1024</p>
+      </hgroup>
+      <article class="flexbox vcenter">
+
+        <img style="height: 80%;" src="images/shadow_map_1024.png" alt="shadow_map_1024.png" title="Shadow Map Resolution 1024px">
+      </article>
+    </slide>
+
+        <slide>
+      <hgroup>
+        <h2>Shadow Map Resolution</h2>
+        <p>4096 * 4096</p>
+      </hgroup>
+      <article class="flexbox vcenter">
+
+        <img style="height: 80%;" src="images/shadow_map_4096.png" alt="shadow_map_4096.png" title="Shadow Map Resolution 4096px">
+      </article>
+    </slide>
 
     <slide class="segue dark nobackground">
       <aside class="gdbar"><img src="images/bht-logo.png"></aside>
