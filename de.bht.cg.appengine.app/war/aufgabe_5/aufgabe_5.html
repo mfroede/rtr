@@ -4,74 +4,118 @@ A WebGL example using tdl.js (http:// code.google.com/p/threedlibrary/).
 author: Henrik Tramberend (tramberend@beuth-hochschule.de)
 -->
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
-"http://www.w3.org/TR/html4/loose.dtd">
+  "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>WebGL using tdl.js</title>
-<script type="text/javascript" src="../resources/tdl/base.js"></script>
-<script type="text/javascript" src="../resources/tdl/gl-matrix.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>WebGL using tdl.js</title>
+  <script type="text/javascript" src="../resources/tdl/base.js"></script>
+  <script type="text/javascript" src="../resources/tdl/gl-matrix.js"></script>
 
-<script src="../resources/common/jquery-1.7.1.min.js"></script>
+  <script src="../resources/common/jquery-1.7.1.min.js"></script>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- <link rel="stylesheet" type="text/css" href="../resources/common/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../resources/common/bootstrap/css/b1234ootstrap-responsive.min.css"> -->
-<link rel="stylesheet" href="../resources/css/style.css" />
+  <link rel="stylesheet" type="text/css" href="../resources/common/bootstrap/css/b1234ootstrap-responsive.min.css"> -->
+  <link rel="stylesheet" href="../resources/css/style.css" />
 
-<script type="text/javascript" src="aufgabe_5.js"></script>
-<script type="text/javascript" src="Entity.js"></script>
-<script type="text/javascript" src="Monitor.js"></script>
-<script type="text/javascript" src="light.js"></script>
-<script type="text/javascript" src="MovebleCamera.js"></script>
+  <script type="text/javascript" src="aufgabe_5.js"></script>
+  <script type="text/javascript" src="Entity.js"></script>
+  <script type="text/javascript" src="Monitor.js"></script>
+  <script type="text/javascript" src="light.js"></script>
+  <script type="text/javascript" src="MovebleCamera.js"></script>
 </head>
 
 <body>
 
-<input class='backButton' type="button" value="back" onclick="http://interactivethreedee.appspot.com/#/Aufgabe_4">
-<div class="subpagetitle"
-style='opacity: 0.8; margin-left: auto; margin-right: auto; display: block; text-align: center; position: relative;'>Aufgabe 5: Shadow-Mapping</div>
+  <input class='backButton' type="button" value="back" onclick="http://interactivethreedee.appspot.com/#/Aufgabe_4">
+  <div class="subpagetitle"
+  style='opacity: 0.8; margin-left: auto; margin-right: auto; display: block; text-align: center; position: relative;'>Aufgabe 5: Shadow-Mapping (<a href='../shadow-mapping-slides/slides.html'>Zur Präsentation</a>)</div>
 
-<div style='margin-left: auto; margin-right: auto; display: block;'>
-<canvas id="canvas" width="1200" height="700" style='margin-left: auto; margin-right: auto; display: block;'></canvas>
-</div>
+  <div style='margin-left: auto; margin-right: auto; display: block;'>
+    <canvas id="canvas" width="1200" height="700" style='margin-left: auto; margin-right: auto; display: block;'></canvas>
 
-<div style='margin-left: 300px;'>
-<div style="display:-webkit-box; -webkit-box-orient:horizontal;">
-<div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
-<div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_0" checked="true">Licht 1</input></div>    
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_0_x" min="-200" max="200" value="0">PosX</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_0_y" min="20" max="200" value="30">PosY</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_0_z" min="-200" max="200" value="0">PosZ</input></div>
-<div style=" -webkit-box-flex:1;"><input id="light_0_i" value="1, 0, 0" size="5" maxlength="50" type="text">Intensität</input></div>
-</div>
-<div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
-<div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_1" checked="true">Licht 2</input></div>    
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_1_x" min="-200" max="200" value="0">PosX</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_1_y" min="20" max="200" value="24">PosY</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_1_z" min="-200" max="200" value="-10">PosZ</input></div>
-<div style=" -webkit-box-flex:1;"><input id="light_1_i" value="0, 1, 0" size="5" maxlength="50" type="text">Intensität</input></div>
-</div>
-<div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
-<div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_2" checked="true">Licht 3</input></div>    
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_2_x" min="-200" max="200" value="-8">PosX</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_2_y" min="20" max="200" value="24">PosY</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_2_z" min="-200" max="200" value="-5">PosZ</input></div>
-<div style=" -webkit-box-flex:1;"><input id="light_2_i" value="0, 0, 1" size="5" maxlength="50" type="text">Intensität</input></div>
-</div>
-<div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
-<div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_3" checked="true">Licht 4</input></div>    
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_3_x" min="-200" max="200" value="0">PosX</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_3_y" min="20" max="200" value="50">PosY</input></div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="light_3_z" min="-200" max="200" value="50">PosZ</input></div>
-<div style=" -webkit-box-flex:1;"><input id="light_3_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input></div>
-</div>
-</div>
-<div style=" -webkit-box-flex:1;"><input type="range" id="diffuse" min="1" max="100" value="20">Diffuse Light</input></div>
+ <div class='slide-content' style='margin-left: auto; margin-riyght: auto; display: block;'>
+    <div style="display:-webkit-box; -webkit-box-orient:horizontal;">
+      <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+        <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_0" checked="true">Licht 1</input></div>    
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_x" min="-200" max="200" value="0">PosX</input></div>
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_y" min="20" max="200" value="30">PosY</input></div>
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_0_z" min="-200" max="200" value="0">PosZ</input></div>
+        <div style=" -webkit-box-flex:1;"><input id="light_0_i" value="1, 0, 0" size="5" maxlength="50" type="text">Intensität</input></div>
+      </div>
+      <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+        <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_1" checked="true">Licht 2</input></div>    
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_x" min="-200" max="200" value="0">PosX</input></div>
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_y" min="20" max="200" value="24">PosY</input></div>
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_1_z" min="-200" max="200" value="-10">PosZ</input></div>
+        <div style=" -webkit-box-flex:1;"><input id="light_1_i" value="0, 1, 0" size="5" maxlength="50" type="text">Intensität</input></div>
+      </div>
+      <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+        <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_2" checked="true">Licht 3</input></div>    
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_2_x" min="-200" max="200" value="-8">PosX</input></div>
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_2_y" min="20" max="200" value="24">PosY</input></div>
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_2_z" min="-200" max="200" value="-5">PosZ</input></div>
+        <div style=" -webkit-box-flex:1;"><input id="light_2_i" value="0, 0, 1" size="5" maxlength="50" type="text">Intensität</input></div>
+      </div>
+      <div style="display:-webkit-box; -webkit-box-orient:vertical; margin-top:10px; margin-right:10px; border: 1px solid white; padding:5px;">
+        <div style=" -webkit-box-flex:1;"><input type="checkbox" id="light_3" checked="true">Licht 4</input></div>    
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_3_x" min="-200" max="200" value="0">PosX</input></div>
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_3_y" min="20" max="200" value="50">PosY</input></div>
+        <div style=" -webkit-box-flex:1;"><input type="range" id="light_3_z" min="-200" max="200" value="50">PosZ</input></div>
+        <div style=" -webkit-box-flex:1;"><input id="light_3_i" value="1, 1, 1" size="5" maxlength="50" type="text">Intensität</input></div>
+      </div>
+      <div style=" -webkit-box-flex:1;"><input type="range" id="diffuse" min="1" max="100" value="20">Diffuse Light</input></div>
+    </div>
 
+    <h3 style='margin: 15px 15px;'>Bedienung der Anwendung</h3>
+    <div class='slide-description' style='width: 1200px; display: -webkit-box; -webkit-box-orient:horizontal;'>
+      <div style="-webkit-box-flex: 1; border: 1px solid white;">
+       <p>"w, a, s, d" - Bewegung</p>
+       <p>"q, e" - Bewegung entlang der Y-Achse</p>
+       <p>"y, x, c" - Mittleres Objekt wählen (Würfel, Torus, Kugel)</p>
+     </div>
+     <div style="-webkit-box-flex: 1; border: 1px solid white;">
+       <p>"b" - Ändern der Blickrichtung aktivieren/deaktivieren</p>
+       <p>Zum Ändern der Blickrichtung die Maus an den entsprechenden Rand des Canvas bewegen</p>
+       <p>"m" - Zeigt die Scene (links) sowie die Shadow Map für Lichtquelle 4 (rechts).</p>
+     </div>
+   </div>
+   <h3 style='margin: 15px 15px;'>Erläuterung des Lösungsansatzes</h3>
+   <div class='slide-description' style='width: 1200px; display: -webkit-box; -webkit-box-orient:horizontal;'>
+    <div style="-webkit-box-flex: 1; border: 1px solid white;">
+      <p><b>Schritt 1: Scene für den diffusen Lichtanteil rendern</b></p>
+      <p>Die Scene wird zunächst einmal nur für den diffusen Anteil gerendert. In diesem Schritt werden auch die Texturinformationen der einzelnen Objekte in den Framebuffer geschrieben.</p> 
+      </br>
+      <p><b>Schritt 2: Rendern aus Sicht der Lichtquelle</b></p>
+      <p>Die Scene wird aus Sicht der zu behandelnden Lichtquelle gerendert. Dazu wird die Kameraposition an die Position der Lichtquelle versetzt. (Abb. 1) Im Shader muss nur die Position der einzelnen Vertices berechnet werden. Auf das Berechnen von GL-Color kann verzichtet werden, da nur die Informationen aus dem Tiefenpuffer benötigt werden. Diese werden in eine Textureinheit geschrieben um sie im nächsten Schritt verwenden zu können. Zusätzlich müssen Informationen über Position der Kamera im nächsten Schritt bekannt sein. Diese werden dazu als Attribute an den Shader übergeben</p>
+      </br>
+      <p><b>Schritt 3: Rendern aus Sicht der Kamera</b></p>
+      <p>Die Scene wird nun mit dem Shader für die Beleuchtung der Lichtquelle (hier Phong Modell) gerendert und das Ergebnis über die GL-Blend Funktion zum bereits vorhandenen diffusen Anteil addiert. Im Shader kann Dank der Tiefentextur bestimmt werden, ob sich zwischen einem Fragment und der Lichtquelle ein anderes Fragment befindet. (Abb. 2) Dazu wird der Abstand des Fragments zur Lichtquelle berechnet und mit dem Inhalt der Tiefentextur an der entsprechenden Stelle verglichen.</p>
+
+      Schritt 2 und 3 werden für jede Lichtquelle wiederholt. Nach Berechnen aller Lichtquellen wird der Inhalt des Framebuffers ins Canvas gezeichnet.
+
+      Hinweis: Es wird je eine Textureinheit pro Lichtquelle verwendet. Dadurch können zu Debugging Zwecken die Shadow Maps aller Lichtquellen nebeneinander dargestellt werden. Im produktiven Umfeld würde man eine einzelne Textureinheit verwenden und für jede Lichtquelle 'recyceln'.
+      </br>
+
+      <div style="margin-left: auto; margin-right: auto; display: block;">
+        <div style="float: left;" width="80%">
+          <img src="../shadow-mapping-slides/images/shadowmap_shadow.svg" width="100%" /><div style='text-align: center;'>Abb. 1</div>
+        </div>
+        <div style="float: left;" width="80%">
+          <img src="../shadow-mapping-slides/images/shadowmap_eye.svg" width="100%"/>
+          <div style='text-align: center;'>Abb. 2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</br>
+</br>
+</div>
+</div>
 
 <div>
-<pre id="error" class="alert alert-error"></pre>
+  <pre id="error" class="alert alert-error"></pre>
 </div>
 </body>
 
@@ -172,9 +216,9 @@ vec3 phong(vec3 normal, vec3 eye, vec3 light,
 }
 
 void main() {
-    vec3 color = phong(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), lightIntensity, texture2D(env, texCoordI).rgb);
+  vec3 color = phong(normalize(normalW), normalize(eyeDirectionW), normalize(lightDirectionW), lightIntensity, texture2D(env, texCoordI).rgb);
 
-    vec3 depth = vPosition.xyz / vPosition.w;
+  vec3 depth = vPosition.xyz / vPosition.w;
 
     //
     // No filtering, just render the shadow map
@@ -194,48 +238,48 @@ void main() {
     // gl_FragColor.rgb = vec3(shadowDepth, shadowDepth, shadowDepth);
     // gl_FragColor.rgb = color;
     gl_FragColor.a = 1.0;
-} 
-</script>
-<!-- EOF Phong lighting model, Phong shading -->
+  } 
+  </script>
+  <!-- EOF Phong lighting model, Phong shading -->
 
-    <!-- Monitor shading -->
-    <script id="vs2" type="text/glsl">
-    attribute vec4 position;
-    varying vec2 texCoordI;
+  <!-- Monitor shading -->
+  <script id="vs2" type="text/glsl">
+  attribute vec4 position;
+  varying vec2 texCoordI;
 
-    uniform mat4 model;
+  uniform mat4 model;
 
-    void main() {
-     texCoordI = (position.xy + 1.0) / 2.0;
-     gl_Position = model * position;
-   }
-   </script>
+  void main() {
+   texCoordI = (position.xy + 1.0) / 2.0;
+   gl_Position = model * position;
+ }
+ </script>
 
-   <script id="fs2" type="text/glsl">
-   precision highp float;
+ <script id="fs2" type="text/glsl">
+ precision highp float;
 
-   varying vec2 texCoordI;
-   uniform sampler2D colorBuffer;
+ varying vec2 texCoordI;
+ uniform sampler2D colorBuffer;
 
-   void main() {
-     gl_FragColor.rgb = texture2D(colorBuffer, texCoordI).rgb;
-     gl_FragColor.a = 1.0;
-   }
-   </script>
-   <!-- EOF Monitor -->
+ void main() {
+   gl_FragColor.rgb = texture2D(colorBuffer, texCoordI).rgb;
+   gl_FragColor.a = 1.0;
+ }
+ </script>
+ <!-- EOF Monitor -->
 
-<!-- Diffuse Shading for multiple light sources -->
-<script id="vs3" type="text/glsl">
-uniform mat4 projection;
-uniform mat4 view;
-uniform mat4 model;
+ <!-- Diffuse Shading for multiple light sources -->
+ <script id="vs3" type="text/glsl">
+ uniform mat4 projection;
+ uniform mat4 view;
+ uniform mat4 model;
 
-attribute vec2 texCoord;
-attribute vec4 position;
+ attribute vec2 texCoord;
+ attribute vec4 position;
 
-varying vec2 texCoordI;
+ varying vec2 texCoordI;
 
-void main() {
+ void main() {
   texCoordI = texCoord;
   gl_Position = projection * view * model * position;
 }
@@ -248,8 +292,8 @@ uniform sampler2D env;
 uniform float diffuseConst;
 
 void main() {
-      gl_FragColor.rgb = texture2D(env, texCoordI).rgb * diffuseConst; 
-      gl_FragColor.a = 1.0;
+  gl_FragColor.rgb = texture2D(env, texCoordI).rgb * diffuseConst; 
+  gl_FragColor.a = 1.0;
 }
 </script>
 <!-- Diffuse Shading for multiple light sources -->

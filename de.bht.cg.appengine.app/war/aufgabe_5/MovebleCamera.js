@@ -13,6 +13,8 @@ var Camera = function(position, arcX, arcY) {
 	this.lookRight = false;
 	this.lookDown = false;
 	this.lookUp = false;
+	this.up = false;
+	this.down = false;
 }
 
 Camera.prototype.getTransformationMatrix = function(view) {
@@ -50,6 +52,12 @@ Camera.prototype.getTransformationMatrix = function(view) {
 	if(this.l) {
 		this.position[2] += sinneg * this.runspeed; 
 		this.position[0] -= sin * this.runspeed;
+	}
+	if(this.up) {
+		this.position[1] += this.runspeed;
+	}
+	if(this.down) {
+		this.position[1] -= this.runspeed;
 	}
 
 	

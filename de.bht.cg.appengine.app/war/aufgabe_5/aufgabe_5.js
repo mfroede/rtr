@@ -54,6 +54,8 @@ function initialize() {
 	var lastMouseX = null;
 	var lastMouseY = null;
 
+	var processView = false;
+
 	var objectRotationMatrix = mat4.create();
 	mat4.identity(objectRotationMatrix);
 	window.canvas.onmousedown = handleMouseDown;
@@ -165,6 +167,10 @@ function initialize() {
 			camera.bw = true;
 		} else if (key == "D") {
 			camera.r = true;
+		} else if (key == "E") {
+			camera.up = true;
+		} else if (key == "Q") {
+			camera.down = true;
 		}
 	}
 	window.onkeyup = function() {
@@ -177,6 +183,10 @@ function initialize() {
 			camera.bw = false;
 		} else if (key == "D") {
 			camera.r = false;
+		} else if (key == "E") {
+			camera.up = false;
+		} else if (key == "Q") {
+			camera.down = false;
 		}
 	}
 
@@ -191,29 +201,32 @@ function initialize() {
   function canvasMouseMove(evt) {
 	    var mousePos = getMousePos(canvas, evt);
 	    // console.log('Mouse position: ' + mousePos.x + ',' + mousePos.y);
-	    if(mousePos.x <= 200) {
-	    	camera.lookLeft = true;
-	    }
 	    if(mousePos.x > 200) {
 	    	camera.lookLeft = false;
-	    }
-	    if(mousePos.x >= 1000) {
-	    	camera.lookRight = true;
 	    }
 	    if(mousePos.x < 1000) {
 	    	camera.lookRight = false;
 	    }
-	    if(mousePos.y >= 550) {
-	    	camera.lookDown = true;
-	    }
 	    if(mousePos.y < 550) {
 	    	camera.lookDown = false;
 	    }
-	    if(mousePos.y <= 150) {
-	    	camera.lookUp = true;
-	    }
 	    if(mousePos.y > 150) {
 	    	camera.lookUp = false;
+	    }
+  		if(!processView) {
+			return;
+		}
+	    if(mousePos.x <= 200) {
+	    	camera.lookLeft = true;
+	    }
+	    if(mousePos.x >= 1000) {
+	    	camera.lookRight = true;
+	    }
+	    if(mousePos.y >= 550) {
+	    	camera.lookDown = true;
+	    }
+	    if(mousePos.y <= 150) {
+	    	camera.lookUp = true;
 	    }
 	  }
 
@@ -251,6 +264,8 @@ function initialize() {
 			torus.setBuffers(newmodel, textures);
 		}else if (key == 'm') {
 			showMonitor = !showMonitor;
+		} else if (key == "b") {
+			processView = !processView;
 		}	
 	};
 
